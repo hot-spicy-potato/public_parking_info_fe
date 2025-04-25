@@ -1,6 +1,11 @@
 PODS:
   - Flutter (1.0.0)
+  - geolocator_apple (1.2.0):
+    - Flutter
+    - FlutterMacOS
   - kakao_map_plugin (0.0.1):
+    - Flutter
+  - permission_handler_apple (9.3.0):
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
@@ -8,20 +13,28 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
   - kakao_map_plugin (from `.symlinks/plugins/kakao_map_plugin/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  geolocator_apple:
+    :path: ".symlinks/plugins/geolocator_apple/darwin"
   kakao_map_plugin:
     :path: ".symlinks/plugins/kakao_map_plugin/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
   kakao_map_plugin: 4d54a08bb9f59383c361f6f2d5526b5359ccb728
+  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
 
 PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
