@@ -8,12 +8,12 @@ part 'parking_response.g.dart';
 @freezed
 class ParkingResponse with _$ParkingResponse {
   factory ParkingResponse({
-    required int? page,
-    required int? perPage,
-    required int? totalCount,
-    required int? currentCount,
-    required int? matchCount,
-    required List<ParkingInfo>? data,
+    required int page,
+    required int perPage,
+    required int totalCount,
+    required int currentCount,
+    required int matchCount,
+    required List<ParkingInfo> data,
   }) = _ParkingResponse;
 
   factory ParkingResponse.fromJson(Map<String, dynamic> json) =>

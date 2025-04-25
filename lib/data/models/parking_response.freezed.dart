@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ParkingResponse {
 
- int? get page; int? get perPage; int? get totalCount; int? get currentCount; int? get matchCount; List<ParkingInfo>? get data;
+ int get page; int get perPage; int get totalCount; int get currentCount; int get matchCount; List<ParkingInfo> get data;
 /// Create a copy of ParkingResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $ParkingResponseCopyWith<$Res>  {
   factory $ParkingResponseCopyWith(ParkingResponse value, $Res Function(ParkingResponse) _then) = _$ParkingResponseCopyWithImpl;
 @useResult
 $Res call({
- int? page, int? perPage, int? totalCount, int? currentCount, int? matchCount, List<ParkingInfo>? data
+ int page, int perPage, int totalCount, int currentCount, int matchCount, List<ParkingInfo> data
 });
 
 
@@ -66,15 +66,15 @@ class _$ParkingResponseCopyWithImpl<$Res>
 
 /// Create a copy of ParkingResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? page = freezed,Object? perPage = freezed,Object? totalCount = freezed,Object? currentCount = freezed,Object? matchCount = freezed,Object? data = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? page = null,Object? perPage = null,Object? totalCount = null,Object? currentCount = null,Object? matchCount = null,Object? data = null,}) {
   return _then(_self.copyWith(
-page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
-as int?,perPage: freezed == perPage ? _self.perPage : perPage // ignore: cast_nullable_to_non_nullable
-as int?,totalCount: freezed == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
-as int?,currentCount: freezed == currentCount ? _self.currentCount : currentCount // ignore: cast_nullable_to_non_nullable
-as int?,matchCount: freezed == matchCount ? _self.matchCount : matchCount // ignore: cast_nullable_to_non_nullable
-as int?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as List<ParkingInfo>?,
+page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int,perPage: null == perPage ? _self.perPage : perPage // ignore: cast_nullable_to_non_nullable
+as int,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as int,currentCount: null == currentCount ? _self.currentCount : currentCount // ignore: cast_nullable_to_non_nullable
+as int,matchCount: null == matchCount ? _self.matchCount : matchCount // ignore: cast_nullable_to_non_nullable
+as int,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as List<ParkingInfo>,
   ));
 }
 
@@ -85,21 +85,19 @@ as List<ParkingInfo>?,
 @JsonSerializable()
 
 class _ParkingResponse implements ParkingResponse {
-   _ParkingResponse({required this.page, required this.perPage, required this.totalCount, required this.currentCount, required this.matchCount, required final  List<ParkingInfo>? data}): _data = data;
+   _ParkingResponse({required this.page, required this.perPage, required this.totalCount, required this.currentCount, required this.matchCount, required final  List<ParkingInfo> data}): _data = data;
   factory _ParkingResponse.fromJson(Map<String, dynamic> json) => _$ParkingResponseFromJson(json);
 
-@override final  int? page;
-@override final  int? perPage;
-@override final  int? totalCount;
-@override final  int? currentCount;
-@override final  int? matchCount;
- final  List<ParkingInfo>? _data;
-@override List<ParkingInfo>? get data {
-  final value = _data;
-  if (value == null) return null;
+@override final  int page;
+@override final  int perPage;
+@override final  int totalCount;
+@override final  int currentCount;
+@override final  int matchCount;
+ final  List<ParkingInfo> _data;
+@override List<ParkingInfo> get data {
   if (_data is EqualUnmodifiableListView) return _data;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
+  return EqualUnmodifiableListView(_data);
 }
 
 
@@ -136,7 +134,7 @@ abstract mixin class _$ParkingResponseCopyWith<$Res> implements $ParkingResponse
   factory _$ParkingResponseCopyWith(_ParkingResponse value, $Res Function(_ParkingResponse) _then) = __$ParkingResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int? page, int? perPage, int? totalCount, int? currentCount, int? matchCount, List<ParkingInfo>? data
+ int page, int perPage, int totalCount, int currentCount, int matchCount, List<ParkingInfo> data
 });
 
 
@@ -153,15 +151,15 @@ class __$ParkingResponseCopyWithImpl<$Res>
 
 /// Create a copy of ParkingResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? page = freezed,Object? perPage = freezed,Object? totalCount = freezed,Object? currentCount = freezed,Object? matchCount = freezed,Object? data = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? page = null,Object? perPage = null,Object? totalCount = null,Object? currentCount = null,Object? matchCount = null,Object? data = null,}) {
   return _then(_ParkingResponse(
-page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
-as int?,perPage: freezed == perPage ? _self.perPage : perPage // ignore: cast_nullable_to_non_nullable
-as int?,totalCount: freezed == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
-as int?,currentCount: freezed == currentCount ? _self.currentCount : currentCount // ignore: cast_nullable_to_non_nullable
-as int?,matchCount: freezed == matchCount ? _self.matchCount : matchCount // ignore: cast_nullable_to_non_nullable
-as int?,data: freezed == data ? _self._data : data // ignore: cast_nullable_to_non_nullable
-as List<ParkingInfo>?,
+page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int,perPage: null == perPage ? _self.perPage : perPage // ignore: cast_nullable_to_non_nullable
+as int,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as int,currentCount: null == currentCount ? _self.currentCount : currentCount // ignore: cast_nullable_to_non_nullable
+as int,matchCount: null == matchCount ? _self.matchCount : matchCount // ignore: cast_nullable_to_non_nullable
+as int,data: null == data ? _self._data : data // ignore: cast_nullable_to_non_nullable
+as List<ParkingInfo>,
   ));
 }
 

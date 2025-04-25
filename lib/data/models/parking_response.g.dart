@@ -8,14 +8,14 @@ part of 'parking_response.dart';
 
 _ParkingResponse _$ParkingResponseFromJson(Map<String, dynamic> json) =>
     _ParkingResponse(
-      page: (json['page'] as num?)?.toInt(),
-      perPage: (json['perPage'] as num?)?.toInt(),
-      totalCount: (json['totalCount'] as num?)?.toInt(),
-      currentCount: (json['currentCount'] as num?)?.toInt(),
-      matchCount: (json['matchCount'] as num?)?.toInt(),
+      page: (json['page'] as num).toInt(),
+      perPage: (json['perPage'] as num).toInt(),
+      totalCount: (json['totalCount'] as num).toInt(),
+      currentCount: (json['currentCount'] as num).toInt(),
+      matchCount: (json['matchCount'] as num).toInt(),
       data:
-          (json['data'] as List<dynamic>?)
-              ?.map((e) => ParkingInfo.fromJson(e as Map<String, dynamic>))
+          (json['data'] as List<dynamic>)
+              .map((e) => ParkingInfo.fromJson(e as Map<String, dynamic>))
               .toList(),
     );
 
