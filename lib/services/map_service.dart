@@ -6,4 +6,11 @@ abstract class MapService {
   Future<Position> getCurrentLocation();
   Future<List<ParkingInfo>> loadParkingData();
   Future<void> addMarkersInView(KakaoMapController mapController);
+  Future<LatLng?> searchAddress(String keyword);
+  void setMapCenter({
+    required KakaoMapController mapController,
+    required double lat,
+    required double lon,
+    int? level,
+  });
 }

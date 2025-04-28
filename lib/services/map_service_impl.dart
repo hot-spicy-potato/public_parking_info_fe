@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:public_parking_info_fe/data/datasource/kakao_search_address_api.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
-import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
 
 class MapServiceImpl implements MapService {
@@ -66,8 +66,6 @@ class MapServiceImpl implements MapService {
     final double swLat = bounds.sw.latitude;
     final double swLng = bounds.sw.longitude;
 
-    print("image : ${Images.markerIcon}");
-
     final newMarkers =
         parkingList
             .where((parking) {
@@ -93,6 +91,39 @@ class MapServiceImpl implements MapService {
     cachedParkingList.addAll(newMarkers);
 
     await mapController.addMarker(markers: cachedParkingList);
+  }
+
+  // kakao search api
+  @override
+  Future<LatLng?> searchAddress(String keyword) async {
+    if (keyword.isEmpty) return null;
+
+    final data = await searchAddressAPI(keyword);
+
+    final documents = data["documents"];
+
+    if (documents != null && documents.isNotEmpty) {
+      // 지도 이동 위해 가장 상위 결과만 반환
+      final first = documents[0];
+      final double lat = double.parse(first["y"]);
+      final double lon = double.parse(first["x"]);
+      return LatLng(lat, lon);
+    }
+
+    return null;
+  }
+
+  // 지도 위치 이동
+  @override
+  void setMapCenter({
+    required KakaoMapController mapController,
+    required double lat,
+    required double lon,
+    int? level,
+  }) async {
+    final LatLng targetPosition = LatLng(lat, lon);
+    await mapController.setLevel(level ?? 5);
+    await mapController.setCenter(targetPosition);
   }
 }
 

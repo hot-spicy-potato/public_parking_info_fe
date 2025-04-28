@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_button.dart';
-import 'package:public_parking_info_fe/presentation/widgets/custom_menu_button.dart';
+import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
+import 'package:public_parking_info_fe/presentation/widgets/search_field.dart';
+import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
 import 'package:public_parking_info_fe/services/map_service_impl.dart';
-import 'package:sidebarx/sidebarx.dart';
 
 class ParkingMapPage extends ConsumerStatefulWidget {
   const ParkingMapPage({super.key});
@@ -17,39 +18,40 @@ class ParkingMapPage extends ConsumerStatefulWidget {
 class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
   @override
   Widget build(BuildContext context) {
-    final sideBarController = SidebarXController(selectedIndex: 0);
-    final key = GlobalKey<ScaffoldState>();
-    KakaoMapController? mapController;
-
+    final mapController = ref.watch(mapControllerProvider);
     final MapService mapService = MapServiceImpl();
 
     return Scaffold(
-      key: key,
-      drawer: SidebarX(controller: sideBarController),
       body: Stack(
         children: [
           KakaoMap(
+            // 지도 이동 및 마커 표시 초기 설정
             onMapCreated: (controller) async {
-              mapController = controller;
+              ref.read(mapControllerProvider.notifier).state = controller;
 
-              // 지도 이동
               final currentLocation = await mapService.getCurrentLocation();
-              final currentPosition = LatLng(
-                currentLocation.latitude,
-                currentLocation.longitude,
+
+              mapService.setMapCenter(
+                mapController: controller,
+                lat: currentLocation.latitude,
+                lon: currentLocation.longitude,
               );
 
+              await mapService.addMarkersInView(controller);
+            },
+            // 지도 이동시 마커 로드
+            onCameraIdle: (latLng, zoomLevel) async {
               if (mapController != null) {
-                mapController!.setLevel(6);
-                await mapController!.setCenter(currentPosition);
-                await mapService.addMarkersInView(mapController!);
+                await mapService.addMarkersInView(mapController);
               }
             },
-            onCameraIdle:
-                (latLng, zoomLevel) async =>
-                    await mapService.addMarkersInView(mapController!),
+            // 마커 클릭시 바텀 시트 노출
+            onMarkerTap: (markerId, latLng, zoomLevel) {
+              showCustomBottomSheet(context);
+            },
           ),
-          CustomMenuButton(sideBarKey: key),
+          // 검색필드
+          SearchField(),
           Positioned(right: 20, bottom: 30, child: CustomBottomButton()),
         ],
       ),
