@@ -47,7 +47,7 @@ class _SearchFieldState extends ConsumerState<SearchField> {
         ),
         child: Row(
           children: [
-            Icon(Icons.menu, color: CustomColors.grey),
+            Icon(Icons.menu, color: CustomColors.lightGrey),
             SizedBox(width: 6),
             Expanded(
               child: TextField(
@@ -70,7 +70,10 @@ class _SearchFieldState extends ConsumerState<SearchField> {
                 },
                 decoration: InputDecoration(
                   hintText: "목적지 또는 주소 검색",
-                  hintStyle: TextStyle(color: CustomColors.grey, fontSize: 16),
+                  hintStyle: TextStyle(
+                    color: CustomColors.lightGrey,
+                    fontSize: 16,
+                  ),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(0),
                 ),
