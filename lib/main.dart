@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/core/constants/keys.dart';
 import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = GoRouter(
       routes: [
-        GoRoute(path: "/", builder: (context, state) => const ParkingMapPage()),
+        GoRoute(path: "/", builder: (context, state) => const SplashPage()),
+        GoRoute(
+          path: "/main",
+          builder: (context, state) => const ParkingMapPage(),
+        ),
       ],
     );
 

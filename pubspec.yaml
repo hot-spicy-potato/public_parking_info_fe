@@ -27,6 +27,7 @@ dependencies:
   go_router: ^15.1.1
   sidebarx: ^0.17.1
   spider: ^4.2.2
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -46,12 +47,11 @@ flutter:
   fonts:
     - family: Pretendard
       fonts:
-        - asset: fonts/Pretendard-Black.ttf
-        - asset: fonts/Pretendard-Bold.ttf
-        - asset: fonts/Pretendard-ExtraBold.ttf
-        - asset: fonts/Pretendard-ExtraLight.ttf
-        - asset: fonts/Pretendard-Light.ttf
-        - asset: fonts/Pretendard-Medium.ttf
-        - asset: fonts/Pretendard-Regular.ttf
-        - asset: fonts/Pretendard-SemiBold.ttf
-        - asset: fonts/Pretendard-Thin.ttf
+        - asset: assets/fonts/Pretendard-Bold.ttf
+        - asset: assets/fonts/Pretendard-ExtraBold.ttf
+        - asset: assets/fonts/Pretendard-ExtraLight.ttf
+        - asset: assets/fonts/Pretendard-Light.ttf
+        - asset: assets/fonts/Pretendard-Medium.ttf
+        - asset: assets/fonts/Pretendard-Regular.ttf
+        - asset: assets/fonts/Pretendard-SemiBold.ttf
+        - asset: assets/fonts/Pretendard-Thin.ttf

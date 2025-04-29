@@ -9,7 +9,11 @@ import 'package:public_parking_info_fe/services/map_service.dart';
 
 class MapServiceImpl implements MapService {
   List<ParkingInfo>? _cachedParkingList;
-  final List<Marker> cachedParkingList = [];
+  final List<Marker> _cachedMarkList = [];
+  final String defaultMarkerImg =
+      "https://velog.velcdn.com/images/luna-han/post/869cb99f-b485-49b0-8c7d-04d0ab0f9762/image.png";
+  final String selectedMarkerImg =
+      "https://velog.velcdn.com/images/luna-han/post/e9628f6d-4882-46db-9781-a9bccfb095f1/image.png";
 
   // GPS 비활성화 또는 위치제공 미동의시 기본 위치 반환, 위치제공 동의시 현재 위치 반환
   @override
@@ -82,15 +86,23 @@ class MapServiceImpl implements MapService {
                 latLng: LatLng(parking.lat, parking.lon),
                 width: 40,
                 height: 40,
-                markerImageSrc:
-                    "https://velog.velcdn.com/images/luna-han/post/869cb99f-b485-49b0-8c7d-04d0ab0f9762/image.png",
+                markerImageSrc: defaultMarkerImg,
               );
             })
             .toList();
 
-    cachedParkingList.addAll(newMarkers);
+    await mapController.clearMarker();
+    await mapController.addMarker(markers: newMarkers);
+  }
 
-    await mapController.addMarker(markers: cachedParkingList);
+  @override
+  Future<void> updateMarker({
+    required KakaoMapController mapController,
+    required String markerId,
+    required LatLng latLng,
+  }) async {
+    await mapController.clearMarker(markerIds: [markerId]);
+    await mapController.addMarker(markers: _cachedMarkList);
   }
 
   // kakao search api

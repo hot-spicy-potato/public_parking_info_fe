@@ -13,4 +13,9 @@ abstract class MapService {
     required double lon,
     int? level,
   });
+  Future<void> updateMarker({
+    required KakaoMapController mapController,
+    required String markerId,
+    required LatLng latLng,
+  });
 }
