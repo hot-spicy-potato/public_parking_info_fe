@@ -14,7 +14,7 @@ class SearchField extends ConsumerStatefulWidget {
 
 class _SearchFieldState extends ConsumerState<SearchField> {
   late TextEditingController textEditingController;
-  final MapService mapService = MapServiceImpl();
+  final MapService mapService = MapServiceImpl.instance;
 
   @override
   void initState() {

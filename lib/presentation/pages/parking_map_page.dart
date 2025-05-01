@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-import 'package:public_parking_info_fe/presentation/widgets/bottom_bar.dart';
-import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_button.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/parking_info_content.dart';
 import 'package:public_parking_info_fe/presentation/widgets/search_field.dart';
@@ -21,7 +19,7 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
   @override
   Widget build(BuildContext context) {
     final mapController = ref.watch(mapControllerProvider);
-    final MapService mapService = MapServiceImpl();
+    final MapService mapService = MapServiceImpl.instance;
 
     return Scaffold(
       body: Stack(
@@ -49,13 +47,14 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
             },
             // 마커 클릭시 바텀 시트 노출
             onMarkerTap: (markerId, latLng, zoomLevel) async {
-              mapController?.setLevel(7);
-              showCustomBottomSheet(context, child: ParkingInfoContent());
-              mapService.updateMarker(
+              await mapService.updateMarker(
                 mapController: mapController!,
                 markerId: markerId,
                 latLng: latLng,
+                ref: ref,
               );
+
+              showCustomBottomSheet(context, child: ParkingInfoContent());
             },
           ),
           // 검색필드

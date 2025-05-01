@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
@@ -17,5 +18,7 @@ abstract class MapService {
     required KakaoMapController mapController,
     required String markerId,
     required LatLng latLng,
+    required WidgetRef ref,
   });
+  ParkingInfo? getParkingInfo(LatLng latLng);
 }

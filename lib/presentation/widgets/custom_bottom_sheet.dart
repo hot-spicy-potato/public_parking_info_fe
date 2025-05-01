@@ -7,7 +7,7 @@ void showCustomBottomSheet(BuildContext context, {required Widget child}) {
     barrierColor: Colors.transparent,
     backgroundColor: Colors.white,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
     ),
     builder: (context) => CustomBottomSheet(child: child),
   );
