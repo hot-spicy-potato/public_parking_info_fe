@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
+import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
 import 'package:public_parking_info_fe/services/map_service_impl.dart';
 
@@ -26,48 +27,48 @@ class _SearchFieldState extends ConsumerState<SearchField> {
   Widget build(BuildContext context) {
     final mapController = ref.watch(mapControllerProvider);
 
+    void searchEvent(String value) async {
+      if (value.isNotEmpty) {
+        // 검색 후 지도 이동
+        await mapService.searchAddress(textEditingController.text).then((
+          targetPosition,
+        ) {
+          if (targetPosition != null && mapController != null) {
+            mapService.setMapCenter(
+              mapController: mapController,
+              lat: targetPosition.latitude,
+              lon: targetPosition.longitude,
+            );
+          }
+        });
+      }
+    }
+
     return SafeArea(
       child: Container(
         width: double.infinity,
         height: 60,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 18),
         margin: const EdgeInsets.symmetric(horizontal: 18),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
               offset: Offset(0, 4),
-              color: Colors.black12,
-              blurRadius: 12,
-              spreadRadius: 6,
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              spreadRadius: 0,
             ),
           ],
         ),
         child: Row(
           children: [
-            Icon(Icons.menu, color: CustomColors.lightGrey),
-            SizedBox(width: 6),
             Expanded(
               child: TextField(
                 controller: textEditingController,
-                onSubmitted: (value) async {
-                  if (value.isNotEmpty) {
-                    // 검색 후 지도 이동
-                    await mapService
-                        .searchAddress(textEditingController.text)
-                        .then((targetPosition) {
-                          if (targetPosition != null && mapController != null) {
-                            mapService.setMapCenter(
-                              mapController: mapController,
-                              lat: targetPosition.latitude,
-                              lon: targetPosition.longitude,
-                            );
-                          }
-                        });
-                  }
-                },
+                onSubmitted: (value) => searchEvent(value),
                 decoration: InputDecoration(
                   hintText: "목적지 또는 주소 검색",
                   hintStyle: TextStyle(
@@ -78,6 +79,10 @@ class _SearchFieldState extends ConsumerState<SearchField> {
                   contentPadding: EdgeInsets.all(0),
                 ),
               ),
+            ),
+            GestureDetector(
+              onTap: () => searchEvent(textEditingController.text),
+              child: Image.asset(Images.searchIcon, width: 24),
             ),
           ],
         ),
