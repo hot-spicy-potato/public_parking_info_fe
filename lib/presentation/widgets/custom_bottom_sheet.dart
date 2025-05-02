@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 
-void showCustomBottomSheet(BuildContext context, {required Widget child}) {
+void showCustomBottomSheet(
+  BuildContext context, {
+  required Color barrierColor,
+  required Widget child,
+}) {
   showModalBottomSheet(
     context: context,
-    barrierColor: Colors.transparent,
+    barrierColor: barrierColor,
     backgroundColor: Colors.white,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
     ),
     builder: (context) => CustomBottomSheet(child: child),
   );
@@ -19,14 +24,25 @@ class CustomBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    double height = MediaQuery.sizeOf(context).height;
-
     return SafeArea(
       child: Container(
         width: double.infinity,
-        height: height * 0.3,
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-        child: child,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 50,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 40),
+              decoration: BoxDecoration(
+                color: CustomColors.dialogBar,
+                borderRadius: BorderRadius.circular(50),
+              ),
+            ),
+            child,
+          ],
+        ),
       ),
     );
   }

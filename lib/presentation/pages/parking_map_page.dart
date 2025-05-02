@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:public_parking_info_fe/presentation/widgets/bottom_bar.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/parking_info_content.dart';
 import 'package:public_parking_info_fe/presentation/widgets/search_field.dart';
@@ -20,6 +21,7 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
   Widget build(BuildContext context) {
     final mapController = ref.watch(mapControllerProvider);
     final MapService mapService = MapServiceImpl.instance;
+    final height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
       body: Stack(
@@ -54,12 +56,16 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                 ref: ref,
               );
 
-              showCustomBottomSheet(context, child: ParkingInfoContent());
+              showCustomBottomSheet(
+                context,
+                barrierColor: Colors.transparent,
+                child: ParkingInfoContent(),
+              );
             },
           ),
           // 검색필드
           SearchField(),
-          // Positioned(bottom: 0, child: BottomBar()),
+          Align(alignment: Alignment.bottomCenter, child: BottomBar()),
         ],
       ),
     );

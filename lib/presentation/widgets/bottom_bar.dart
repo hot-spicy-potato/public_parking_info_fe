@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
+import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
+import 'package:public_parking_info_fe/presentation/widgets/bottom_buttons.dart';
+import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
+import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.dart';
+import 'package:public_parking_info_fe/providers/page_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 
 class BottomBar extends ConsumerWidget {
@@ -7,9 +13,112 @@ class BottomBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      width: double.infinity,
-      child: Row(children: [Image.asset(Images.kakaoIcon), Text("프로필")]),
+    double height = MediaQuery.sizeOf(context).height;
+    double width = MediaQuery.sizeOf(context).width;
+
+    Widget iconWithText({
+      required int index,
+      required String src,
+      required String selectedSrc,
+      required String text,
+      required Function onTap,
+    }) {
+      final isSelected = ref.watch(pageProvider) == index;
+
+      return GestureDetector(
+        onTap: () {
+          ref.read(pageProvider.notifier).state = index;
+          onTap();
+        },
+        child: Column(
+          children: [
+            Image.asset(isSelected ? selectedSrc : src, width: 24, height: 24),
+            SizedBox(height: 4),
+            Text(
+              text,
+              style: CustomFonts.w400(
+                fontSize: 12,
+                color:
+                    isSelected ? CustomColors.primary : CustomColors.unselected,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        BottomButtons(),
+        Container(
+          width: double.infinity,
+          alignment: Alignment.topCenter,
+          margin: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(color: Colors.black12, blurRadius: 8, spreadRadius: 2),
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  iconWithText(
+                    index: 0,
+                    src: Images.tabbarHomeIcon,
+                    selectedSrc: Images.selectedTabbarHomeIcon,
+                    text: "홈",
+                    onTap: () {
+                      //
+                    },
+                  ),
+                  iconWithText(
+                    index: 1,
+                    src: Images.tabbarFavoriteIcon,
+                    selectedSrc: Images.selectedTabbarFavoriteIcon,
+                    text: "즐겨찾기",
+                    onTap: () {
+                      showCustomBottomSheet(
+                        context,
+                        barrierColor: Colors.black.withOpacity(0.4),
+                        child: RequestLoginSheet(),
+                      );
+                    },
+                  ),
+                  iconWithText(
+                    index: 2,
+                    src: Images.tabbarHistoryIcon,
+                    selectedSrc: Images.selectedTabbarHistoryIcon,
+                    text: "주차이력",
+                    onTap: () {
+                      //
+                    },
+                  ),
+                  iconWithText(
+                    index: 3,
+                    src: Images.tabbarMypageIcon,
+                    selectedSrc: Images.selectedTabbarMypageIcon,
+                    text: "내 정보",
+                    onTap: () {
+                      showCustomBottomSheet(
+                        context,
+                        barrierColor: Colors.black.withOpacity(0.4),
+                        child: RequestLoginSheet(),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

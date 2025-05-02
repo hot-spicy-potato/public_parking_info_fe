@@ -9,6 +9,7 @@ class CustomFonts {
       fontWeight: FontWeight.w900,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 
@@ -18,6 +19,7 @@ class CustomFonts {
       fontWeight: FontWeight.w800,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 
@@ -27,6 +29,7 @@ class CustomFonts {
       fontWeight: FontWeight.w700,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 
@@ -36,6 +39,7 @@ class CustomFonts {
       fontWeight: FontWeight.w600,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 
@@ -45,6 +49,7 @@ class CustomFonts {
       fontWeight: FontWeight.w500,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 
@@ -54,6 +59,7 @@ class CustomFonts {
       fontWeight: FontWeight.w400,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 
@@ -63,6 +69,7 @@ class CustomFonts {
       fontWeight: FontWeight.w300,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 
@@ -72,6 +79,7 @@ class CustomFonts {
       fontWeight: FontWeight.w200,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 
@@ -81,6 +89,7 @@ class CustomFonts {
       fontWeight: FontWeight.w100,
       fontSize: fontSize,
       color: color ?? Colors.black,
+      height: 0,
     );
   }
 }

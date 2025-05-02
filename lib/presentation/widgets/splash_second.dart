@@ -9,18 +9,37 @@ class SplashSecond extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    double height = MediaQuery.sizeOf(context).height;
+
     return Stack(
       children: [
         Align(
           alignment: Alignment.center,
-          child: Image.asset(Images.splashMapIcon, width: 300),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Text(
-            "위치 서비스를 활성화하시고,\n더 많은 편리한 기능을\n경험해 보세요.",
-            style: CustomFonts.w600(fontSize: 24, color: CustomColors.darkGrey),
-            textAlign: TextAlign.center,
+          child: Column(
+            children: [
+              SizedBox(height: height * 0.2),
+              SizedBox(
+                height: 300,
+                child: Image.asset(Images.splash03Icon, width: 300),
+              ),
+              Text(
+                "위치 서비스를 활성화하세요!",
+                style: CustomFonts.w700(
+                  fontSize: 24,
+                  color: CustomColors.primary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 30),
+              Text(
+                "그리고 더 많은 편리한 기능을\n경험해보세요.",
+                style: CustomFonts.w400(
+                  fontSize: 18,
+                  color: CustomColors.darkGrey,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ],
