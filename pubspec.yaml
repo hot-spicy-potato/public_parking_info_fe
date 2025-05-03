@@ -29,6 +29,9 @@ dependencies:
   spider: ^4.2.2
   smooth_page_indicator: ^1.2.1
   dropdown_button2: ^2.3.9
+  simple_animated_rating_bar: ^2.0.1
+  scroll_time_picker: ^1.1.2
+  scroll_datetime_picker: ^0.2.1
 
 dev_dependencies:
   flutter_test:

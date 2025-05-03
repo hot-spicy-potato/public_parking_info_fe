@@ -24,6 +24,8 @@ void main() {
     expect(File(Images.parkingFeeIcon).existsSync(), isTrue);
     expect(File(Images.roadViewIcon).existsSync(), isTrue);
     expect(File(Images.searchIcon).existsSync(), isTrue);
+    expect(File(Images.selectDateIcon).existsSync(), isTrue);
+    expect(File(Images.selectTimeIcon).existsSync(), isTrue);
     expect(File(Images.selectedMarkerIcon).existsSync(), isTrue);
     expect(File(Images.selectedStarIcon).existsSync(), isTrue);
     expect(File(Images.selectedTabbarFavoriteIcon).existsSync(), isTrue);

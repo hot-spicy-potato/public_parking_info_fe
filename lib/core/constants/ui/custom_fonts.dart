@@ -53,13 +53,18 @@ class CustomFonts {
     );
   }
 
-  static TextStyle w400({required double fontSize, Color? color}) {
+  static TextStyle w400({
+    required double fontSize,
+    Color? color,
+    double? letterSpacing,
+  }) {
     return TextStyle(
       fontFamily: _fontFamily,
       fontWeight: FontWeight.w400,
       fontSize: fontSize,
       color: color ?? Colors.black,
       height: 0,
+      letterSpacing: letterSpacing,
     );
   }
 

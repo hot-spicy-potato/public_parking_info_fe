@@ -8,6 +8,7 @@ class CustomColors {
   static const Color dialogBar = Color(0xffCACDD2);
   static const Color unselected = Color(0xff9FA4A9);
   static const Color lightGrey = Color(0xffA6AAB4);
+  static const Color textField = Color(0xffDBDBDB);
   static const Color grey = Color(0xff757F8C);
   static const Color darkGrey = Color(0xff3B414B);
   static const Color primary = Color(0xff613EEA);
