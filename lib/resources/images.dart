@@ -8,6 +8,7 @@ class Images {
   static const String carIcon = 'assets/imgs/car_icon.png';
   static const String currentLocationIcon =
       'assets/imgs/current_location_icon.png';
+  static const String dotMenuIcon = 'assets/imgs/dot_menu_icon.png';
   static const String emptyDataIcon = 'assets/imgs/empty_data_icon.png';
   static const String enableParkingCountIcon =
       'assets/imgs/enable_parking_count_icon.png';
@@ -18,6 +19,7 @@ class Images {
   static const String logo = 'assets/imgs/logo.png';
   static const String logoIcon = 'assets/imgs/logo_icon.png';
   static const String markerIcon = 'assets/imgs/marker_icon.png';
+  static const String noDataIcon = 'assets/imgs/no_data_icon.png';
   static const String operationTimeIcon = 'assets/imgs/operation_time_icon.png';
   static const String parkingFeeIcon = 'assets/imgs/parking_fee_icon.png';
   static const String roadViewIcon = 'assets/imgs/road_view_icon.png';

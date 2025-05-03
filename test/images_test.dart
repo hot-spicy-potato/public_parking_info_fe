@@ -9,6 +9,7 @@ void main() {
     expect(File(Images.arrowRight).existsSync(), isTrue);
     expect(File(Images.carIcon).existsSync(), isTrue);
     expect(File(Images.currentLocationIcon).existsSync(), isTrue);
+    expect(File(Images.dotMenuIcon).existsSync(), isTrue);
     expect(File(Images.emptyDataIcon).existsSync(), isTrue);
     expect(File(Images.enableParkingCountIcon).existsSync(), isTrue);
     expect(File(Images.favoriteIcon).existsSync(), isTrue);
@@ -18,6 +19,7 @@ void main() {
     expect(File(Images.logo).existsSync(), isTrue);
     expect(File(Images.logoIcon).existsSync(), isTrue);
     expect(File(Images.markerIcon).existsSync(), isTrue);
+    expect(File(Images.noDataIcon).existsSync(), isTrue);
     expect(File(Images.operationTimeIcon).existsSync(), isTrue);
     expect(File(Images.parkingFeeIcon).existsSync(), isTrue);
     expect(File(Images.roadViewIcon).existsSync(), isTrue);

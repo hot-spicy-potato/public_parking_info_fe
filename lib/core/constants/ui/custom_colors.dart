@@ -4,6 +4,7 @@ class CustomColors {
   CustomColors._();
 
   static const Color whiteGrey = Color(0xffE9EBED);
+  static const Color divider = Color(0xFFefefef);
   static const Color dialogBar = Color(0xffCACDD2);
   static const Color unselected = Color(0xff9FA4A9);
   static const Color lightGrey = Color(0xffA6AAB4);
