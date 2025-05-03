@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
 import 'package:public_parking_info_fe/presentation/widgets/bottom_bar.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/parking_info_content.dart';
@@ -21,7 +23,6 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
   Widget build(BuildContext context) {
     final mapController = ref.watch(mapControllerProvider);
     final MapService mapService = MapServiceImpl.instance;
-    final height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
       body: Stack(
@@ -31,7 +32,7 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
             onMapCreated: (controller) async {
               ref.read(mapControllerProvider.notifier).state = controller;
 
-              final currentLocation = await mapService.getCurrentLocation();
+              final currentLocation = await mapService.setInitialLocation();
 
               mapService.setMapCenter(
                 mapController: controller,
@@ -61,6 +62,15 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                 barrierColor: Colors.transparent,
                 child: ParkingInfoContent(),
               );
+            },
+            onMapTap: (latLng) async {
+              final isRoadView = ref.watch(roadViewProvider);
+
+              print(isRoadView);
+
+              if (isRoadView) {
+                context.pushNamed("roadView", extra: latLng);
+              }
             },
           ),
           // 검색필드

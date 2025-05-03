@@ -1,10 +1,14 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
-import 'package:public_parking_info_fe/presentation/widgets/bottom_buttons.dart';
+import 'package:public_parking_info_fe/presentation/widgets/current_location_button.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
+import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
 import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.dart';
+import 'package:public_parking_info_fe/presentation/widgets/road_view_button.dart';
 import 'package:public_parking_info_fe/providers/page_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 
@@ -13,7 +17,6 @@ class BottomBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
 
     Widget iconWithText({
@@ -50,7 +53,27 @@ class BottomBar extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        BottomButtons(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            FastSearch(),
+            SizedBox(width: width / 3 - 48),
+            Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  RoadViewButton(),
+                  SizedBox(height: 6),
+                  CurrentLocationButton(),
+                ],
+              ),
+            ),
+          ],
+        ),
         Container(
           width: double.infinity,
           alignment: Alignment.topCenter,

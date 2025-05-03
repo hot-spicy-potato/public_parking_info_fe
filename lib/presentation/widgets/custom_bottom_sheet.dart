@@ -24,25 +24,35 @@ class CustomBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 50,
-              height: 4,
-              margin: const EdgeInsets.only(bottom: 40),
-              decoration: BoxDecoration(
-                color: CustomColors.dialogBar,
-                borderRadius: BorderRadius.circular(50),
-              ),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            offset: Offset(0, -2),
+            blurRadius: 6,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 50,
+            height: 4,
+            margin: const EdgeInsets.only(bottom: 20),
+            decoration: BoxDecoration(
+              color: CustomColors.dialogBar,
+              borderRadius: BorderRadius.circular(50),
             ),
-            child,
-          ],
-        ),
+          ),
+          SafeArea(child: child),
+        ],
       ),
     );
   }

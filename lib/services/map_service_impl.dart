@@ -22,16 +22,13 @@ class MapServiceImpl implements MapService {
   final String selectedMarkerImg =
       "https://velog.velcdn.com/images/luna-han/post/e9628f6d-4882-46db-9781-a9bccfb095f1/image.png";
 
-  // GPS 비활성화 또는 위치제공 미동의시 기본 위치 반환, 위치제공 동의시 현재 위치 반환
   @override
-  Future<Position> getCurrentLocation() async {
-    Position initialPosition = _initialPosition();
-
+  Future<Position?> getCurrentLocation() async {
     // GPS 활성화 여부
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
-      return initialPosition;
+      return null;
     }
 
     // 위치 제공 동의 여부
@@ -43,13 +40,24 @@ class MapServiceImpl implements MapService {
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
         // 위치 제공 미동의시 서울역 좌표 반환
-        return initialPosition;
+        return null;
       }
     }
 
-    try {
-      return await Geolocator.getCurrentPosition();
-    } catch (e) {
+    return await Geolocator.getCurrentPosition();
+  }
+
+  // GPS 비활성화 또는 위치제공 미동의시 기본 위치 반환, 위치제공 동의시 현재 위치 반환
+  @override
+  Future<Position> setInitialLocation() async {
+    Position initialPosition = _initialPosition();
+    getCurrentLocation();
+
+    Position? currentLocation = await getCurrentLocation();
+
+    if (currentLocation != null) {
+      return currentLocation;
+    } else {
       return initialPosition;
     }
   }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/core/constants/keys.dart';
 import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/splash_page.dart';
 
 void main() async {
@@ -20,10 +21,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = GoRouter(
       routes: [
-        GoRoute(path: "/", builder: (context, state) => const SplashPage()),
         GoRoute(
-          path: "/main",
+          name: "splash",
+          path: "/splash",
+          builder: (context, state) => const SplashPage(),
+        ),
+        GoRoute(
+          name: "main",
+          path: "/",
           builder: (context, state) => const ParkingMapPage(),
+        ),
+        GoRoute(
+          name: "roadView",
+          path: "/road-view",
+          builder: (context, state) {
+            final latlng = state.extra as LatLng;
+            return RoadViewPage(latLng: latlng);
+          },
         ),
       ],
     );
