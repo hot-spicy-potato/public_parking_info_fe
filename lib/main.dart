@@ -9,6 +9,7 @@ import 'package:public_parking_info_fe/presentation/pages/review_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/splash_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/write_review_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,19 +17,25 @@ void main() async {
   KakaoSdk.init(nativeAppKey: kakaoNativeAppKey);
   AuthRepository.initialize(appKey: kakaoAppKey);
 
-  runApp(const ProviderScope(child: MyApp()));
+  final prefs = await SharedPreferences.getInstance();
+  final accessToken = prefs.getString("accessToken");
+  final isLoggedIn = accessToken != null;
+
+  runApp(ProviderScope(child: MyApp(isLoggedIn: isLoggedIn)));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+  const MyApp({required this.isLoggedIn, super.key});
 
   @override
   Widget build(BuildContext context) {
     final router = GoRouter(
+      initialLocation: isLoggedIn ? "/main" : "/splash",
       routes: [
         GoRoute(
           name: "splash",
-          path: "/",
+          path: "/splash",
           builder: (context, state) => const SplashPage(),
         ),
         GoRoute(
