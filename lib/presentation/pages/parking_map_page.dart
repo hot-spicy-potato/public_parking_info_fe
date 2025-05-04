@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
 import 'package:public_parking_info_fe/presentation/widgets/bottom_bar.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/parking_info_content.dart';
@@ -65,8 +64,6 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
             },
             onMapTap: (latLng) async {
               final isRoadView = ref.watch(roadViewProvider);
-
-              print(isRoadView);
 
               if (isRoadView) {
                 context.pushNamed("roadView", extra: latLng);

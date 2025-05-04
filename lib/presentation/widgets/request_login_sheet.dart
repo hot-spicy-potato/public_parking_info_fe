@@ -3,12 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
+import 'package:public_parking_info_fe/services/user_service.dart';
+import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
 class RequestLoginSheet extends ConsumerWidget {
   const RequestLoginSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final UserService userService = UserServiceImpl.instance;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -21,29 +25,35 @@ class RequestLoginSheet extends ConsumerWidget {
           "로그인 이후 서비스 이용이 가능합니다.",
           style: CustomFonts.w400(fontSize: 16, color: CustomColors.darkGrey),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-          margin: const EdgeInsets.symmetric(vertical: 20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: CustomColors.kakao,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(Images.kakaoLoginIcon, width: 24, height: 24),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    "카카오 로그인",
-                    style: CustomFonts.w600(
-                      fontSize: 16,
-                      color: CustomColors.darkGrey,
+        GestureDetector(
+          onTap: () {
+            userService.kakaoLogin();
+            print(userService.getToken());
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            margin: const EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: CustomColors.kakao,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(Images.kakaoLoginIcon, width: 24, height: 24),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      "카카오 로그인",
+                      style: CustomFonts.w600(
+                        fontSize: 16,
+                        color: CustomColors.darkGrey,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Text(
