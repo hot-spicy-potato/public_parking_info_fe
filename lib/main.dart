@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_share.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/core/constants/keys.dart';
 import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/review_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/splash_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/write_review_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  KakaoSdk.init(nativeAppKey: kakaoNativeAppKey);
   AuthRepository.initialize(appKey: kakaoAppKey);
 
   runApp(const ProviderScope(child: MyApp()));
@@ -23,12 +28,12 @@ class MyApp extends StatelessWidget {
       routes: [
         GoRoute(
           name: "splash",
-          path: "/splash",
+          path: "/",
           builder: (context, state) => const SplashPage(),
         ),
         GoRoute(
           name: "main",
-          path: "/",
+          path: "/main",
           builder: (context, state) => const ParkingMapPage(),
         ),
         GoRoute(
@@ -38,6 +43,16 @@ class MyApp extends StatelessWidget {
             final latlng = state.extra as LatLng;
             return RoadViewPage(latLng: latlng);
           },
+        ),
+        GoRoute(
+          name: "review",
+          path: "/review",
+          builder: (context, state) => ReviewPage(),
+        ),
+        GoRoute(
+          name: "write-review",
+          path: "/write-review",
+          builder: (context, state) => WriteReviewPage(),
         ),
       ],
     );
