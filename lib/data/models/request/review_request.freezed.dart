@@ -15,14 +15,8 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$ReviewRequest {
-  int get id;
-  String get kakaoId;
-  String get code;
-  double get score;
-  String get content;
-  DateTime get reviewDate;
-  DateTime get reviewtime;
-  DateTime get updateTime;
+  String get mngCd;
+  String get sort;
 
   /// Create a copy of ReviewRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -40,27 +34,17 @@ mixin _$ReviewRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is ReviewRequest &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.score, score) || other.score == score) &&
-            (identical(other.content, content) || other.content == content) &&
-            (identical(other.reviewDate, reviewDate) ||
-                other.reviewDate == reviewDate) &&
-            (identical(other.reviewtime, reviewtime) ||
-                other.reviewtime == reviewtime) &&
-            (identical(other.updateTime, updateTime) ||
-                other.updateTime == updateTime));
+            (identical(other.mngCd, mngCd) || other.mngCd == mngCd) &&
+            (identical(other.sort, sort) || other.sort == sort));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, kakaoId, code, score,
-      content, reviewDate, reviewtime, updateTime);
+  int get hashCode => Object.hash(runtimeType, mngCd, sort);
 
   @override
   String toString() {
-    return 'ReviewRequest(id: $id, kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewtime: $reviewtime, updateTime: $updateTime)';
+    return 'ReviewRequest(mngCd: $mngCd, sort: $sort)';
   }
 }
 
@@ -70,15 +54,7 @@ abstract mixin class $ReviewRequestCopyWith<$Res> {
           ReviewRequest value, $Res Function(ReviewRequest) _then) =
       _$ReviewRequestCopyWithImpl;
   @useResult
-  $Res call(
-      {int id,
-      String kakaoId,
-      String code,
-      double score,
-      String content,
-      DateTime reviewDate,
-      DateTime reviewtime,
-      DateTime updateTime});
+  $Res call({String mngCd, String sort});
 }
 
 /// @nodoc
@@ -94,48 +70,18 @@ class _$ReviewRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? kakaoId = null,
-    Object? code = null,
-    Object? score = null,
-    Object? content = null,
-    Object? reviewDate = null,
-    Object? reviewtime = null,
-    Object? updateTime = null,
+    Object? mngCd = null,
+    Object? sort = null,
   }) {
     return _then(_self.copyWith(
-      id: null == id
-          ? _self.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      kakaoId: null == kakaoId
-          ? _self.kakaoId
-          : kakaoId // ignore: cast_nullable_to_non_nullable
+      mngCd: null == mngCd
+          ? _self.mngCd
+          : mngCd // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
-          ? _self.code
-          : code // ignore: cast_nullable_to_non_nullable
+      sort: null == sort
+          ? _self.sort
+          : sort // ignore: cast_nullable_to_non_nullable
               as String,
-      score: null == score
-          ? _self.score
-          : score // ignore: cast_nullable_to_non_nullable
-              as double,
-      content: null == content
-          ? _self.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
-      reviewDate: null == reviewDate
-          ? _self.reviewDate
-          : reviewDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      reviewtime: null == reviewtime
-          ? _self.reviewtime
-          : reviewtime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updateTime: null == updateTime
-          ? _self.updateTime
-          : updateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -143,34 +89,14 @@ class _$ReviewRequestCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _ReviewRequest implements ReviewRequest {
-  _ReviewRequest(
-      {required this.id,
-      required this.kakaoId,
-      required this.code,
-      required this.score,
-      required this.content,
-      required this.reviewDate,
-      required this.reviewtime,
-      required this.updateTime});
+  _ReviewRequest({required this.mngCd, required this.sort});
   factory _ReviewRequest.fromJson(Map<String, dynamic> json) =>
       _$ReviewRequestFromJson(json);
 
   @override
-  final int id;
+  final String mngCd;
   @override
-  final String kakaoId;
-  @override
-  final String code;
-  @override
-  final double score;
-  @override
-  final String content;
-  @override
-  final DateTime reviewDate;
-  @override
-  final DateTime reviewtime;
-  @override
-  final DateTime updateTime;
+  final String sort;
 
   /// Create a copy of ReviewRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -192,27 +118,17 @@ class _ReviewRequest implements ReviewRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ReviewRequest &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.score, score) || other.score == score) &&
-            (identical(other.content, content) || other.content == content) &&
-            (identical(other.reviewDate, reviewDate) ||
-                other.reviewDate == reviewDate) &&
-            (identical(other.reviewtime, reviewtime) ||
-                other.reviewtime == reviewtime) &&
-            (identical(other.updateTime, updateTime) ||
-                other.updateTime == updateTime));
+            (identical(other.mngCd, mngCd) || other.mngCd == mngCd) &&
+            (identical(other.sort, sort) || other.sort == sort));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, kakaoId, code, score,
-      content, reviewDate, reviewtime, updateTime);
+  int get hashCode => Object.hash(runtimeType, mngCd, sort);
 
   @override
   String toString() {
-    return 'ReviewRequest(id: $id, kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewtime: $reviewtime, updateTime: $updateTime)';
+    return 'ReviewRequest(mngCd: $mngCd, sort: $sort)';
   }
 }
 
@@ -224,15 +140,7 @@ abstract mixin class _$ReviewRequestCopyWith<$Res>
       __$ReviewRequestCopyWithImpl;
   @override
   @useResult
-  $Res call(
-      {int id,
-      String kakaoId,
-      String code,
-      double score,
-      String content,
-      DateTime reviewDate,
-      DateTime reviewtime,
-      DateTime updateTime});
+  $Res call({String mngCd, String sort});
 }
 
 /// @nodoc
@@ -248,48 +156,18 @@ class __$ReviewRequestCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? id = null,
-    Object? kakaoId = null,
-    Object? code = null,
-    Object? score = null,
-    Object? content = null,
-    Object? reviewDate = null,
-    Object? reviewtime = null,
-    Object? updateTime = null,
+    Object? mngCd = null,
+    Object? sort = null,
   }) {
     return _then(_ReviewRequest(
-      id: null == id
-          ? _self.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      kakaoId: null == kakaoId
-          ? _self.kakaoId
-          : kakaoId // ignore: cast_nullable_to_non_nullable
+      mngCd: null == mngCd
+          ? _self.mngCd
+          : mngCd // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
-          ? _self.code
-          : code // ignore: cast_nullable_to_non_nullable
+      sort: null == sort
+          ? _self.sort
+          : sort // ignore: cast_nullable_to_non_nullable
               as String,
-      score: null == score
-          ? _self.score
-          : score // ignore: cast_nullable_to_non_nullable
-              as double,
-      content: null == content
-          ? _self.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
-      reviewDate: null == reviewDate
-          ? _self.reviewDate
-          : reviewDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      reviewtime: null == reviewtime
-          ? _self.reviewtime
-          : reviewtime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updateTime: null == updateTime
-          ? _self.updateTime
-          : updateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
