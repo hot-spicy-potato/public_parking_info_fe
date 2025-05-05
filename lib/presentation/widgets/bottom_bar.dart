@@ -11,6 +11,8 @@ import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.
 import 'package:public_parking_info_fe/presentation/widgets/road_view_button.dart';
 import 'package:public_parking_info_fe/providers/page_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
+import 'package:public_parking_info_fe/services/user_service.dart';
+import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
 class BottomBar extends ConsumerWidget {
   const BottomBar({super.key});
@@ -18,6 +20,7 @@ class BottomBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.sizeOf(context).width;
+    final UserService userService = UserServiceImpl.instance;
 
     Widget iconWithText({
       required int index,
@@ -30,7 +33,6 @@ class BottomBar extends ConsumerWidget {
 
       return GestureDetector(
         onTap: () {
-          ref.read(pageProvider.notifier).state = index;
           onTap();
         },
         child: Column(
@@ -97,7 +99,7 @@ class BottomBar extends ConsumerWidget {
                     selectedSrc: Images.selectedTabbarHomeIcon,
                     text: "홈",
                     onTap: () {
-                      //
+                      ref.read(pageProvider.notifier).state = 0;
                     },
                   ),
                   iconWithText(
@@ -105,36 +107,42 @@ class BottomBar extends ConsumerWidget {
                     src: Images.tabbarFavoriteIcon,
                     selectedSrc: Images.selectedTabbarFavoriteIcon,
                     text: "즐겨찾기",
-                    onTap: () {
-                      showCustomBottomSheet(
-                        context,
-                        barrierColor: Colors.black.withOpacity(0.4),
-                        child: RequestLoginSheet(),
-                      );
+                    onTap: () async {
+                      final token = await userService.getToken();
+                      if (token == null) {
+                        showCustomBottomSheet(
+                          context,
+                          barrierColor: Colors.black.withOpacity(0.4),
+                          child: RequestLoginSheet(),
+                        );
+                      } else {
+                        ref.read(pageProvider.notifier).state = 1;
+                        // todo. page 이동
+                      }
                     },
                   ),
-                  iconWithText(
-                    index: 2,
-                    src: Images.tabbarHistoryIcon,
-                    selectedSrc: Images.selectedTabbarHistoryIcon,
-                    text: "주차이력",
-                    onTap: () {
-                      //
-                    },
-                  ),
-                  iconWithText(
-                    index: 3,
-                    src: Images.tabbarMypageIcon,
-                    selectedSrc: Images.selectedTabbarMypageIcon,
-                    text: "내 정보",
-                    onTap: () {
-                      showCustomBottomSheet(
-                        context,
-                        barrierColor: Colors.black.withOpacity(0.4),
-                        child: RequestLoginSheet(),
-                      );
-                    },
-                  ),
+                  // iconWithText(
+                  //   index: 2,
+                  //   src: Images.tabbarHistoryIcon,
+                  //   selectedSrc: Images.selectedTabbarHistoryIcon,
+                  //   text: "주차이력",
+                  //   onTap: () {
+                  //     //
+                  //   },
+                  // ),
+                  // iconWithText(
+                  //   index: 3,
+                  //   src: Images.tabbarMypageIcon,
+                  //   selectedSrc: Images.selectedTabbarMypageIcon,
+                  //   text: "내 정보",
+                  //   onTap: () {
+                  //     showCustomBottomSheet(
+                  //       context,
+                  //       barrierColor: Colors.black.withOpacity(0.4),
+                  //       child: RequestLoginSheet(),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
               SizedBox(height: 24),

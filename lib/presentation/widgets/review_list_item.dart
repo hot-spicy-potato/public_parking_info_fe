@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
+import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 
 class ReviewListItem extends ConsumerWidget {
-  const ReviewListItem({super.key});
+  final ReviewListItemResponse reviewItem;
+  const ReviewListItem({required this.reviewItem, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,7 +46,7 @@ class ReviewListItem extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "고길동",
+                    reviewItem.kakaoId, // todo. name으로 변경 필요
                     style: CustomFonts.w700(
                       fontSize: 18,
                       color: CustomColors.darkGrey,
@@ -81,10 +83,14 @@ class ReviewListItem extends ConsumerWidget {
               SizedBox(height: 8),
               Row(
                 children: [
-                  ReviewRate(value: 4, size: 14, paddingRight: 4),
+                  ReviewRate(
+                    value: reviewItem.score.toInt(),
+                    size: 14,
+                    paddingRight: 4,
+                  ),
                   SizedBox(width: 8),
                   Text(
-                    "2025.05.03",
+                    reviewItem.updateTime.toString(),
                     style: CustomFonts.w400(
                       fontSize: 16,
                       color: CustomColors.grey,
@@ -94,7 +100,7 @@ class ReviewListItem extends ConsumerWidget {
               ),
               SizedBox(height: 8),
               Text(
-                "리뷰 내용입니다.",
+                reviewItem.content,
                 style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
               ),
             ],

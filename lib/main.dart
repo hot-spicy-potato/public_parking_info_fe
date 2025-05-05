@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_share.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/core/constants/keys.dart';
+import 'package:public_parking_info_fe/data/models/parking_info.dart';
+import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
 import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/review_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
@@ -54,10 +56,15 @@ class MyApp extends StatelessWidget {
         GoRoute(
           name: "review",
           path: "/review",
-          builder: (context, state) => ReviewPage(),
+          builder: (context, state) {
+            final extra = GoRouterState.of(context).extra as Map;
+            final parkingInfo = extra["parkingInfo"] as ParkingInfo;
+            final reviewInfo = extra["reviewInfo"] as ReviewInfoResponse;
+            return ReviewPage(parkingInfo: parkingInfo, reviewInfo: reviewInfo);
+          },
         ),
         GoRoute(
-          name: "write-review",
+          name: "writeReview",
           path: "/write-review",
           builder: (context, state) => WriteReviewPage(),
         ),

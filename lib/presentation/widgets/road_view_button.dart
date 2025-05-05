@@ -22,8 +22,8 @@ class RoadViewButton extends ConsumerWidget {
         final isRoadView = ref.watch(roadViewProvider);
 
         isRoadView
-            ? mapController?.addOverlayMapTypeId(MapType.roadView)
-            : mapController?.removeOverlayMapTypeId(MapType.roadView);
+            ? mapController?.addOverlayMapTypeId(MapType.traffic)
+            : mapController?.removeOverlayMapTypeId(MapType.traffic);
       },
       child: Container(
         width: 48,
@@ -47,7 +47,7 @@ class RoadViewButton extends ConsumerWidget {
             Image.asset(Images.roadViewIcon, width: 16, height: 16),
             SizedBox(height: 4),
             Text(
-              "로드뷰",
+              "혼잡도", // todo. 로드뷰
               style: CustomFonts.w500(fontSize: 9, color: Colors.grey),
             ),
           ],

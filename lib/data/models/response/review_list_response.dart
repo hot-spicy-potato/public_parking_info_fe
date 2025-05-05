@@ -5,8 +5,9 @@ part 'review_list_response.g.dart';
 
 @freezed
 class ReviewListResponse with _$ReviewListResponse {
-  factory ReviewListResponse({required List<ReviewListItem> favoriteList}) =
-      _ReviewListResponse;
+  factory ReviewListResponse({
+    required List<ReviewListItemResponse> favoriteList,
+  }) = _ReviewListResponse;
 
   factory ReviewListResponse.fromJson(Map<String, dynamic> json) =>
       _$ReviewListResponseFromJson(json);
@@ -16,8 +17,8 @@ class ReviewListResponse with _$ReviewListResponse {
 }
 
 @freezed
-class ReviewListItem with _$ReviewListItem {
-  factory ReviewListItem({
+class ReviewListItemResponse with _$ReviewListItemResponse {
+  factory ReviewListItemResponse({
     required int id,
     required String kakaoId,
     required String code,
@@ -27,10 +28,10 @@ class ReviewListItem with _$ReviewListItem {
     required DateTime reviewTime,
     required DateTime updateTime,
     required bool isMyReview,
-  }) = _ReviewListItem;
+  }) = _ReviewListItemResponse;
 
-  factory ReviewListItem.fromJson(Map<String, dynamic> json) =>
-      _$ReviewListItemFromJson(json);
+  factory ReviewListItemResponse.fromJson(Map<String, dynamic> json) =>
+      _$ReviewListItemResponseFromJson(json);
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

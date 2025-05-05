@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$ReviewListResponse {
-  List<ReviewListItem> get favoriteList;
+  List<ReviewListItemResponse> get favoriteList;
 
   /// Create a copy of ReviewListResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -54,7 +54,7 @@ abstract mixin class $ReviewListResponseCopyWith<$Res> {
           ReviewListResponse value, $Res Function(ReviewListResponse) _then) =
       _$ReviewListResponseCopyWithImpl;
   @useResult
-  $Res call({List<ReviewListItem> favoriteList});
+  $Res call({List<ReviewListItemResponse> favoriteList});
 }
 
 /// @nodoc
@@ -76,7 +76,7 @@ class _$ReviewListResponseCopyWithImpl<$Res>
       favoriteList: null == favoriteList
           ? _self.favoriteList
           : favoriteList // ignore: cast_nullable_to_non_nullable
-              as List<ReviewListItem>,
+              as List<ReviewListItemResponse>,
     ));
   }
 }
@@ -84,14 +84,15 @@ class _$ReviewListResponseCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _ReviewListResponse implements ReviewListResponse {
-  _ReviewListResponse({required final List<ReviewListItem> favoriteList})
+  _ReviewListResponse(
+      {required final List<ReviewListItemResponse> favoriteList})
       : _favoriteList = favoriteList;
   factory _ReviewListResponse.fromJson(Map<String, dynamic> json) =>
       _$ReviewListResponseFromJson(json);
 
-  final List<ReviewListItem> _favoriteList;
+  final List<ReviewListItemResponse> _favoriteList;
   @override
-  List<ReviewListItem> get favoriteList {
+  List<ReviewListItemResponse> get favoriteList {
     if (_favoriteList is EqualUnmodifiableListView) return _favoriteList;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_favoriteList);
@@ -140,7 +141,7 @@ abstract mixin class _$ReviewListResponseCopyWith<$Res>
       __$ReviewListResponseCopyWithImpl;
   @override
   @useResult
-  $Res call({List<ReviewListItem> favoriteList});
+  $Res call({List<ReviewListItemResponse> favoriteList});
 }
 
 /// @nodoc
@@ -162,13 +163,13 @@ class __$ReviewListResponseCopyWithImpl<$Res>
       favoriteList: null == favoriteList
           ? _self._favoriteList
           : favoriteList // ignore: cast_nullable_to_non_nullable
-              as List<ReviewListItem>,
+              as List<ReviewListItemResponse>,
     ));
   }
 }
 
 /// @nodoc
-mixin _$ReviewListItem {
+mixin _$ReviewListItemResponse {
   int get id;
   String get kakaoId;
   String get code;
@@ -179,22 +180,22 @@ mixin _$ReviewListItem {
   DateTime get updateTime;
   bool get isMyReview;
 
-  /// Create a copy of ReviewListItem
+  /// Create a copy of ReviewListItemResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $ReviewListItemCopyWith<ReviewListItem> get copyWith =>
-      _$ReviewListItemCopyWithImpl<ReviewListItem>(
-          this as ReviewListItem, _$identity);
+  $ReviewListItemResponseCopyWith<ReviewListItemResponse> get copyWith =>
+      _$ReviewListItemResponseCopyWithImpl<ReviewListItemResponse>(
+          this as ReviewListItemResponse, _$identity);
 
-  /// Serializes this ReviewListItem to a JSON map.
+  /// Serializes this ReviewListItemResponse to a JSON map.
   Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ReviewListItem &&
+            other is ReviewListItemResponse &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
             (identical(other.code, code) || other.code == code) &&
@@ -217,15 +218,15 @@ mixin _$ReviewListItem {
 
   @override
   String toString() {
-    return 'ReviewListItem(id: $id, kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime, updateTime: $updateTime, isMyReview: $isMyReview)';
+    return 'ReviewListItemResponse(id: $id, kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime, updateTime: $updateTime, isMyReview: $isMyReview)';
   }
 }
 
 /// @nodoc
-abstract mixin class $ReviewListItemCopyWith<$Res> {
-  factory $ReviewListItemCopyWith(
-          ReviewListItem value, $Res Function(ReviewListItem) _then) =
-      _$ReviewListItemCopyWithImpl;
+abstract mixin class $ReviewListItemResponseCopyWith<$Res> {
+  factory $ReviewListItemResponseCopyWith(ReviewListItemResponse value,
+          $Res Function(ReviewListItemResponse) _then) =
+      _$ReviewListItemResponseCopyWithImpl;
   @useResult
   $Res call(
       {int id,
@@ -240,14 +241,14 @@ abstract mixin class $ReviewListItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ReviewListItemCopyWithImpl<$Res>
-    implements $ReviewListItemCopyWith<$Res> {
-  _$ReviewListItemCopyWithImpl(this._self, this._then);
+class _$ReviewListItemResponseCopyWithImpl<$Res>
+    implements $ReviewListItemResponseCopyWith<$Res> {
+  _$ReviewListItemResponseCopyWithImpl(this._self, this._then);
 
-  final ReviewListItem _self;
-  final $Res Function(ReviewListItem) _then;
+  final ReviewListItemResponse _self;
+  final $Res Function(ReviewListItemResponse) _then;
 
-  /// Create a copy of ReviewListItem
+  /// Create a copy of ReviewListItemResponse
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -305,8 +306,8 @@ class _$ReviewListItemCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _ReviewListItem implements ReviewListItem {
-  _ReviewListItem(
+class _ReviewListItemResponse implements ReviewListItemResponse {
+  _ReviewListItemResponse(
       {required this.id,
       required this.kakaoId,
       required this.code,
@@ -316,8 +317,8 @@ class _ReviewListItem implements ReviewListItem {
       required this.reviewTime,
       required this.updateTime,
       required this.isMyReview});
-  factory _ReviewListItem.fromJson(Map<String, dynamic> json) =>
-      _$ReviewListItemFromJson(json);
+  factory _ReviewListItemResponse.fromJson(Map<String, dynamic> json) =>
+      _$ReviewListItemResponseFromJson(json);
 
   @override
   final int id;
@@ -338,17 +339,18 @@ class _ReviewListItem implements ReviewListItem {
   @override
   final bool isMyReview;
 
-  /// Create a copy of ReviewListItem
+  /// Create a copy of ReviewListItemResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$ReviewListItemCopyWith<_ReviewListItem> get copyWith =>
-      __$ReviewListItemCopyWithImpl<_ReviewListItem>(this, _$identity);
+  _$ReviewListItemResponseCopyWith<_ReviewListItemResponse> get copyWith =>
+      __$ReviewListItemResponseCopyWithImpl<_ReviewListItemResponse>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$ReviewListItemToJson(
+    return _$ReviewListItemResponseToJson(
       this,
     );
   }
@@ -357,7 +359,7 @@ class _ReviewListItem implements ReviewListItem {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ReviewListItem &&
+            other is _ReviewListItemResponse &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
             (identical(other.code, code) || other.code == code) &&
@@ -380,16 +382,16 @@ class _ReviewListItem implements ReviewListItem {
 
   @override
   String toString() {
-    return 'ReviewListItem(id: $id, kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime, updateTime: $updateTime, isMyReview: $isMyReview)';
+    return 'ReviewListItemResponse(id: $id, kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime, updateTime: $updateTime, isMyReview: $isMyReview)';
   }
 }
 
 /// @nodoc
-abstract mixin class _$ReviewListItemCopyWith<$Res>
-    implements $ReviewListItemCopyWith<$Res> {
-  factory _$ReviewListItemCopyWith(
-          _ReviewListItem value, $Res Function(_ReviewListItem) _then) =
-      __$ReviewListItemCopyWithImpl;
+abstract mixin class _$ReviewListItemResponseCopyWith<$Res>
+    implements $ReviewListItemResponseCopyWith<$Res> {
+  factory _$ReviewListItemResponseCopyWith(_ReviewListItemResponse value,
+          $Res Function(_ReviewListItemResponse) _then) =
+      __$ReviewListItemResponseCopyWithImpl;
   @override
   @useResult
   $Res call(
@@ -405,14 +407,14 @@ abstract mixin class _$ReviewListItemCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ReviewListItemCopyWithImpl<$Res>
-    implements _$ReviewListItemCopyWith<$Res> {
-  __$ReviewListItemCopyWithImpl(this._self, this._then);
+class __$ReviewListItemResponseCopyWithImpl<$Res>
+    implements _$ReviewListItemResponseCopyWith<$Res> {
+  __$ReviewListItemResponseCopyWithImpl(this._self, this._then);
 
-  final _ReviewListItem _self;
-  final $Res Function(_ReviewListItem) _then;
+  final _ReviewListItemResponse _self;
+  final $Res Function(_ReviewListItemResponse) _then;
 
-  /// Create a copy of ReviewListItem
+  /// Create a copy of ReviewListItemResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -427,7 +429,7 @@ class __$ReviewListItemCopyWithImpl<$Res>
     Object? updateTime = null,
     Object? isMyReview = null,
   }) {
-    return _then(_ReviewListItem(
+    return _then(_ReviewListItemResponse(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable

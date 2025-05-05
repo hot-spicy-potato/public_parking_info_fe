@@ -9,7 +9,8 @@ part of 'review_list_response.dart';
 _ReviewListResponse _$ReviewListResponseFromJson(Map<String, dynamic> json) =>
     _ReviewListResponse(
       favoriteList: (json['favoriteList'] as List<dynamic>)
-          .map((e) => ReviewListItem.fromJson(e as Map<String, dynamic>))
+          .map(
+              (e) => ReviewListItemResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -18,8 +19,9 @@ Map<String, dynamic> _$ReviewListResponseToJson(_ReviewListResponse instance) =>
       'favoriteList': instance.favoriteList,
     };
 
-_ReviewListItem _$ReviewListItemFromJson(Map<String, dynamic> json) =>
-    _ReviewListItem(
+_ReviewListItemResponse _$ReviewListItemResponseFromJson(
+        Map<String, dynamic> json) =>
+    _ReviewListItemResponse(
       id: (json['id'] as num).toInt(),
       kakaoId: json['kakaoId'] as String,
       code: json['code'] as String,
@@ -31,7 +33,8 @@ _ReviewListItem _$ReviewListItemFromJson(Map<String, dynamic> json) =>
       isMyReview: json['isMyReview'] as bool,
     );
 
-Map<String, dynamic> _$ReviewListItemToJson(_ReviewListItem instance) =>
+Map<String, dynamic> _$ReviewListItemResponseToJson(
+        _ReviewListItemResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
       'kakaoId': instance.kakaoId,

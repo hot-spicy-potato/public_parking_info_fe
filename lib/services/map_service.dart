@@ -22,4 +22,9 @@ abstract class MapService {
     required WidgetRef ref,
   });
   ParkingInfo? getParkingInfo(LatLng latLng);
+  List<ParkingInfo> getParkingNearby({
+    required double lat,
+    required double lon,
+    required int radiusMeters,
+  });
 }

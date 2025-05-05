@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
+import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
+import 'package:public_parking_info_fe/presentation/widgets/favorite_button.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
+import 'package:public_parking_info_fe/providers/api_provider.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
+import 'package:public_parking_info_fe/services/user_service.dart';
+import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
 class ParkingInfoContent extends ConsumerWidget {
   const ParkingInfoContent({super.key});
@@ -13,6 +19,7 @@ class ParkingInfoContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ParkingInfo? parkingInfo = ref.watch(targetParkingProvider);
+    final UserService userService = UserServiceImpl.instance;
 
     return parkingInfo != null
         ? Column(
@@ -47,34 +54,40 @@ class ParkingInfoContent extends ConsumerWidget {
                     SizedBox(height: 4),
                   ],
                 ),
-                // 즐겨찾기 여부
-                Image.asset(Images.starIcon, width: 24),
+                // 즐겨찾기 버튼
+                FavoriteButton(mngNo: parkingInfo.mngNo.toString()),
               ],
             ),
             // 후기
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "3.0",
-                  style: CustomFonts.w600(
-                    fontSize: 16,
-                    color: CustomColors.primary,
-                  ),
-                ),
-                SizedBox(width: 6),
-                ReviewRate(value: 3, size: 18, paddingRight: 6),
-                Text(
-                  "후기",
-                  style: CustomFonts.w400(
-                    fontSize: 16,
-                    color: CustomColors.grey,
-                  ),
-                ),
-                SizedBox(width: 6),
-                Image.asset(Images.arrowRight, height: 14),
-              ],
+            Consumer(
+              builder: (context, ref, child) {
+                ReviewInfoResponse reviewInfo = ReviewInfoResponse(
+                  code: "",
+                  total: 0,
+                  score: 0,
+                );
+
+                return ref
+                    .watch(reviewInfoProvider(parkingInfo.mngNo.toString()))
+                    .when(
+                      data: (data) {
+                        return _review(
+                          context,
+                          data?.score.toInt() ?? 0,
+                          parkingInfo,
+                          data ?? reviewInfo,
+                        );
+                      },
+                      error: (error, stackTrace) {
+                        return _review(context, 0, parkingInfo, reviewInfo);
+                      },
+                      loading: () {
+                        return _review(context, 0, parkingInfo, reviewInfo);
+                      },
+                    );
+              },
             ),
+
             Divider(color: CustomColors.whiteGrey, thickness: 1, height: 40),
             Column(
               children: [
@@ -126,6 +139,41 @@ class ParkingInfoContent extends ConsumerWidget {
             value,
             style: CustomFonts.w600(fontSize: 18, color: CustomColors.primary),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _review(
+    BuildContext context,
+    int score,
+    ParkingInfo? parkingInfo,
+    ReviewInfoResponse reviewInfo,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        if (parkingInfo != null) {
+          context.pushNamed(
+            "review",
+            extra: {"parkingInfo": parkingInfo, "reviewInfo": reviewInfo},
+          );
+        }
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            score.toString(),
+            style: CustomFonts.w600(fontSize: 16, color: CustomColors.primary),
+          ),
+          SizedBox(width: 6),
+          ReviewRate(value: score, size: 18, paddingRight: 6),
+          Text(
+            "후기",
+            style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
+          ),
+          SizedBox(width: 6),
+          Image.asset(Images.arrowRight, height: 14),
         ],
       ),
     );

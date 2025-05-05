@@ -62,13 +62,6 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                 child: ParkingInfoContent(),
               );
             },
-            onMapTap: (latLng) async {
-              final isRoadView = ref.watch(roadViewProvider);
-
-              if (isRoadView) {
-                context.pushNamed("roadView", extra: latLng);
-              }
-            },
           ),
           // 검색필드
           SearchField(),
