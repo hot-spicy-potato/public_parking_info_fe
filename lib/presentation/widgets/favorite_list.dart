@@ -4,7 +4,6 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/favorite_list_response.dart';
-import 'package:public_parking_info_fe/data/models/response/favorite_response.dart';
 import 'package:public_parking_info_fe/providers/api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
@@ -18,6 +17,7 @@ class FavoriteList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final MapService mapService = MapServiceImpl.instance;
+    final UserService userService = UserServiceImpl.instance;
 
     Widget _emptyList() {
       return Image.asset(Images.emptyDataIcon, width: 28);
@@ -29,12 +29,13 @@ class FavoriteList extends ConsumerWidget {
           "즐겨찾기",
           style: CustomFonts.w600(fontSize: 18, color: CustomColors.darkGrey),
         ),
-        Consumer(
-          builder: (context, ref, child) {
-            final String kakaoId = ref.watch(kakaoIdProvider);
+        FutureBuilder(
+          future: userService.getKakaoId(),
+          builder: (context, snapshot) {
+            if (snapshot.data != null) return _emptyList();
 
             return ref
-                .watch(favoriteListProvider(kakaoId))
+                .watch(favoriteListProvider(snapshot.data!))
                 .when(
                   data: (data) {
                     if (data == null || data.favoriteList.isEmpty) {
@@ -81,8 +82,12 @@ class FavoriteList extends ConsumerWidget {
                       },
                     );
                   },
-                  error: (error, stackTrace) => Container(),
-                  loading: () => Container(),
+                  error: (error, stackTrace) {
+                    return Container();
+                  },
+                  loading: () {
+                    return Container();
+                  },
                 );
           },
         ),

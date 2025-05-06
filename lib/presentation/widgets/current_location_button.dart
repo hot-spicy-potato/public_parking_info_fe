@@ -16,8 +16,8 @@ class CurrentLocationButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mapController = ref.watch(mapControllerProvider);
     final MapService mapService = MapServiceImpl.instance;
-    Position? currentLocation;
-    LatLng? mapCenter;
+    // Position? currentLocation;
+    // LatLng? mapCenter;
 
     return GestureDetector(
       onTap: () async {

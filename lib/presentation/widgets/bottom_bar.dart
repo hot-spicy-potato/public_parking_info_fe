@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
@@ -7,6 +5,7 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/presentation/widgets/current_location_button.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
+import 'package:public_parking_info_fe/presentation/widgets/favorite_list.dart';
 import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/road_view_button.dart';
 import 'package:public_parking_info_fe/providers/page_provider.dart';
@@ -108,22 +107,21 @@ class BottomBar extends ConsumerWidget {
                     selectedSrc: Images.selectedTabbarFavoriteIcon,
                     text: "즐겨찾기",
                     onTap: () async {
-                      showCustomBottomSheet(
-                        context,
-                        barrierColor: Colors.black.withOpacity(0.4),
-                        child: RequestLoginSheet(),
-                      );
-                      // final token = await userService.getToken();
-                      // if (token == null) {
-                      //   showCustomBottomSheet(
-                      //     context,
-                      //     barrierColor: Colors.black.withOpacity(0.4),
-                      //     child: RequestLoginSheet(),
-                      //   );
-                      // } else {
-                      //   ref.read(pageProvider.notifier).state = 1;
-                      //   // todo. page 이동
-                      // }
+                      final token = await userService.getToken();
+                      if (token == null) {
+                        showCustomBottomSheet(
+                          context,
+                          barrierColor: Colors.black.withOpacity(0.4),
+                          child: RequestLoginSheet(),
+                        );
+                      } else {
+                        ref.read(pageProvider.notifier).state = 1;
+                        showCustomBottomSheet(
+                          context,
+                          barrierColor: Colors.black.withOpacity(0.4),
+                          child: FavoriteList(),
+                        );
+                      }
                     },
                   ),
                   // iconWithText(

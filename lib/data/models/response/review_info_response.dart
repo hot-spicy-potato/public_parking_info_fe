@@ -9,6 +9,7 @@ class ReviewInfoResponse with _$ReviewInfoResponse {
     required String code,
     required int total,
     required double score,
+    required String favoriteState,
   }) = _ReviewInfoResponse;
 
   factory ReviewInfoResponse.fromJson(Map<String, dynamic> json) =>

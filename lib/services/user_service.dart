@@ -3,6 +3,9 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 
 abstract class UserService {
   Future<OAuthToken?> kakaoLogin(WidgetRef ref);
-  Future<OAuthToken?> getToken();
+  Future<void> saveKakaoId(String kakaoId);
+  Future<String?> getKakaoId();
+  Future<void> saveToken(String token);
+  Future<String?> getToken();
   Future<void> logout();
 }

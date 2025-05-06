@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
-import 'package:public_parking_info_fe/services/map_service.dart';
-import 'package:public_parking_info_fe/services/map_service_impl.dart';
+// import 'package:public_parking_info_fe/services/map_service.dart';
+// import 'package:public_parking_info_fe/services/map_service_impl.dart';
 
 class RoadViewButton extends ConsumerWidget {
   const RoadViewButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final MapService mapService = MapServiceImpl.instance;
+    // final MapService mapService = MapServiceImpl.instance;
     final mapController = ref.watch(mapControllerProvider);
 
     return GestureDetector(
