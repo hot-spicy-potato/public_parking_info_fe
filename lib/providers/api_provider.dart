@@ -28,3 +28,10 @@ final toggleFavoriteProvider = FutureProviderFamily<FavoriteResponse?, String>((
 ) async {
   return await userApi.postFavorite(mngNo);
 });
+
+final loginProvider = FutureProviderFamily<String?, String>((
+  ref,
+  accessToken,
+) async {
+  return await userApi.login(accessToken);
+});

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
+import 'package:public_parking_info_fe/providers/api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
 import 'package:public_parking_info_fe/services/user_service_impl.dart';
@@ -21,14 +24,21 @@ class RequestLoginSheet extends ConsumerWidget {
           style: CustomFonts.w600(fontSize: 18, color: CustomColors.darkGrey),
         ),
         SizedBox(height: 20),
+
         Text(
           "로그인 이후 서비스 이용이 가능합니다.",
           style: CustomFonts.w400(fontSize: 16, color: CustomColors.darkGrey),
         ),
         GestureDetector(
-          onTap: () {
-            userService.kakaoLogin();
-            print(userService.getToken());
+          onTap: () async {
+            OAuthToken? oAuthToken = await userService.kakaoLogin();
+            if (oAuthToken != null && oAuthToken.accessToken.isNotEmpty) {
+              // post login & signup api
+              await ref.read(loginProvider(oAuthToken.accessToken).future);
+              if (context.mounted) {
+                context.pushNamed("main");
+              }
+            }
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),

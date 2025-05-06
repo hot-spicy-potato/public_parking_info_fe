@@ -10,15 +10,14 @@ class UserServiceImpl implements UserService {
   static const String _tokenKey = "accessToken";
 
   @override
-  void kakaoLogin() async {
+  Future<OAuthToken?> kakaoLogin() async {
     try {
-      final token = await UserApi.instance.loginWithKakaoTalk();
-      print("token: $token");
-      await saveToken(token.accessToken);
+      OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+      // await saveToken(token.accessToken);
+      return token;
     } catch (error) {
       print("error: $error");
     }
-    return null;
   }
 
   Future<void> saveToken(String token) async {

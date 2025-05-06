@@ -108,17 +108,22 @@ class BottomBar extends ConsumerWidget {
                     selectedSrc: Images.selectedTabbarFavoriteIcon,
                     text: "즐겨찾기",
                     onTap: () async {
-                      final token = await userService.getToken();
-                      if (token == null) {
-                        showCustomBottomSheet(
-                          context,
-                          barrierColor: Colors.black.withOpacity(0.4),
-                          child: RequestLoginSheet(),
-                        );
-                      } else {
-                        ref.read(pageProvider.notifier).state = 1;
-                        // todo. page 이동
-                      }
+                      showCustomBottomSheet(
+                        context,
+                        barrierColor: Colors.black.withOpacity(0.4),
+                        child: RequestLoginSheet(),
+                      );
+                      // final token = await userService.getToken();
+                      // if (token == null) {
+                      //   showCustomBottomSheet(
+                      //     context,
+                      //     barrierColor: Colors.black.withOpacity(0.4),
+                      //     child: RequestLoginSheet(),
+                      //   );
+                      // } else {
+                      //   ref.read(pageProvider.notifier).state = 1;
+                      //   // todo. page 이동
+                      // }
                     },
                   ),
                   // iconWithText(

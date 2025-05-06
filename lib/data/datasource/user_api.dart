@@ -14,6 +14,7 @@ class UserApi {
     BaseOptions(
       baseUrl:
           'https://port-0-public-parking-info-de-ma8tyvwu9ca7cc7b.sel4.cloudtype.app',
+      // 'http://192.168.0.14:8080/',
       headers: {'Content-Type': 'application/json'},
     ),
   );
@@ -171,6 +172,24 @@ class UserApi {
     } catch (e) {
       print(e);
     }
+  }
+
+  // 로그인
+  // POST /api/users/login
+  Future<String?> login(String accessToken) async {
+    try {
+      final res = await dio.post(
+        "/api/users/login",
+        options: Options(headers: {"Authorization": "Bearer $accessToken"}),
+      );
+
+      print(res);
+
+      return res.data;
+    } catch (e) {
+      print(e);
+    }
+    return null;
   }
 
   //   dio.interceptors.add(InterceptorsWrapper(
