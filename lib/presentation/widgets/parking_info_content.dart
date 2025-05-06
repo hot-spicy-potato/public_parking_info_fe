@@ -10,8 +10,6 @@ import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
 import 'package:public_parking_info_fe/providers/api_provider.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
-import 'package:public_parking_info_fe/services/user_service.dart';
-import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
 class ParkingInfoContent extends ConsumerWidget {
   const ParkingInfoContent({super.key});
@@ -19,7 +17,6 @@ class ParkingInfoContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ParkingInfo? parkingInfo = ref.watch(targetParkingProvider);
-    final UserService userService = UserServiceImpl.instance;
 
     return parkingInfo != null
         ? Column(
@@ -54,8 +51,6 @@ class ParkingInfoContent extends ConsumerWidget {
                     SizedBox(height: 4),
                   ],
                 ),
-                // 즐겨찾기 버튼
-                FavoriteButton(mngNo: parkingInfo.mngNo.toString()),
               ],
             ),
             // 후기
@@ -65,24 +60,55 @@ class ParkingInfoContent extends ConsumerWidget {
                   code: "",
                   total: 0,
                   score: 0,
+                  favoriteState: "off",
                 );
 
                 return ref
                     .watch(reviewInfoProvider(parkingInfo.mngNo.toString()))
                     .when(
                       data: (data) {
-                        return _review(
-                          context,
-                          data?.score.toInt() ?? 0,
-                          parkingInfo,
-                          data ?? reviewInfo,
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _review(
+                              context,
+                              data?.score.toInt() ?? 0,
+                              parkingInfo,
+                              data ?? reviewInfo,
+                            ),
+                            // 즐겨찾기 버튼
+                            FavoriteButton(
+                              mngNo: parkingInfo.mngNo.toString(),
+                              favoriteState: data?.favoriteState == "on",
+                            ),
+                          ],
                         );
                       },
                       error: (error, stackTrace) {
-                        return _review(context, 0, parkingInfo, reviewInfo);
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _review(context, 0, parkingInfo, reviewInfo),
+                            // 즐겨찾기 버튼
+                            FavoriteButton(
+                              mngNo: parkingInfo.mngNo.toString(),
+                              favoriteState: false,
+                            ),
+                          ],
+                        );
                       },
                       loading: () {
-                        return _review(context, 0, parkingInfo, reviewInfo);
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _review(context, 0, parkingInfo, reviewInfo),
+                            // 즐겨찾기 버튼
+                            FavoriteButton(
+                              mngNo: parkingInfo.mngNo.toString(),
+                              favoriteState: false,
+                            ),
+                          ],
+                        );
                       },
                     );
               },

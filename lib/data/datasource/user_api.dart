@@ -13,20 +13,24 @@ class UserApi {
   final dio = Dio(
     BaseOptions(
       baseUrl:
-          'https://port-0-public-parking-info-de-ma8tyvwu9ca7cc7b.sel4.cloudtype.app',
-      // 'http://192.168.0.14:8080/',
-      headers: {'Content-Type': 'application/json'},
+          // 'https://port-0-public-parking-info-de-ma8tyvwu9ca7cc7b.sel4.cloudtype.app',
+          'http://192.168.0.14:8080/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+      },
     ),
   );
 
   // 리뷰 건수, 별점 조회 API
   // GET /api/users/review
-  Future<ReviewInfoResponse?> getReview(String mngNo) async {
+  Future<ReviewInfoResponse?> getReview(String mngNo, String kakaoId) async {
     try {
-      final res = await dio.get(
+      final res = await dio.post(
         "/api/users/review",
-        queryParameters: {"mngNo": mngNo},
+        data: {"mngNo": mngNo, "kakaoId": kakaoId},
       );
+      print("res: $res");
       return ReviewInfoResponse.fromJson(res.data);
     } catch (e) {
       print(e);
@@ -43,9 +47,7 @@ class UserApi {
       if (token != null) {
         final res = await dio.delete(
           "/api/users/review/delete/$reviewId",
-          options: Options(
-            headers: {"Authorization": "Bearer ${token.accessToken}"},
-          ),
+          options: Options(headers: {"Authorization": "Bearer $token"}),
         );
         return res.statusCode;
       }
@@ -65,9 +67,7 @@ class UserApi {
         final res = await dio.get(
           "/api/users/review/report",
           data: {"id": reviewId, "reporter": userId},
-          options: Options(
-            headers: {"Authorization": "Bearer ${token.accessToken}"},
-          ),
+          options: Options(headers: {"Authorization": "Bearer $token"}),
         );
         return res.statusCode;
       }
@@ -87,9 +87,7 @@ class UserApi {
         final res = await dio.post(
           "/api/users/review/insert",
           data: reviewRequest.toJson(),
-          options: Options(
-            headers: {"Authorization": "Bearer ${token.accessToken}"},
-          ),
+          options: Options(headers: {"Authorization": "Bearer $token"}),
         );
         return res.statusCode;
       }
@@ -101,17 +99,17 @@ class UserApi {
 
   // 즐겨찾기 토글 API
   // POST /api/users/favorite
-  Future<FavoriteResponse?> postFavorite(String mngNo) async {
+  Future<FavoriteResponse?> postFavorite(String mngNo, String kakaoId) async {
     final token = await userService.getToken();
+
+    print("jwt : $token");
 
     try {
       if (token != null) {
         final res = await dio.post(
           "/api/users/favorite",
-          data: {"mngNo": mngNo},
-          options: Options(
-            headers: {"Authorization": "Bearer ${token.accessToken}"},
-          ),
+          data: {"mngNo": mngNo, "kakaoId": kakaoId},
+          options: Options(headers: {"Authorization": "Bearer $token"}),
         );
         return FavoriteResponse.fromJson(res.data);
       }
@@ -123,7 +121,7 @@ class UserApi {
 
   // 즐겨찾기 목록 조회 API
   // GET /api/users/favorite/list
-  Future<FavoriteListResponse?> favoriteList(String kakaoId) async {
+  Future<FavoriteListResponse?> getFavoriteList(String kakaoId) async {
     final token = await userService.getToken();
 
     try {
@@ -131,9 +129,7 @@ class UserApi {
         final res = await dio.get(
           "/api/users/favorite/list",
           queryParameters: {"kakaoId": kakaoId},
-          options: Options(
-            headers: {"Authorization": "Bearer ${token.accessToken}"},
-          ),
+          options: Options(headers: {"Authorization": "Bearer $token"}),
         );
 
         return FavoriteListResponse.fromJson(res.data);
@@ -161,18 +157,18 @@ class UserApi {
 
   // kakao 로그인
   // GET /api/users/login/oauth/kakao
-  Future<void> kakaoLogin(String kakaoCode) async {
-    try {
-      final res = await dio.get(
-        "/api/users/login/oauth/kakao",
-        data: {"code: kakaoCode"},
-      );
+  // Future<void> kakaoLogin(String kakaoCode) async {
+  //   try {
+  //     final res = await dio.get(
+  //       "/api/users/login/oauth/kakao",
+  //       data: {"code: kakaoCode"},
+  //     );
 
-      print(res);
-    } catch (e) {
-      print(e);
-    }
-  }
+  //     print(res);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   // 로그인
   // POST /api/users/login
@@ -182,8 +178,6 @@ class UserApi {
         "/api/users/login",
         options: Options(headers: {"Authorization": "Bearer $accessToken"}),
       );
-
-      print(res);
 
       return res.data;
     } catch (e) {

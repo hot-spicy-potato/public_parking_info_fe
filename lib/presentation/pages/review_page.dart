@@ -9,7 +9,6 @@ import 'package:public_parking_info_fe/data/models/response/review_info_response
 import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.dart';
-import 'package:public_parking_info_fe/presentation/widgets/review_dropdown.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_list_item.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
 import 'package:public_parking_info_fe/providers/api_provider.dart';

@@ -9,7 +9,12 @@ import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
 class FavoriteButton extends ConsumerStatefulWidget {
   final String mngNo;
-  const FavoriteButton({required this.mngNo, super.key});
+  final bool favoriteState;
+  const FavoriteButton({
+    required this.mngNo,
+    required this.favoriteState,
+    super.key,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _FavoriteButtonState();
@@ -20,33 +25,26 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
   bool isFavorite = false;
 
   @override
+  void initState() {
+    super.initState();
+    isFavorite = widget.favoriteState;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final token = await userService.getToken();
-        if (token == null) {
+        final kakaoId = await userService.getKakaoId();
+        if (kakaoId == null) {
           showCustomBottomSheet(
             context,
             barrierColor: Colors.black.withOpacity(0.4),
             child: RequestLoginSheet(),
           );
         } else {
-          // todo. api post
+          await ref.read(toggleFavoriteProvider(widget.mngNo).future);
           isFavorite = !isFavorite;
           setState(() {});
-
-          // 즐겨찾기
-          final response = await ref.read(
-            toggleFavoriteProvider(widget.mngNo).future,
-          );
-
-          if (response != null && response.state == "on") {
-            // 즐겨찾기 등록
-          } else if (response != null && response.state == "off") {
-            // 즐겨찾기 해제
-          } else {
-            // 실패
-          }
         }
       },
       child: Image.asset(

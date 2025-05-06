@@ -229,12 +229,21 @@ class MapServiceImpl implements MapService {
     await mapController.setCenter(targetPosition);
   }
 
+  // 좌표로 주소 정보 조회
   @override
   ParkingInfo? getParkingInfo(LatLng latLng) {
     return _cachedParkingList.firstWhere(
       (parkingInfo) =>
           parkingInfo.lat == latLng.latitude &&
           parkingInfo.lon == latLng.longitude,
+    );
+  }
+
+  // id로 주소 정보 조회
+  @override
+  ParkingInfo? getParkingInfoByMngNo(String mngNo) {
+    return _cachedParkingList.firstWhere(
+      (parkingInfo) => parkingInfo.mngNo.toString() == mngNo,
     );
   }
 

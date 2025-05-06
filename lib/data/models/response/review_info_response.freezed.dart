@@ -18,6 +18,7 @@ mixin _$ReviewInfoResponse {
   String get code;
   int get total;
   double get score;
+  String get favoriteState;
 
   /// Create a copy of ReviewInfoResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -37,16 +38,19 @@ mixin _$ReviewInfoResponse {
             other is ReviewInfoResponse &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.total, total) || other.total == total) &&
-            (identical(other.score, score) || other.score == score));
+            (identical(other.score, score) || other.score == score) &&
+            (identical(other.favoriteState, favoriteState) ||
+                other.favoriteState == favoriteState));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, code, total, score);
+  int get hashCode =>
+      Object.hash(runtimeType, code, total, score, favoriteState);
 
   @override
   String toString() {
-    return 'ReviewInfoResponse(code: $code, total: $total, score: $score)';
+    return 'ReviewInfoResponse(code: $code, total: $total, score: $score, favoriteState: $favoriteState)';
   }
 }
 
@@ -56,7 +60,7 @@ abstract mixin class $ReviewInfoResponseCopyWith<$Res> {
           ReviewInfoResponse value, $Res Function(ReviewInfoResponse) _then) =
       _$ReviewInfoResponseCopyWithImpl;
   @useResult
-  $Res call({String code, int total, double score});
+  $Res call({String code, int total, double score, String favoriteState});
 }
 
 /// @nodoc
@@ -75,6 +79,7 @@ class _$ReviewInfoResponseCopyWithImpl<$Res>
     Object? code = null,
     Object? total = null,
     Object? score = null,
+    Object? favoriteState = null,
   }) {
     return _then(_self.copyWith(
       code: null == code
@@ -89,6 +94,10 @@ class _$ReviewInfoResponseCopyWithImpl<$Res>
           ? _self.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
+      favoriteState: null == favoriteState
+          ? _self.favoriteState
+          : favoriteState // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -97,7 +106,10 @@ class _$ReviewInfoResponseCopyWithImpl<$Res>
 @JsonSerializable()
 class _ReviewInfoResponse implements ReviewInfoResponse {
   _ReviewInfoResponse(
-      {required this.code, required this.total, required this.score});
+      {required this.code,
+      required this.total,
+      required this.score,
+      required this.favoriteState});
   factory _ReviewInfoResponse.fromJson(Map<String, dynamic> json) =>
       _$ReviewInfoResponseFromJson(json);
 
@@ -107,6 +119,8 @@ class _ReviewInfoResponse implements ReviewInfoResponse {
   final int total;
   @override
   final double score;
+  @override
+  final String favoriteState;
 
   /// Create a copy of ReviewInfoResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -130,16 +144,19 @@ class _ReviewInfoResponse implements ReviewInfoResponse {
             other is _ReviewInfoResponse &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.total, total) || other.total == total) &&
-            (identical(other.score, score) || other.score == score));
+            (identical(other.score, score) || other.score == score) &&
+            (identical(other.favoriteState, favoriteState) ||
+                other.favoriteState == favoriteState));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, code, total, score);
+  int get hashCode =>
+      Object.hash(runtimeType, code, total, score, favoriteState);
 
   @override
   String toString() {
-    return 'ReviewInfoResponse(code: $code, total: $total, score: $score)';
+    return 'ReviewInfoResponse(code: $code, total: $total, score: $score, favoriteState: $favoriteState)';
   }
 }
 
@@ -151,7 +168,7 @@ abstract mixin class _$ReviewInfoResponseCopyWith<$Res>
       __$ReviewInfoResponseCopyWithImpl;
   @override
   @useResult
-  $Res call({String code, int total, double score});
+  $Res call({String code, int total, double score, String favoriteState});
 }
 
 /// @nodoc
@@ -170,6 +187,7 @@ class __$ReviewInfoResponseCopyWithImpl<$Res>
     Object? code = null,
     Object? total = null,
     Object? score = null,
+    Object? favoriteState = null,
   }) {
     return _then(_ReviewInfoResponse(
       code: null == code
@@ -184,6 +202,10 @@ class __$ReviewInfoResponseCopyWithImpl<$Res>
           ? _self.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
+      favoriteState: null == favoriteState
+          ? _self.favoriteState
+          : favoriteState // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
