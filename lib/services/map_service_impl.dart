@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/data/datasource/kakao_search_address_api.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
+import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
 
@@ -84,37 +86,51 @@ class MapServiceImpl implements MapService {
   @override
   Future<void> addMarkersInView(KakaoMapController mapController) async {
     final List<ParkingInfo> parkingList = await loadParkingData();
+    final center = await mapController.getCenter();
 
-    final bounds = await mapController.getBounds();
+    final double ctlat = center.latitude;
+    final double ctlon = center.longitude;
+    final double radius = 1000;
 
-    final double swLat = bounds.sw.latitude;
-    final double swLng = bounds.sw.longitude;
+    // 반경 내 주차장 필터링
+    final visibleParkings =
+        parkingList.where((parking) {
+          final distance = Geolocator.distanceBetween(
+            ctlat,
+            ctlon,
+            parking.lat,
+            parking.lon,
+          );
+          return distance <= radius;
+        }).toList();
+
+    // 중복 좌표 제거
+    final uniqueCoordinates = <String>{};
+    final filteredParkings =
+        visibleParkings.where((parking) {
+          final key = "${parking.lat},${parking.lon}";
+          return uniqueCoordinates.add(key); // add는 중복이면 false 반환
+        }).toList();
+
+    _cachedMarkList.clear();
 
     final newMarkers =
-        parkingList
-            .where((parking) {
-              final double lat = parking.lat;
-              final double lng = parking.lon;
-              return lat <= swLat + 0.05 &&
-                  lat >= swLat - 0.05 &&
-                  lng <= swLng + 0.05 &&
-                  lng >= swLng - 0.05;
-            })
-            .map((parking) {
-              return Marker(
-                markerId: parking.mngNo.toString(),
-                latLng: LatLng(parking.lat, parking.lon),
-                width: 40,
-                height: 40,
-                markerImageSrc: defaultMarkerImg,
-              );
-            })
-            .toList();
+        filteredParkings.map((parking) {
+          return Marker(
+            markerId: parking.mngNo.toString(),
+            latLng: LatLng(parking.lat, parking.lon),
+            width: 40,
+            height: 40,
+            markerImageSrc: defaultMarkerImg,
+          );
+        }).toList();
 
     _cachedMarkList.addAll(newMarkers);
-
     await mapController.addMarker(markers: newMarkers);
   }
+
+  // 마커 상태 관리용 Map
+  Map<String, bool> _markerSelectionStatus = {};
 
   @override
   Future<void> updateMarker({
@@ -130,24 +146,54 @@ class MapServiceImpl implements MapService {
     );
 
     ref.read(targetParkingProvider.notifier).state = parkingInfo;
-
     await mapController.clear();
 
+    // 마커 삭제(작동 안됨)
+    await mapController.clearMarker(markerIds: [markerId]);
+
+    // 기존 마커 리스트에서 해당 마커 제거
     _cachedMarkList.removeWhere((Marker marker) => marker.markerId == markerId);
 
-    mapController.addMarker(markers: _cachedMarkList.toList());
-
-    await mapController.addMarker(
-      markers: [
-        Marker(
-          markerId: markerId,
-          latLng: latLng,
-          width: 40,
-          height: 40,
-          markerImageSrc: selectedMarkerImg,
-        ),
-      ],
+    // 새로운 마커 생성
+    Marker updatedMarker = Marker(
+      markerId: markerId,
+      latLng: latLng,
+      width: 40,
+      height: 40,
+      markerImageSrc: selectedMarkerImg, // 이미지 변경
     );
+
+    // 새로운 마커 추가
+    _cachedMarkList.add(updatedMarker);
+    await mapController.addMarker(markers: _cachedMarkList.toList());
+    // 중심 이동
+    await mapController.setCenter(latLng);
+  }
+
+  // 지도 배경 클릭 시 마커 이미지를 원래 상태로 되돌리기(보류)
+  @override
+  Future<void> onMapBackgroundClick(KakaoMapController mapController) async {
+    try {
+      print(_cachedMarkList);
+
+      final updatedMarkers =
+          _cachedMarkList.map((marker) {
+            return Marker(
+              markerId: marker.markerId,
+              latLng: marker.latLng,
+              width: 40,
+              height: 40,
+              markerImageSrc: defaultMarkerImg,
+            );
+          }).toList();
+
+      // 지도에 마커 업데이트
+      await mapController.clear();
+      await Future.delayed(Duration(milliseconds: 100));
+      await mapController.addMarker(markers: updatedMarkers);
+    } catch (e) {
+      print("onMapBackgroundClick 오류: $e");
+    }
   }
 
   // kakao search api
@@ -193,15 +239,30 @@ class MapServiceImpl implements MapService {
   }
 
   @override
-  List<ParkingInfo> getParkingNearby({
+  List<ParkingInfoWithDistance> getParkingNearby({
     required double lat,
     required double lon,
     required int radiusMeters,
   }) {
-    return _cachedParkingList.where((parking) {
-      final distance = _calculateDistance(lat, lon, parking.lat, parking.lon);
-      return distance <= radiusMeters;
-    }).toList();
+    return _cachedParkingList
+        .map((parking) {
+          // 거리 계산
+          final distance = _calculateDistance(
+            lat,
+            lon,
+            parking.lat,
+            parking.lon,
+          );
+
+          // ParkingInfo와 거리 정보를 함께 담은 객체 생성
+          return ParkingInfoWithDistance(
+            parkingInfo: parking, // ParkingInfo 객체
+            distance: distance, // 계산된 거리
+          );
+        })
+        .where((e) => e.distance <= radiusMeters) // 거리 기준으로 필터링
+        .toList()
+      ..sort((a, b) => a.distance.compareTo(b.distance)); // 거리 순으로 정렬
   }
 
   // 서울역 좌표

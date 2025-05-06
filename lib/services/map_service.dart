@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
+import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
 
 abstract class MapService {
   Future<Position?> getCurrentLocation();
@@ -22,9 +23,10 @@ abstract class MapService {
     required WidgetRef ref,
   });
   ParkingInfo? getParkingInfo(LatLng latLng);
-  List<ParkingInfo> getParkingNearby({
+  List<ParkingInfoWithDistance> getParkingNearby({
     required double lat,
     required double lon,
     required int radiusMeters,
   });
+  Future<void> onMapBackgroundClick(KakaoMapController mapController);
 }
