@@ -1,5 +1,6 @@
 import 'package:public_parking_info_fe/data/datasource/user_api.dart';
 import 'package:public_parking_info_fe/data/models/request/review_request.dart';
+import 'package:public_parking_info_fe/data/models/response/favorite_list_response.dart';
 import 'package:public_parking_info_fe/data/models/response/favorite_response.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
 import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
@@ -35,3 +36,10 @@ final loginProvider = FutureProviderFamily<String?, String>((
 ) async {
   return await userApi.login(accessToken);
 });
+
+final favoriteListProvider =
+    FutureProviderFamily<FavoriteListResponse?, String>((ref, kakaoId) async {
+      return await userApi.getFavoriteList(kakaoId);
+    });
+
+final kakaoIdProvider = StateProvider<String>((ref) => "");

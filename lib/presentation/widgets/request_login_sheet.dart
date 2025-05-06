@@ -31,7 +31,7 @@ class RequestLoginSheet extends ConsumerWidget {
         ),
         GestureDetector(
           onTap: () async {
-            OAuthToken? oAuthToken = await userService.kakaoLogin();
+            OAuthToken? oAuthToken = await userService.kakaoLogin(ref);
             if (oAuthToken != null && oAuthToken.accessToken.isNotEmpty) {
               // post login & signup api
               await ref.read(loginProvider(oAuthToken.accessToken).future);

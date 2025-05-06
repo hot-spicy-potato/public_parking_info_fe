@@ -27,4 +27,5 @@ abstract class MapService {
     required double lon,
     required int radiusMeters,
   });
+  ParkingInfo? getParkingInfoByMngNo(String mngNo);
 }

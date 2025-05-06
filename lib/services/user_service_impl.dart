@@ -1,4 +1,6 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:public_parking_info_fe/providers/api_provider.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,14 +12,19 @@ class UserServiceImpl implements UserService {
   static const String _tokenKey = "accessToken";
 
   @override
-  Future<OAuthToken?> kakaoLogin() async {
+  Future<OAuthToken?> kakaoLogin(WidgetRef ref) async {
     try {
       OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-      // await saveToken(token.accessToken);
+      await saveToken(token.accessToken);
+
+      User user = await UserApi.instance.me();
+      ref.read(kakaoIdProvider.notifier).state = user.id.toString();
+
       return token;
     } catch (error) {
       print("error: $error");
     }
+    return null;
   }
 
   Future<void> saveToken(String token) async {
