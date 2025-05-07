@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<NavigatorState> _rootNavigatorKey =
         GlobalKey<NavigatorState>();
-    // DeepLinkHandler.init(context, _rootNavigatorKey);
+    DeepLinkHandler.init(context, _rootNavigatorKey);
 
     final router = GoRouter(
       navigatorKey: _rootNavigatorKey,
