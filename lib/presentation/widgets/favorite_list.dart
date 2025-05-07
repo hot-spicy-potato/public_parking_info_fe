@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/favorite_list_response.dart';
 import 'package:public_parking_info_fe/providers/api_provider.dart';
+import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
 import 'package:public_parking_info_fe/services/map_service_impl.dart';
@@ -18,6 +20,7 @@ class FavoriteList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final MapService mapService = MapServiceImpl.instance;
     final UserService userService = UserServiceImpl.instance;
+    final mapController = ref.watch(mapControllerProvider);
 
     Widget _emptyList() {
       return Padding(
@@ -69,33 +72,52 @@ class FavoriteList extends ConsumerWidget {
 
                         return Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      parkingInfo.parkingNm,
-                                      style: CustomFonts.w600(
-                                        fontSize: 18,
-                                        color: CustomColors.darkGrey,
+                            GestureDetector(
+                              onTap: () {
+                                final lat = parkingInfo.lat;
+                                final lon = parkingInfo.lon;
+
+                                if (mapController != null) {
+                                  mapService.setMapCenter(
+                                    mapController: mapController,
+                                    lat: lat,
+                                    lon: lon,
+                                  );
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        parkingInfo.parkingNm,
+                                        style: CustomFonts.w600(
+                                          fontSize: 18,
+                                          color: CustomColors.darkGrey,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      parkingInfo.roadAddr.isEmpty
-                                          ? parkingInfo.jibunAddr
-                                          : parkingInfo.roadAddr,
-                                      style: CustomFonts.w400(
-                                        fontSize: 12,
-                                        color: CustomColors.grey,
+                                      SizedBox(height: 8),
+                                      Text(
+                                        parkingInfo.roadAddr.isEmpty
+                                            ? parkingInfo.jibunAddr
+                                            : parkingInfo.roadAddr,
+                                        style: CustomFonts.w400(
+                                          fontSize: 12,
+                                          color: CustomColors.grey,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Image.asset(Images.selectedStarIcon, width: 24),
-                              ],
+                                    ],
+                                  ),
+                                  Image.asset(
+                                    Images.selectedStarIcon,
+                                    width: 24,
+                                  ),
+                                ],
+                              ),
                             ),
                             Divider(color: CustomColors.divider, height: 40),
                           ],
