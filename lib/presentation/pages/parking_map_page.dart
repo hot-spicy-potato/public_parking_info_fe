@@ -30,13 +30,23 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
             onMapCreated: (controller) async {
               ref.read(mapControllerProvider.notifier).state = controller;
 
-              final currentLocation = await mapService.setInitialLocation();
+              final currentLocation = await mapService.getCurrentLocation();
 
-              mapService.setMapCenter(
-                mapController: controller,
-                lat: currentLocation.latitude,
-                lon: currentLocation.longitude,
-              );
+              if (currentLocation != null) {
+                mapService.setMapCenter(
+                  mapController: controller,
+                  lat: currentLocation.latitude,
+                  lon: currentLocation.longitude,
+                );
+              } else {
+                final location = mapService.getSeoulStationLocation();
+
+                mapService.setMapCenter(
+                  mapController: controller,
+                  lat: location.latitude,
+                  lon: location.longitude,
+                );
+              }
 
               await mapService.addMarkersInView(controller);
             },

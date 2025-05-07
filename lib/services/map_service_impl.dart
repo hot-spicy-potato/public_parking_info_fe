@@ -58,7 +58,7 @@ class MapServiceImpl implements MapService {
   // GPS 비활성화 또는 위치제공 미동의시 기본 위치 반환, 위치제공 동의시 현재 위치 반환
   @override
   Future<Position> setInitialLocation() async {
-    Position initialPosition = _initialPosition();
+    Position initialPosition = getSeoulStationLocation();
     getCurrentLocation();
 
     Position? currentLocation = await getCurrentLocation();
@@ -283,7 +283,8 @@ class MapServiceImpl implements MapService {
   }
 
   // 서울역 좌표
-  Position _initialPosition() {
+  @override
+  Position getSeoulStationLocation() {
     return Position(
       longitude: 37.5547,
       latitude: 126.9708,

@@ -6,6 +6,7 @@ import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
 
 abstract class MapService {
   Future<Position?> getCurrentLocation();
+  Position getSeoulStationLocation();
   Future<Position> setInitialLocation();
   Future<List<ParkingInfo>> loadParkingData();
   Future<void> addMarkersInView(KakaoMapController mapController);
