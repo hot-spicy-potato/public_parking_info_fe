@@ -20,7 +20,19 @@ class FavoriteList extends ConsumerWidget {
     final UserService userService = UserServiceImpl.instance;
 
     Widget _emptyList() {
-      return Image.asset(Images.emptyDataIcon, width: 28);
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 60),
+        child: Column(
+          children: [
+            Image.asset(Images.emptyDataIcon, width: 28),
+            SizedBox(height: 6),
+            Text(
+              "즐겨찾는 주차장이 없습니다.",
+              style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
+            ),
+          ],
+        ),
+      );
     }
 
     return Column(
@@ -32,51 +44,60 @@ class FavoriteList extends ConsumerWidget {
         FutureBuilder(
           future: userService.getKakaoId(),
           builder: (context, snapshot) {
-            if (snapshot.data != null) return _emptyList();
+            final kakaoId = snapshot.data;
+            if (kakaoId == null) return _emptyList();
 
             return ref
-                .watch(favoriteListProvider(snapshot.data!))
+                .watch(favoriteListProvider(kakaoId))
                 .when(
                   data: (data) {
-                    if (data == null || data.favoriteList.isEmpty) {
+                    if (data == null || data.isEmpty) {
                       return _emptyList();
                     }
 
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: data.favoriteList.length,
+                      padding: const EdgeInsets.all(0),
+                      itemCount: data.length,
                       itemBuilder: (context, index) {
-                        FavoriteListItem favoriteItem =
-                            data.favoriteList[index];
+                        FavoriteListItem favoriteItem = data[index];
 
                         ParkingInfo? parkingInfo = mapService
                             .getParkingInfoByMngNo(favoriteItem.code);
 
                         if (parkingInfo == null) return _emptyList();
 
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        return Column(
                           children: [
-                            Column(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  parkingInfo.parkingNm,
-                                  style: CustomFonts.w600(
-                                    fontSize: 18,
-                                    color: CustomColors.darkGrey,
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      parkingInfo.parkingNm,
+                                      style: CustomFonts.w600(
+                                        fontSize: 18,
+                                        color: CustomColors.darkGrey,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      parkingInfo.roadAddr.isEmpty
+                                          ? parkingInfo.jibunAddr
+                                          : parkingInfo.roadAddr,
+                                      style: CustomFonts.w400(
+                                        fontSize: 12,
+                                        color: CustomColors.grey,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 8),
-                                Text(
-                                  parkingInfo.roadAddr,
-                                  style: CustomFonts.w400(
-                                    fontSize: 12,
-                                    color: CustomColors.grey,
-                                  ),
-                                ),
+                                Image.asset(Images.selectedStarIcon, width: 24),
                               ],
                             ),
-                            Image.asset(Images.selectedStarIcon, width: 24),
+                            Divider(color: CustomColors.divider, height: 40),
                           ],
                         );
                       },

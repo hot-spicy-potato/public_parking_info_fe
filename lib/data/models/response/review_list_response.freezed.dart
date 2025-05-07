@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$ReviewListResponse {
-  List<ReviewListItemResponse> get favoriteList;
+  List<ReviewListItemResponse> get reviews;
 
   /// Create a copy of ReviewListResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -33,18 +33,17 @@ mixin _$ReviewListResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is ReviewListResponse &&
-            const DeepCollectionEquality()
-                .equals(other.favoriteList, favoriteList));
+            const DeepCollectionEquality().equals(other.reviews, reviews));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(favoriteList));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(reviews));
 
   @override
   String toString() {
-    return 'ReviewListResponse(favoriteList: $favoriteList)';
+    return 'ReviewListResponse(reviews: $reviews)';
   }
 }
 
@@ -54,7 +53,7 @@ abstract mixin class $ReviewListResponseCopyWith<$Res> {
           ReviewListResponse value, $Res Function(ReviewListResponse) _then) =
       _$ReviewListResponseCopyWithImpl;
   @useResult
-  $Res call({List<ReviewListItemResponse> favoriteList});
+  $Res call({List<ReviewListItemResponse> reviews});
 }
 
 /// @nodoc
@@ -70,12 +69,12 @@ class _$ReviewListResponseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? favoriteList = null,
+    Object? reviews = null,
   }) {
     return _then(_self.copyWith(
-      favoriteList: null == favoriteList
-          ? _self.favoriteList
-          : favoriteList // ignore: cast_nullable_to_non_nullable
+      reviews: null == reviews
+          ? _self.reviews
+          : reviews // ignore: cast_nullable_to_non_nullable
               as List<ReviewListItemResponse>,
     ));
   }
@@ -84,18 +83,17 @@ class _$ReviewListResponseCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _ReviewListResponse implements ReviewListResponse {
-  _ReviewListResponse(
-      {required final List<ReviewListItemResponse> favoriteList})
-      : _favoriteList = favoriteList;
+  _ReviewListResponse({required final List<ReviewListItemResponse> reviews})
+      : _reviews = reviews;
   factory _ReviewListResponse.fromJson(Map<String, dynamic> json) =>
       _$ReviewListResponseFromJson(json);
 
-  final List<ReviewListItemResponse> _favoriteList;
+  final List<ReviewListItemResponse> _reviews;
   @override
-  List<ReviewListItemResponse> get favoriteList {
-    if (_favoriteList is EqualUnmodifiableListView) return _favoriteList;
+  List<ReviewListItemResponse> get reviews {
+    if (_reviews is EqualUnmodifiableListView) return _reviews;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_favoriteList);
+    return EqualUnmodifiableListView(_reviews);
   }
 
   /// Create a copy of ReviewListResponse
@@ -118,18 +116,17 @@ class _ReviewListResponse implements ReviewListResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ReviewListResponse &&
-            const DeepCollectionEquality()
-                .equals(other._favoriteList, _favoriteList));
+            const DeepCollectionEquality().equals(other._reviews, _reviews));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_favoriteList));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_reviews));
 
   @override
   String toString() {
-    return 'ReviewListResponse(favoriteList: $favoriteList)';
+    return 'ReviewListResponse(reviews: $reviews)';
   }
 }
 
@@ -141,7 +138,7 @@ abstract mixin class _$ReviewListResponseCopyWith<$Res>
       __$ReviewListResponseCopyWithImpl;
   @override
   @useResult
-  $Res call({List<ReviewListItemResponse> favoriteList});
+  $Res call({List<ReviewListItemResponse> reviews});
 }
 
 /// @nodoc
@@ -157,12 +154,12 @@ class __$ReviewListResponseCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? favoriteList = null,
+    Object? reviews = null,
   }) {
     return _then(_ReviewListResponse(
-      favoriteList: null == favoriteList
-          ? _self._favoriteList
-          : favoriteList // ignore: cast_nullable_to_non_nullable
+      reviews: null == reviews
+          ? _self._reviews
+          : reviews // ignore: cast_nullable_to_non_nullable
               as List<ReviewListItemResponse>,
     ));
   }
@@ -171,14 +168,11 @@ class __$ReviewListResponseCopyWithImpl<$Res>
 /// @nodoc
 mixin _$ReviewListItemResponse {
   int get id;
-  String get kakaoId;
-  String get code;
-  double get score;
+  String get name;
   String get content;
+  double get score;
   DateTime get reviewDate;
-  DateTime get reviewTime;
-  DateTime get updateTime;
-  bool get isMyReview;
+  bool get myReview;
 
   /// Create a copy of ReviewListItemResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -197,28 +191,23 @@ mixin _$ReviewListItemResponse {
         (other.runtimeType == runtimeType &&
             other is ReviewListItemResponse &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.score, score) || other.score == score) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.content, content) || other.content == content) &&
+            (identical(other.score, score) || other.score == score) &&
             (identical(other.reviewDate, reviewDate) ||
                 other.reviewDate == reviewDate) &&
-            (identical(other.reviewTime, reviewTime) ||
-                other.reviewTime == reviewTime) &&
-            (identical(other.updateTime, updateTime) ||
-                other.updateTime == updateTime) &&
-            (identical(other.isMyReview, isMyReview) ||
-                other.isMyReview == isMyReview));
+            (identical(other.myReview, myReview) ||
+                other.myReview == myReview));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, kakaoId, code, score,
-      content, reviewDate, reviewTime, updateTime, isMyReview);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, content, score, reviewDate, myReview);
 
   @override
   String toString() {
-    return 'ReviewListItemResponse(id: $id, kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime, updateTime: $updateTime, isMyReview: $isMyReview)';
+    return 'ReviewListItemResponse(id: $id, name: $name, content: $content, score: $score, reviewDate: $reviewDate, myReview: $myReview)';
   }
 }
 
@@ -230,14 +219,11 @@ abstract mixin class $ReviewListItemResponseCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String kakaoId,
-      String code,
-      double score,
+      String name,
       String content,
+      double score,
       DateTime reviewDate,
-      DateTime reviewTime,
-      DateTime updateTime,
-      bool isMyReview});
+      bool myReview});
 }
 
 /// @nodoc
@@ -254,51 +240,36 @@ class _$ReviewListItemResponseCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? kakaoId = null,
-    Object? code = null,
-    Object? score = null,
+    Object? name = null,
     Object? content = null,
+    Object? score = null,
     Object? reviewDate = null,
-    Object? reviewTime = null,
-    Object? updateTime = null,
-    Object? isMyReview = null,
+    Object? myReview = null,
   }) {
     return _then(_self.copyWith(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      kakaoId: null == kakaoId
-          ? _self.kakaoId
-          : kakaoId // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
-          ? _self.code
-          : code // ignore: cast_nullable_to_non_nullable
+      content: null == content
+          ? _self.content
+          : content // ignore: cast_nullable_to_non_nullable
               as String,
       score: null == score
           ? _self.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
-      content: null == content
-          ? _self.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
       reviewDate: null == reviewDate
           ? _self.reviewDate
           : reviewDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      reviewTime: null == reviewTime
-          ? _self.reviewTime
-          : reviewTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updateTime: null == updateTime
-          ? _self.updateTime
-          : updateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      isMyReview: null == isMyReview
-          ? _self.isMyReview
-          : isMyReview // ignore: cast_nullable_to_non_nullable
+      myReview: null == myReview
+          ? _self.myReview
+          : myReview // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -309,35 +280,26 @@ class _$ReviewListItemResponseCopyWithImpl<$Res>
 class _ReviewListItemResponse implements ReviewListItemResponse {
   _ReviewListItemResponse(
       {required this.id,
-      required this.kakaoId,
-      required this.code,
-      required this.score,
+      required this.name,
       required this.content,
+      required this.score,
       required this.reviewDate,
-      required this.reviewTime,
-      required this.updateTime,
-      required this.isMyReview});
+      required this.myReview});
   factory _ReviewListItemResponse.fromJson(Map<String, dynamic> json) =>
       _$ReviewListItemResponseFromJson(json);
 
   @override
   final int id;
   @override
-  final String kakaoId;
-  @override
-  final String code;
-  @override
-  final double score;
+  final String name;
   @override
   final String content;
   @override
+  final double score;
+  @override
   final DateTime reviewDate;
   @override
-  final DateTime reviewTime;
-  @override
-  final DateTime updateTime;
-  @override
-  final bool isMyReview;
+  final bool myReview;
 
   /// Create a copy of ReviewListItemResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -361,28 +323,23 @@ class _ReviewListItemResponse implements ReviewListItemResponse {
         (other.runtimeType == runtimeType &&
             other is _ReviewListItemResponse &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.score, score) || other.score == score) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.content, content) || other.content == content) &&
+            (identical(other.score, score) || other.score == score) &&
             (identical(other.reviewDate, reviewDate) ||
                 other.reviewDate == reviewDate) &&
-            (identical(other.reviewTime, reviewTime) ||
-                other.reviewTime == reviewTime) &&
-            (identical(other.updateTime, updateTime) ||
-                other.updateTime == updateTime) &&
-            (identical(other.isMyReview, isMyReview) ||
-                other.isMyReview == isMyReview));
+            (identical(other.myReview, myReview) ||
+                other.myReview == myReview));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, kakaoId, code, score,
-      content, reviewDate, reviewTime, updateTime, isMyReview);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, content, score, reviewDate, myReview);
 
   @override
   String toString() {
-    return 'ReviewListItemResponse(id: $id, kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime, updateTime: $updateTime, isMyReview: $isMyReview)';
+    return 'ReviewListItemResponse(id: $id, name: $name, content: $content, score: $score, reviewDate: $reviewDate, myReview: $myReview)';
   }
 }
 
@@ -396,14 +353,11 @@ abstract mixin class _$ReviewListItemResponseCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      String kakaoId,
-      String code,
-      double score,
+      String name,
       String content,
+      double score,
       DateTime reviewDate,
-      DateTime reviewTime,
-      DateTime updateTime,
-      bool isMyReview});
+      bool myReview});
 }
 
 /// @nodoc
@@ -420,51 +374,36 @@ class __$ReviewListItemResponseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
-    Object? kakaoId = null,
-    Object? code = null,
-    Object? score = null,
+    Object? name = null,
     Object? content = null,
+    Object? score = null,
     Object? reviewDate = null,
-    Object? reviewTime = null,
-    Object? updateTime = null,
-    Object? isMyReview = null,
+    Object? myReview = null,
   }) {
     return _then(_ReviewListItemResponse(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      kakaoId: null == kakaoId
-          ? _self.kakaoId
-          : kakaoId // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
-          ? _self.code
-          : code // ignore: cast_nullable_to_non_nullable
+      content: null == content
+          ? _self.content
+          : content // ignore: cast_nullable_to_non_nullable
               as String,
       score: null == score
           ? _self.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
-      content: null == content
-          ? _self.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
       reviewDate: null == reviewDate
           ? _self.reviewDate
           : reviewDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      reviewTime: null == reviewTime
-          ? _self.reviewTime
-          : reviewTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updateTime: null == updateTime
-          ? _self.updateTime
-          : updateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      isMyReview: null == isMyReview
-          ? _self.isMyReview
-          : isMyReview // ignore: cast_nullable_to_non_nullable
+      myReview: null == myReview
+          ? _self.myReview
+          : myReview // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }

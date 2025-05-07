@@ -6,29 +6,38 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_dialog.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_text_field.dart';
 import 'package:public_parking_info_fe/presentation/widgets/select_review_button.dart';
+import 'package:public_parking_info_fe/providers/api_provider.dart';
+import 'package:public_parking_info_fe/providers/review_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 import 'package:scroll_time_picker/scroll_time_picker.dart';
 import 'package:simple_animated_rating_bar/simple_animated_rating_bar.dart';
 import 'package:simple_animated_rating_bar/utils/arb_type.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class WriteReviewPage extends ConsumerWidget {
-  const WriteReviewPage({super.key});
+  final String mngNo;
+  const WriteReviewPage({required this.mngNo, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Widget button() {
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: CustomColors.primary, width: 1),
-        ),
-        child: Text(
-          "선택완료",
-          style: CustomFonts.w600(fontSize: 16, color: CustomColors.primary),
+      return GestureDetector(
+        onTap: () {
+          context.pop();
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: CustomColors.primary, width: 1),
+          ),
+          child: Text(
+            "선택완료",
+            style: CustomFonts.w600(fontSize: 16, color: CustomColors.primary),
+          ),
         ),
       );
     }
@@ -51,19 +60,29 @@ class WriteReviewPage extends ConsumerWidget {
           style: CustomFonts.w700(fontSize: 18, color: CustomColors.darkGrey),
         ),
       ),
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        height: 60,
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        margin: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: CustomColors.primary,
-        ),
-        child: Text(
-          "작성 완료",
-          style: CustomFonts.w600(fontSize: 16, color: Colors.white),
+      bottomNavigationBar: GestureDetector(
+        onTap: () {
+          ref.read(reviewProvider.notifier).setCode(mngNo);
+          ref.read(reviewProvider.notifier).setKakaoId();
+          ref.read(reviewProvider.notifier).postReview();
+
+          ref.invalidate(reviewListProvider);
+          context.pop();
+        },
+        child: Container(
+          width: double.infinity,
+          height: 60,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          margin: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: CustomColors.primary,
+          ),
+          child: Text(
+            "작성 완료",
+            style: CustomFonts.w600(fontSize: 16, color: Colors.white),
+          ),
         ),
       ),
       body: GestureDetector(
@@ -84,6 +103,11 @@ class WriteReviewPage extends ConsumerWidget {
               SizedBox(
                 width: 140,
                 child: AnimatedRatingBar(
+                  onRatingChanged: (value) {
+                    ref
+                        .read(reviewProvider.notifier)
+                        .setScore(value.toDouble());
+                  },
                   initialValue: 5,
                   animationType: ARBAnimationType.none,
                   cascadeAnimation: false,
@@ -136,7 +160,9 @@ class WriteReviewPage extends ConsumerWidget {
                                       dateFormat: DateFormat("yyyy/MM/dd"),
                                     ),
                                     onChange: (datetime) {
-                                      //
+                                      ref
+                                          .read(reviewProvider.notifier)
+                                          .setReviewDate(datetime);
                                     },
                                   ),
                                   button(),
@@ -166,7 +192,9 @@ class WriteReviewPage extends ConsumerWidget {
                                       is12hFormat: true,
                                       selectedTime: DateTime.now(),
                                       onDateTimeChanged: (value) {
-                                        //
+                                        ref
+                                            .read(reviewProvider.notifier)
+                                            .setReviewDate(value);
                                       },
                                     ),
                                   ),

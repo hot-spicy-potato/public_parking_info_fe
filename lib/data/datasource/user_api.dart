@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:public_parking_info_fe/data/models/request/review_filter_request.dart';
 import 'package:public_parking_info_fe/data/models/request/review_request.dart';
 import 'package:public_parking_info_fe/data/models/response/favorite_list_response.dart';
 import 'package:public_parking_info_fe/data/models/response/favorite_response.dart';
+import 'package:public_parking_info_fe/data/models/response/jwt_response.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
 import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
@@ -13,8 +15,8 @@ class UserApi {
   final dio = Dio(
     BaseOptions(
       baseUrl:
-          // 'https://port-0-public-parking-info-de-ma8tyvwu9ca7cc7b.sel4.cloudtype.app',
-          'http://192.168.0.14:8080/',
+          'https://port-0-public-parking-info-de-ma8tyvwu9ca7cc7b.sel4.cloudtype.app',
+      // 'http://192.168.0.14:8080/',
       headers: {
         'Content-Type': 'application/json',
         'Accept': "application/json",
@@ -40,7 +42,7 @@ class UserApi {
 
   // 리뷰 삭제 API
   // DELETE /api/users/review/delete/{id}
-  Future<int?> deleteReview(String reviewId) async {
+  Future<int?> deleteReview(int reviewId) async {
     final token = await userService.getToken();
 
     try {
@@ -121,18 +123,19 @@ class UserApi {
 
   // 즐겨찾기 목록 조회 API
   // GET /api/users/favorite/list
-  Future<FavoriteListResponse?> getFavoriteList(String kakaoId) async {
+  Future<List<FavoriteListItem>?> getFavoriteList(String kakaoId) async {
     final token = await userService.getToken();
 
     try {
       if (token != null) {
-        final res = await dio.get(
+        final res = await dio.post(
           "/api/users/favorite/list",
-          queryParameters: {"kakaoId": kakaoId},
+          data: {"kakaoId": kakaoId},
           options: Options(headers: {"Authorization": "Bearer $token"}),
         );
 
-        return FavoriteListResponse.fromJson(res.data);
+        final List<dynamic> rawList = res.data;
+        return rawList.map((e) => FavoriteListItem.fromJson(e)).toList();
       }
     } catch (e) {
       print(e);
@@ -142,11 +145,13 @@ class UserApi {
 
   // 리뷰 목록 조회 API
   // GET /api/users/review/list
-  Future<ReviewListResponse?> getReviewList(ReviewRequest reviewRequest) async {
+  Future<ReviewListResponse?> getReviewList(
+    ReviewFilterRequest reviewFilterRequest,
+  ) async {
     try {
-      final res = await dio.get(
+      final res = await dio.post(
         "/api/users/review/list",
-        data: reviewRequest.toJson(),
+        data: reviewFilterRequest.toJson(),
       );
       return ReviewListResponse.fromJson(res.data);
     } catch (e) {
@@ -155,31 +160,17 @@ class UserApi {
     return null;
   }
 
-  // kakao 로그인
-  // GET /api/users/login/oauth/kakao
-  // Future<void> kakaoLogin(String kakaoCode) async {
-  //   try {
-  //     final res = await dio.get(
-  //       "/api/users/login/oauth/kakao",
-  //       data: {"code: kakaoCode"},
-  //     );
-
-  //     print(res);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
   // 로그인
   // POST /api/users/login
   Future<String?> login(String accessToken) async {
     try {
       final res = await dio.post(
         "/api/users/login",
-        options: Options(headers: {"Authorization": "Bearer $accessToken"}),
+        options: Options(headers: {"Authorization": accessToken}),
       );
 
-      return res.data;
+      print(JwtResponse.fromJson(res.data).token);
+      return JwtResponse.fromJson(res.data).token;
     } catch (e) {
       print(e);
     }

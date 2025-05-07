@@ -74,7 +74,7 @@ class SplashPage extends ConsumerWidget {
                   GestureDetector(
                     onTap: () {
                       if (pageController.page == 1) {
-                        mapService.getCurrentLocation();
+                        // mapService.getCurrentLocation();
                         context.pushNamed("main");
                       } else {
                         pageController.nextPage(

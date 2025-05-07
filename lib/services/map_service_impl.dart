@@ -25,29 +25,34 @@ class MapServiceImpl implements MapService {
   final String selectedMarkerImg =
       "https://velog.velcdn.com/images/luna-han/post/e9628f6d-4882-46db-9781-a9bccfb095f1/image.png";
 
+  bool _isRequestingLocation = false;
+
   @override
   Future<Position?> getCurrentLocation() async {
-    // GPS 활성화 여부
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (_isRequestingLocation) return null;
+    _isRequestingLocation = true;
 
-    if (!serviceEnabled) {
-      return null;
-    }
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
-    // 위치 제공 동의 여부
-    LocationPermission permission = await Geolocator.checkPermission();
+      if (!serviceEnabled) return null;
 
-    if (permission == LocationPermission.denied) {
-      // 위치 제공 동의 요청
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        // 위치 제공 미동의시 서울역 좌표 반환
-        return null;
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied ||
+            permission == LocationPermission.deniedForever) {
+          return null;
+        }
       }
-    }
 
-    return await Geolocator.getCurrentPosition();
+      return await Geolocator.getCurrentPosition();
+    } catch (e) {
+      print('Location error: $e');
+      return null;
+    } finally {
+      _isRequestingLocation = false;
+    }
   }
 
   // GPS 비활성화 또는 위치제공 미동의시 기본 위치 반환, 위치제공 동의시 현재 위치 반환

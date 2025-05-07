@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
-import 'package:public_parking_info_fe/providers/api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
 import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
-class RequestLoginSheet extends ConsumerWidget {
+class RequestLoginSheet extends ConsumerStatefulWidget {
   const RequestLoginSheet({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RequestLoginSheetState();
+}
+
+class _RequestLoginSheetState extends ConsumerState<RequestLoginSheet> {
+  @override
+  Widget build(BuildContext context) {
     final UserService userService = UserServiceImpl.instance;
 
     return Column(
@@ -31,17 +35,10 @@ class RequestLoginSheet extends ConsumerWidget {
         ),
         GestureDetector(
           onTap: () async {
-            OAuthToken? oAuthToken = await userService.kakaoLogin(ref);
-            if (oAuthToken != null && oAuthToken.accessToken.isNotEmpty) {
-              // post login & signup api
-              final res = await ref.read(
-                loginProvider(oAuthToken.accessToken).future,
-              );
-              if (res != null) {
-                userService.saveToken(res);
-                print("jwt token: $res");
-              }
-              if (context.mounted) {
+            String? jwt = await userService.kakaoLogin(ref);
+            if (jwt != null && jwt.isNotEmpty) {
+              print("jwt token: $jwt");
+              if (mounted) {
                 context.pushNamed("main");
               }
             }

@@ -8,12 +8,20 @@ part of 'review_request.dart';
 
 _ReviewRequest _$ReviewRequestFromJson(Map<String, dynamic> json) =>
     _ReviewRequest(
-      mngCd: json['mngCd'] as String,
-      sort: json['sort'] as String,
+      kakaoId: json['kakaoId'] as String,
+      code: json['code'] as String,
+      score: (json['score'] as num).toDouble(),
+      content: json['content'] as String,
+      reviewDate: DateTime.parse(json['reviewDate'] as String),
+      reviewTime: DateTime.parse(json['reviewTime'] as String),
     );
 
 Map<String, dynamic> _$ReviewRequestToJson(_ReviewRequest instance) =>
     <String, dynamic>{
-      'mngCd': instance.mngCd,
-      'sort': instance.sort,
+      'kakaoId': instance.kakaoId,
+      'code': instance.code,
+      'score': instance.score,
+      'content': instance.content,
+      'reviewDate': instance.reviewDate.toIso8601String(),
+      'reviewTime': instance.reviewTime.toIso8601String(),
     };
