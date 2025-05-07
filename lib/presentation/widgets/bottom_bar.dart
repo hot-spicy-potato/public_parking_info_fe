@@ -120,6 +120,8 @@ class BottomBar extends ConsumerWidget {
                           context,
                           barrierColor: Colors.black.withOpacity(0.4),
                           child: FavoriteList(),
+                        ).then(
+                          (value) => ref.read(pageProvider.notifier).state = 0,
                         );
                       }
                     },

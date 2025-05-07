@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
-import 'package:public_parking_info_fe/data/models/request/review_request.dart';
+import 'package:public_parking_info_fe/data/models/request/review_filter_request.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
 import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.dart';
+import 'package:public_parking_info_fe/presentation/widgets/review_score.dart';
+import 'package:public_parking_info_fe/presentation/widgets/review_sort_dropdown.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_list_item.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
 import 'package:public_parking_info_fe/providers/api_provider.dart';
@@ -74,7 +76,10 @@ class ReviewPage extends ConsumerWidget {
                       child: RequestLoginSheet(),
                     );
                   } else {
-                    context.pushNamed("writeReview");
+                    context.pushNamed(
+                      "writeReview",
+                      extra: parkingInfo.mngNo.toString(),
+                    );
                   }
                 },
                 child: ReviewRate(value: 0, size: 24, paddingRight: 4),
@@ -84,33 +89,12 @@ class ReviewPage extends ConsumerWidget {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    // 통계
-                    Row(
-                      children: [
-                        Text(
-                          reviewInfo.score.toString(),
-                          style: CustomFonts.w600(
-                            fontSize: 20,
-                            color: CustomColors.primary,
-                          ),
-                        ),
-                        SizedBox(width: 6),
-                        ReviewRate(value: 3, size: 16, paddingRight: 2),
-                        Spacer(),
-                        Text(
-                          "후기 ${reviewInfo.total.toString()}",
-                          style: CustomFonts.w400(
-                            fontSize: 16,
-                            color: CustomColors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
+                    ReviewScore(mngNo: parkingInfo.mngNo.toString()),
                     // 필터
-                    // Align(
-                    //   alignment: Alignment.centerLeft,
-                    //   child: ReviewDropdown(),
-                    // ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: ReviewSortDropdown(),
+                    ),
                   ],
                 ),
               ),
@@ -119,15 +103,15 @@ class ReviewPage extends ConsumerWidget {
                   return ref
                       .watch(
                         reviewListProvider(
-                          ReviewRequest(
+                          ReviewFilterRequest(
                             mngCd: parkingInfo.mngNo.toString(),
-                            sort: "",
+                            sort: "score",
                           ),
                         ),
                       )
                       .when(
                         data: (data) {
-                          existReview = data?.favoriteList.isNotEmpty ?? false;
+                          existReview = data?.reviews.isNotEmpty ?? false;
                           return _widget(existReview, data);
                         },
                         error:
@@ -144,7 +128,7 @@ class ReviewPage extends ConsumerWidget {
   }
 
   Widget _widget(bool existReview, ReviewListResponse? data) {
-    final existReview = data != null && data.favoriteList.isNotEmpty;
+    final existReview = data != null && data.reviews.isNotEmpty;
 
     return Column(
       children: [
@@ -153,10 +137,10 @@ class ReviewPage extends ConsumerWidget {
             ? ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: data.favoriteList.length,
+              itemCount: data.reviews.length,
               itemBuilder:
                   (context, index) =>
-                      ReviewListItem(reviewItem: data.favoriteList[index]),
+                      ReviewListItem(reviewItem: data.reviews[index]),
             )
             : Column(
               mainAxisAlignment: MainAxisAlignment.center,

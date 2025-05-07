@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 
-void showCustomBottomSheet(
+Future<void> showCustomBottomSheet(
   BuildContext context, {
   required Color barrierColor,
   required Widget child,
-}) {
-  showModalBottomSheet(
+}) async {
+  await showModalBottomSheet(
     context: context,
     barrierColor: barrierColor,
     backgroundColor: Colors.white,

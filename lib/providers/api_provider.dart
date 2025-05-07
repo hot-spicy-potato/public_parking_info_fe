@@ -1,5 +1,5 @@
 import 'package:public_parking_info_fe/data/datasource/user_api.dart';
-import 'package:public_parking_info_fe/data/models/request/review_request.dart';
+import 'package:public_parking_info_fe/data/models/request/review_filter_request.dart';
 import 'package:public_parking_info_fe/data/models/response/favorite_list_response.dart';
 import 'package:public_parking_info_fe/data/models/response/favorite_response.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
@@ -23,13 +23,36 @@ final reviewInfoProvider = FutureProvider.family<ReviewInfoResponse?, String>((
   return null;
 });
 
+final reviewSortProvider = StateProvider<String>((ref) => "score");
+
 final reviewListProvider =
-    FutureProvider.family<ReviewListResponse?, ReviewRequest>((
+    FutureProvider.family<ReviewListResponse?, ReviewFilterRequest>((
       ref,
       reviewRequest,
     ) async {
-      return await userApi.getReviewList(reviewRequest);
+      final String? kakaoId = await userService.getKakaoId();
+      final String sort = ref.watch(reviewSortProvider);
+      return await userApi.getReviewList(
+        reviewRequest.copyWith(kakaoId: kakaoId, sort: sort),
+      );
     });
+
+final deleteReviewProvider = FutureProvider.family<void, int>((
+  ref,
+  reviewId,
+) async {
+  await userApi.deleteReview(reviewId);
+});
+
+final reportReviewProvider = FutureProvider.family<void, int>((
+  ref,
+  reviewId,
+) async {
+  final String? kakaoId = await userService.getKakaoId();
+  if (kakaoId != null && kakaoId.isNotEmpty) {
+    await userApi.reviewReport(reviewId, kakaoId);
+  }
+});
 
 final toggleFavoriteProvider = FutureProviderFamily<FavoriteResponse?, String>((
   ref,
@@ -42,14 +65,7 @@ final toggleFavoriteProvider = FutureProviderFamily<FavoriteResponse?, String>((
   return null;
 });
 
-final loginProvider = FutureProviderFamily<String?, String>((
-  ref,
-  accessToken,
-) async {
-  return await userApi.login(accessToken);
-});
-
 final favoriteListProvider =
-    FutureProviderFamily<FavoriteListResponse?, String>((ref, kakaoId) async {
+    FutureProviderFamily<List<FavoriteListItem>?, String>((ref, kakaoId) async {
       return await userApi.getFavoriteList(kakaoId);
     });

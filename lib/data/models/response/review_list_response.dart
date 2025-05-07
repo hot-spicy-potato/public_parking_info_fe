@@ -5,9 +5,8 @@ part 'review_list_response.g.dart';
 
 @freezed
 class ReviewListResponse with _$ReviewListResponse {
-  factory ReviewListResponse({
-    required List<ReviewListItemResponse> favoriteList,
-  }) = _ReviewListResponse;
+  factory ReviewListResponse({required List<ReviewListItemResponse> reviews}) =
+      _ReviewListResponse;
 
   factory ReviewListResponse.fromJson(Map<String, dynamic> json) =>
       _$ReviewListResponseFromJson(json);
@@ -20,14 +19,11 @@ class ReviewListResponse with _$ReviewListResponse {
 class ReviewListItemResponse with _$ReviewListItemResponse {
   factory ReviewListItemResponse({
     required int id,
-    required String kakaoId,
-    required String code,
-    required double score,
+    required String name,
     required String content,
+    required double score,
     required DateTime reviewDate,
-    required DateTime reviewTime,
-    required DateTime updateTime,
-    required bool isMyReview,
+    required bool myReview,
   }) = _ReviewListItemResponse;
 
   factory ReviewListItemResponse.fromJson(Map<String, dynamic> json) =>

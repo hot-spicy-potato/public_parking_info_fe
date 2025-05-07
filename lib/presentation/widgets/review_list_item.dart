@@ -5,7 +5,9 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
+import 'package:public_parking_info_fe/providers/api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
+import 'package:intl/intl.dart';
 
 class ReviewListItem extends ConsumerWidget {
   final ReviewListItemResponse reviewItem;
@@ -36,7 +38,7 @@ class ReviewListItem extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Divider(),
+        Divider(color: CustomColors.divider),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           child: Column(
@@ -46,7 +48,7 @@ class ReviewListItem extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    reviewItem.kakaoId, // todo. name으로 변경 필요
+                    reviewItem.name,
                     style: CustomFonts.w700(
                       fontSize: 18,
                       color: CustomColors.darkGrey,
@@ -67,7 +69,29 @@ class ReviewListItem extends ConsumerWidget {
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  menuItem(() {}, "신고하기", 6),
+                                  reviewItem.myReview
+                                      ? menuItem(
+                                        () {
+                                          ref.read(
+                                            deleteReviewProvider(reviewItem.id),
+                                          );
+                                          ref.invalidate(reviewListProvider);
+                                          context.pop();
+                                        },
+                                        "삭제하기",
+                                        6,
+                                      )
+                                      : menuItem(
+                                        () {
+                                          ref.read(
+                                            reportReviewProvider(reviewItem.id),
+                                          );
+                                          ref.invalidate(reviewListProvider);
+                                          context.pop();
+                                        },
+                                        "신고하기",
+                                        6,
+                                      ),
                                   menuItem(() => context.pop(), "취소", 40),
                                 ],
                               );
@@ -90,7 +114,7 @@ class ReviewListItem extends ConsumerWidget {
                   ),
                   SizedBox(width: 8),
                   Text(
-                    reviewItem.updateTime.toString(),
+                    DateFormat("yyyy.mm.dd").format(reviewItem.reviewDate),
                     style: CustomFonts.w400(
                       fontSize: 16,
                       color: CustomColors.grey,

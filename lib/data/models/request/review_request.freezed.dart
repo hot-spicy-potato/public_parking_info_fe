@@ -15,8 +15,12 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$ReviewRequest {
-  String get mngCd;
-  String get sort;
+  String get kakaoId;
+  String get code;
+  double get score;
+  String get content;
+  DateTime get reviewDate;
+  DateTime get reviewTime;
 
   /// Create a copy of ReviewRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -34,17 +38,24 @@ mixin _$ReviewRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is ReviewRequest &&
-            (identical(other.mngCd, mngCd) || other.mngCd == mngCd) &&
-            (identical(other.sort, sort) || other.sort == sort));
+            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.score, score) || other.score == score) &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.reviewDate, reviewDate) ||
+                other.reviewDate == reviewDate) &&
+            (identical(other.reviewTime, reviewTime) ||
+                other.reviewTime == reviewTime));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, mngCd, sort);
+  int get hashCode => Object.hash(
+      runtimeType, kakaoId, code, score, content, reviewDate, reviewTime);
 
   @override
   String toString() {
-    return 'ReviewRequest(mngCd: $mngCd, sort: $sort)';
+    return 'ReviewRequest(kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime)';
   }
 }
 
@@ -54,7 +65,13 @@ abstract mixin class $ReviewRequestCopyWith<$Res> {
           ReviewRequest value, $Res Function(ReviewRequest) _then) =
       _$ReviewRequestCopyWithImpl;
   @useResult
-  $Res call({String mngCd, String sort});
+  $Res call(
+      {String kakaoId,
+      String code,
+      double score,
+      String content,
+      DateTime reviewDate,
+      DateTime reviewTime});
 }
 
 /// @nodoc
@@ -70,18 +87,38 @@ class _$ReviewRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? mngCd = null,
-    Object? sort = null,
+    Object? kakaoId = null,
+    Object? code = null,
+    Object? score = null,
+    Object? content = null,
+    Object? reviewDate = null,
+    Object? reviewTime = null,
   }) {
     return _then(_self.copyWith(
-      mngCd: null == mngCd
-          ? _self.mngCd
-          : mngCd // ignore: cast_nullable_to_non_nullable
+      kakaoId: null == kakaoId
+          ? _self.kakaoId
+          : kakaoId // ignore: cast_nullable_to_non_nullable
               as String,
-      sort: null == sort
-          ? _self.sort
-          : sort // ignore: cast_nullable_to_non_nullable
+      code: null == code
+          ? _self.code
+          : code // ignore: cast_nullable_to_non_nullable
               as String,
+      score: null == score
+          ? _self.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as double,
+      content: null == content
+          ? _self.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      reviewDate: null == reviewDate
+          ? _self.reviewDate
+          : reviewDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      reviewTime: null == reviewTime
+          ? _self.reviewTime
+          : reviewTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -89,14 +126,28 @@ class _$ReviewRequestCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _ReviewRequest implements ReviewRequest {
-  _ReviewRequest({required this.mngCd, required this.sort});
+  _ReviewRequest(
+      {required this.kakaoId,
+      required this.code,
+      required this.score,
+      required this.content,
+      required this.reviewDate,
+      required this.reviewTime});
   factory _ReviewRequest.fromJson(Map<String, dynamic> json) =>
       _$ReviewRequestFromJson(json);
 
   @override
-  final String mngCd;
+  final String kakaoId;
   @override
-  final String sort;
+  final String code;
+  @override
+  final double score;
+  @override
+  final String content;
+  @override
+  final DateTime reviewDate;
+  @override
+  final DateTime reviewTime;
 
   /// Create a copy of ReviewRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -118,17 +169,24 @@ class _ReviewRequest implements ReviewRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ReviewRequest &&
-            (identical(other.mngCd, mngCd) || other.mngCd == mngCd) &&
-            (identical(other.sort, sort) || other.sort == sort));
+            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.score, score) || other.score == score) &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.reviewDate, reviewDate) ||
+                other.reviewDate == reviewDate) &&
+            (identical(other.reviewTime, reviewTime) ||
+                other.reviewTime == reviewTime));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, mngCd, sort);
+  int get hashCode => Object.hash(
+      runtimeType, kakaoId, code, score, content, reviewDate, reviewTime);
 
   @override
   String toString() {
-    return 'ReviewRequest(mngCd: $mngCd, sort: $sort)';
+    return 'ReviewRequest(kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime)';
   }
 }
 
@@ -140,7 +198,13 @@ abstract mixin class _$ReviewRequestCopyWith<$Res>
       __$ReviewRequestCopyWithImpl;
   @override
   @useResult
-  $Res call({String mngCd, String sort});
+  $Res call(
+      {String kakaoId,
+      String code,
+      double score,
+      String content,
+      DateTime reviewDate,
+      DateTime reviewTime});
 }
 
 /// @nodoc
@@ -156,18 +220,38 @@ class __$ReviewRequestCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? mngCd = null,
-    Object? sort = null,
+    Object? kakaoId = null,
+    Object? code = null,
+    Object? score = null,
+    Object? content = null,
+    Object? reviewDate = null,
+    Object? reviewTime = null,
   }) {
     return _then(_ReviewRequest(
-      mngCd: null == mngCd
-          ? _self.mngCd
-          : mngCd // ignore: cast_nullable_to_non_nullable
+      kakaoId: null == kakaoId
+          ? _self.kakaoId
+          : kakaoId // ignore: cast_nullable_to_non_nullable
               as String,
-      sort: null == sort
-          ? _self.sort
-          : sort // ignore: cast_nullable_to_non_nullable
+      code: null == code
+          ? _self.code
+          : code // ignore: cast_nullable_to_non_nullable
               as String,
+      score: null == score
+          ? _self.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as double,
+      content: null == content
+          ? _self.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      reviewDate: null == reviewDate
+          ? _self.reviewDate
+          : reviewDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      reviewTime: null == reviewTime
+          ? _self.reviewTime
+          : reviewTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }

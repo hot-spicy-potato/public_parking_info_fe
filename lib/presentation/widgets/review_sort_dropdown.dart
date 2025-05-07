@@ -1,15 +1,16 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:public_parking_info_fe/providers/api_provider.dart';
 
-class ReviewDropdown extends ConsumerWidget {
-  const ReviewDropdown({super.key});
+class ReviewSortDropdown extends ConsumerWidget {
+  const ReviewSortDropdown({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<String> items = ["최신순", "별점순"];
+    final List<String> items = ["별점순", "최신순"];
 
-    String selectedValue = items.first;
+    String selectedValue = ref.watch(reviewSortProvider);
 
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
@@ -24,8 +25,13 @@ class ReviewDropdown extends ConsumerWidget {
         buttonStyleData: ButtonStyleData(padding: const EdgeInsets.all(0)),
         onChanged: (value) {
           selectedValue = value!;
+          if (value == items[0]) {
+            ref.read(reviewSortProvider.notifier).state = "score";
+          } else {
+            ref.read(reviewSortProvider.notifier).state = "reviewDate";
+          }
         },
-        value: selectedValue,
+        value: selectedValue == "score" ? "별점순" : "최신순",
         items:
             items
                 .map(

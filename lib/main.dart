@@ -72,7 +72,10 @@ class MyApp extends StatelessWidget {
         GoRoute(
           name: "writeReview",
           path: "/write-review",
-          builder: (context, state) => WriteReviewPage(),
+          builder: (context, state) {
+            final String mngNo = state.extra as String;
+            return WriteReviewPage(mngNo: mngNo);
+          },
         ),
       ],
     );
