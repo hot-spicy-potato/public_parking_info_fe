@@ -172,10 +172,11 @@ class MapServiceImpl implements MapService {
 
   // 지도 배경 클릭 시 마커 이미지를 원래 상태로 되돌리기(보류)
   @override
-  Future<void> onMapBackgroundClick(KakaoMapController mapController) async {
+  Future<void> onMapBackgroundClick(
+    KakaoMapController mapController,
+    String markerId,
+  ) async {
     try {
-      print(_cachedMarkList);
-
       final updatedMarkers =
           _cachedMarkList.map((marker) {
             return Marker(
@@ -189,6 +190,8 @@ class MapServiceImpl implements MapService {
 
       // 지도에 마커 업데이트
       await mapController.clear();
+      // await mapController.clearMarker(markerIds: [markerId]);
+
       await Future.delayed(Duration(milliseconds: 100));
       await mapController.addMarker(markers: updatedMarkers);
     } catch (e) {

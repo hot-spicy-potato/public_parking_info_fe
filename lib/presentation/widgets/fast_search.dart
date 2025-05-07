@@ -37,11 +37,13 @@ class FastSearch extends ConsumerWidget {
             radiusMeters: 1000,
           );
 
-          // 거리 정보를 포함한 주차 목록을 바텀 시트로 보여줌
           showCustomBottomSheet(
             context,
             barrierColor: Colors.transparent,
-            child: NearbyParkingList(parkingList: parkingList),
+            child: NearbyParkingList(
+              parkingList: parkingList,
+              mapController: mapController,
+            ),
           );
         }
       },

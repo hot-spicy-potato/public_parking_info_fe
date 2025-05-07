@@ -6,6 +6,8 @@ final mapControllerProvider = StateProvider<KakaoMapController?>((ref) => null);
 
 final targetParkingProvider = StateProvider<ParkingInfo?>((ref) => null);
 
+final markerProvider = StateProvider<String>((ref) => "");
+
 final roadViewProvider = StateNotifierProvider<RoadViewNotifier, bool>(
   (ref) => RoadViewNotifier(),
 );

@@ -54,23 +54,21 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                 latLng: latLng,
                 ref: ref,
               );
-
+              ref.read(markerProvider.notifier).state = markerId;
               showCustomBottomSheet(
                 context,
                 barrierColor: Colors.transparent,
                 child: ParkingInfoContent(),
               ).then((value) async {
+                await mapController.clearMarker(markerIds: [markerId]);
                 if (mapController != null) {
-                  await mapService.onMapBackgroundClick(mapController);
+                  await mapService.onMapBackgroundClick(
+                    mapController,
+                    markerId,
+                  );
                 }
               });
             },
-            // 배경 클릭시 마커 이미지 원래대로 복원
-            // onMapTap: (latLng) async {
-            //   if (mapController != null) {
-            //     await mapService.onMapBackgroundClick(mapController);
-            //   }
-            // },
           ),
           // 검색필드
           SearchField(),

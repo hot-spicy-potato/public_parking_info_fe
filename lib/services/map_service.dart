@@ -29,5 +29,8 @@ abstract class MapService {
     required int radiusMeters,
   });
   ParkingInfo? getParkingInfoByMngNo(String mngNo);
-  Future<void> onMapBackgroundClick(KakaoMapController mapController);
+  Future<void> onMapBackgroundClick(
+    KakaoMapController mapController,
+    String markerId,
+  );
 }

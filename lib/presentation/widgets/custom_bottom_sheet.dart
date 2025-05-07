@@ -7,7 +7,7 @@ Future<void> showCustomBottomSheet(
   required Color barrierColor,
   required Widget child,
 }) async {
-  showModalBottomSheet(
+  await showModalBottomSheet(
     context: context,
     barrierColor: barrierColor,
     backgroundColor: Colors.white,

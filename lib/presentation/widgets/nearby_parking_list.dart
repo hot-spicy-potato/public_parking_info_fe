@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
+import 'package:public_parking_info_fe/services/map_service.dart';
+import 'package:public_parking_info_fe/services/map_service_impl.dart';
 
 class NearbyParkingList extends ConsumerWidget {
   final List<ParkingInfoWithDistance> parkingList;
+  final KakaoMapController mapController;
 
-  const NearbyParkingList({required this.parkingList, super.key});
+  const NearbyParkingList({
+    required this.parkingList,
+    required this.mapController,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print("qwe $parkingList");
     double height = MediaQuery.sizeOf(context).height;
+    final MapService mapService = MapServiceImpl.instance;
 
     return SizedBox(
       height: height * 0.4, // ListView 높이 제한
@@ -39,6 +47,16 @@ class NearbyParkingList extends ConsumerWidget {
               "${(item.distance / 1000).toStringAsFixed(1)} km",
               style: CustomFonts.w500(fontSize: 14, color: Colors.blueGrey),
             ),
+            onTap: () {
+              final lat = item.parkingInfo.lat;
+              final lon = item.parkingInfo.lon;
+
+              mapService.setMapCenter(
+                mapController: mapController,
+                lat: lat,
+                lon: lon,
+              );
+            },
           );
         },
         separatorBuilder: (context, index) => const Divider(height: 1),
