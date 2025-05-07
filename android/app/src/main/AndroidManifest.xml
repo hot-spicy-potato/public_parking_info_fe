@@ -5,7 +5,7 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
 
     <application
-        android:label="public_parking_info_fe"
+        android:label="공영주차장 알리미"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">

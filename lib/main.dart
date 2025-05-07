@@ -80,6 +80,10 @@ class MyApp extends StatelessWidget {
       ],
     );
 
-    return MaterialApp.router(routerConfig: router, title: "공영주차알리미");
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: router,
+      title: "공영주차알리미",
+    );
   }
 }
