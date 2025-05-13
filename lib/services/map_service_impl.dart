@@ -117,8 +117,6 @@ class MapServiceImpl implements MapService {
           return uniqueCoordinates.add(key); // add는 중복이면 false 반환
         }).toList();
 
-    _cachedMarkList.clear();
-
     final newMarkers =
         filteredParkings.map((parking) {
           return Marker(
@@ -134,9 +132,6 @@ class MapServiceImpl implements MapService {
     await mapController.addMarker(markers: newMarkers);
   }
 
-  // 마커 상태 관리용 Map
-  Map<String, bool> _markerSelectionStatus = {};
-
   @override
   Future<void> updateMarker({
     required KakaoMapController mapController,
@@ -151,13 +146,13 @@ class MapServiceImpl implements MapService {
     );
 
     ref.read(targetParkingProvider.notifier).state = parkingInfo;
-    await mapController.clear();
-
-    // 마커 삭제(작동 안됨)
-    await mapController.clearMarker(markerIds: [markerId]);
 
     // 기존 마커 리스트에서 해당 마커 제거
     _cachedMarkList.removeWhere((Marker marker) => marker.markerId == markerId);
+    List<String> markerIdsToKeep =
+        _cachedMarkList.map((marker) => marker.markerId.toString()).toList();
+
+    await mapController.clearMarker(markerIds: markerIdsToKeep);
 
     // 새로운 마커 생성
     Marker updatedMarker = Marker(
@@ -193,9 +188,14 @@ class MapServiceImpl implements MapService {
             );
           }).toList();
 
-      // 지도에 마커 업데이트
-      await mapController.clear();
-      // await mapController.clearMarker(markerIds: [markerId]);
+      // 기존 마커 리스트에서 해당 마커 제거
+      _cachedMarkList.removeWhere(
+        (Marker marker) => marker.markerId == markerId,
+      );
+      List<String> markerIdsToKeep =
+          _cachedMarkList.map((marker) => marker.markerId.toString()).toList();
+
+      await mapController.clearMarker(markerIds: markerIdsToKeep);
 
       await Future.delayed(Duration(milliseconds: 100));
       await mapController.addMarker(markers: updatedMarkers);

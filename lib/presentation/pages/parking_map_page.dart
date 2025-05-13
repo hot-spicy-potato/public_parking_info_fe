@@ -70,7 +70,6 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                 barrierColor: Colors.transparent,
                 child: ParkingInfoContent(),
               ).then((value) async {
-                await mapController.clearMarker(markerIds: [markerId]);
                 if (mapController != null) {
                   await mapService.onMapBackgroundClick(
                     mapController,
