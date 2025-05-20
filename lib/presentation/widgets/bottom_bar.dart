@@ -11,7 +11,6 @@ import 'package:public_parking_info_fe/presentation/widgets/road_view_button.dar
 import 'package:public_parking_info_fe/providers/page_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
-import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
 class BottomBar extends ConsumerWidget {
   const BottomBar({super.key});
@@ -19,7 +18,7 @@ class BottomBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.sizeOf(context).width;
-    final UserService userService = UserServiceImpl.instance;
+    final UserService userService = UserService.instance;
 
     Widget iconWithText({
       required int index,
@@ -42,8 +41,7 @@ class BottomBar extends ConsumerWidget {
               text,
               style: CustomFonts.w400(
                 fontSize: 12,
-                color:
-                    isSelected ? CustomColors.primary : CustomColors.unselected,
+                color: isSelected ? CustomColors.primary : CustomColors.unselected,
               ),
             ),
           ],
@@ -66,11 +64,7 @@ class BottomBar extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  RoadViewButton(),
-                  SizedBox(height: 6),
-                  CurrentLocationButton(),
-                ],
+                children: [RoadViewButton(), SizedBox(height: 6), CurrentLocationButton()],
               ),
             ),
           ],
@@ -83,9 +77,7 @@ class BottomBar extends ConsumerWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(color: Colors.black12, blurRadius: 8, spreadRadius: 2),
-            ],
+            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, spreadRadius: 2)],
           ),
           child: Column(
             children: [
@@ -107,7 +99,7 @@ class BottomBar extends ConsumerWidget {
                     selectedSrc: Images.selectedTabbarFavoriteIcon,
                     text: "즐겨찾기",
                     onTap: () async {
-                      final token = await userService.getToken();
+                      final token = await userService.getAccessToken();
                       if (token == null) {
                         showCustomBottomSheet(
                           context,
@@ -120,9 +112,7 @@ class BottomBar extends ConsumerWidget {
                           context,
                           barrierColor: Colors.black.withOpacity(0.4),
                           child: FavoriteList(),
-                        ).then(
-                          (value) => ref.read(pageProvider.notifier).state = 0,
-                        );
+                        ).then((value) => ref.read(pageProvider.notifier).state = 0);
                       }
                     },
                   ),

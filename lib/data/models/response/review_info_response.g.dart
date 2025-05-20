@@ -11,7 +11,7 @@ _ReviewInfoResponse _$ReviewInfoResponseFromJson(Map<String, dynamic> json) =>
       code: json['code'] as String,
       total: (json['total'] as num).toInt(),
       score: (json['score'] as num).toDouble(),
-      favoriteState: json['favoriteState'] as String,
+      favorite: json['favorite'] as bool?,
     );
 
 Map<String, dynamic> _$ReviewInfoResponseToJson(_ReviewInfoResponse instance) =>
@@ -19,5 +19,5 @@ Map<String, dynamic> _$ReviewInfoResponseToJson(_ReviewInfoResponse instance) =>
       'code': instance.code,
       'total': instance.total,
       'score': instance.score,
-      'favoriteState': instance.favoriteState,
+      'favorite': instance.favorite,
     };

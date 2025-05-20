@@ -6,8 +6,7 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
-import 'package:public_parking_info_fe/services/map_service.dart';
-import 'package:public_parking_info_fe/services/map_service_impl.dart';
+import 'package:public_parking_info_fe/services/location_service.dart';
 
 class CurrentLocationButton extends ConsumerWidget {
   const CurrentLocationButton({super.key});
@@ -15,17 +14,15 @@ class CurrentLocationButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mapController = ref.watch(mapControllerProvider);
-    final MapService mapService = MapServiceImpl.instance;
+    final LocationService locationService = LocationService.instance;
     // Position? currentLocation;
     // LatLng? mapCenter;
 
     return GestureDetector(
       onTap: () async {
-        Position? currentLocation = await mapService.getCurrentLocation();
+        Position? currentLocation = await locationService.getCurrentLocation();
         if (currentLocation != null) {
-          mapController?.setCenter(
-            LatLng(currentLocation.latitude, currentLocation.longitude),
-          );
+          mapController?.setCenter(LatLng(currentLocation.latitude, currentLocation.longitude));
         }
       },
       child: Container(
@@ -36,12 +33,7 @@ class CurrentLocationButton extends ConsumerWidget {
           shape: BoxShape.circle,
           color: CustomColors.primary,
           boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 6,
-              spreadRadius: 2,
-              offset: Offset(0, 2),
-            ),
+            BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 2, offset: Offset(0, 2)),
           ],
         ),
         child: Column(
@@ -49,10 +41,7 @@ class CurrentLocationButton extends ConsumerWidget {
           children: [
             Image.asset(Images.currentLocationIcon, width: 16, height: 16),
             SizedBox(height: 4),
-            Text(
-              "내 위치",
-              style: CustomFonts.w500(fontSize: 9, color: Colors.white),
-            ),
+            Text("내 위치", style: CustomFonts.w500(fontSize: 9, color: Colors.white)),
           ],
         ),
       ),

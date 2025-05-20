@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
-import 'package:public_parking_info_fe/services/user_service.dart';
-import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
 class RequestLoginSheet extends ConsumerStatefulWidget {
   const RequestLoginSheet({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RequestLoginSheetState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RequestLoginSheetState();
 }
 
 class _RequestLoginSheetState extends ConsumerState<RequestLoginSheet> {
   @override
   Widget build(BuildContext context) {
-    final UserService userService = UserServiceImpl.instance;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -35,13 +29,13 @@ class _RequestLoginSheetState extends ConsumerState<RequestLoginSheet> {
         ),
         GestureDetector(
           onTap: () async {
-            String? jwt = await userService.kakaoLogin(ref);
-            if (jwt != null && jwt.isNotEmpty) {
-              print("jwt token: $jwt");
-              if (mounted) {
-                context.pushNamed("main");
-              }
-            }
+            // String? accessToken = await userService.getAccessToken();
+            // if (accessToken != null && accessToken.isNotEmpty) {
+            //   print("accessToken token: $accessToken");
+            //   if (mounted) {
+            //     context.pushNamed("main");
+            //   }
+            // }
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -58,10 +52,7 @@ class _RequestLoginSheetState extends ConsumerState<RequestLoginSheet> {
                   child: Center(
                     child: Text(
                       "카카오 로그인",
-                      style: CustomFonts.w600(
-                        fontSize: 16,
-                        color: CustomColors.darkGrey,
-                      ),
+                      style: CustomFonts.w600(fontSize: 16, color: CustomColors.darkGrey),
                     ),
                   ),
                 ),
@@ -69,10 +60,7 @@ class _RequestLoginSheetState extends ConsumerState<RequestLoginSheet> {
             ),
           ),
         ),
-        Text(
-          "건너뛰기",
-          style: CustomFonts.w600(fontSize: 16, color: CustomColors.darkGrey),
-        ),
+        Text("건너뛰기", style: CustomFonts.w600(fontSize: 16, color: CustomColors.darkGrey)),
       ],
     );
   }

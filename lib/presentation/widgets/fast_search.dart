@@ -7,7 +7,6 @@ import 'package:public_parking_info_fe/presentation/widgets/nearby_parking_list.
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
-import 'package:public_parking_info_fe/services/map_service_impl.dart';
 
 class ParkingInfoWithDistance {
   final ParkingInfo parkingInfo; // ParkingInfo 객체
@@ -23,7 +22,7 @@ class FastSearch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mapController = ref.watch(mapControllerProvider);
-    final MapService mapService = MapServiceImpl.instance;
+    final MapService mapService = MapService.instance;
 
     return GestureDetector(
       onTap: () async {
@@ -40,10 +39,7 @@ class FastSearch extends ConsumerWidget {
           showCustomBottomSheet(
             context,
             barrierColor: Colors.transparent,
-            child: NearbyParkingList(
-              parkingList: parkingList,
-              mapController: mapController,
-            ),
+            child: NearbyParkingList(parkingList: parkingList, mapController: mapController),
           );
         }
       },
@@ -61,10 +57,7 @@ class FastSearch extends ConsumerWidget {
           children: [
             Image.asset(Images.carIcon, width: 15),
             SizedBox(width: 8),
-            Text(
-              "빠른 탐색",
-              style: CustomFonts.w500(fontSize: 16, color: Colors.white),
-            ),
+            Text("빠른 탐색", style: CustomFonts.w500(fontSize: 16, color: Colors.white)),
           ],
         ),
       ),

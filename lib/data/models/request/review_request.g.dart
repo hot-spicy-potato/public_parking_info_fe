@@ -8,7 +8,6 @@ part of 'review_request.dart';
 
 _ReviewRequest _$ReviewRequestFromJson(Map<String, dynamic> json) =>
     _ReviewRequest(
-      kakaoId: json['kakaoId'] as String,
       code: json['code'] as String,
       score: (json['score'] as num).toDouble(),
       content: json['content'] as String,
@@ -18,7 +17,6 @@ _ReviewRequest _$ReviewRequestFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ReviewRequestToJson(_ReviewRequest instance) =>
     <String, dynamic>{
-      'kakaoId': instance.kakaoId,
       'code': instance.code,
       'score': instance.score,
       'content': instance.content,

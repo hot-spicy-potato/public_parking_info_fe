@@ -5,10 +5,9 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
-import 'package:public_parking_info_fe/presentation/widgets/favorite_button.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
-import 'package:public_parking_info_fe/providers/api_provider.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
+import 'package:public_parking_info_fe/providers/review_api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 
 class ParkingInfoContent extends ConsumerWidget {
@@ -32,21 +31,13 @@ class ParkingInfoContent extends ConsumerWidget {
                     // 주차장 이름
                     Text(
                       parkingInfo.parkingNm,
-                      style: CustomFonts.w700(
-                        fontSize: 18,
-                        color: CustomColors.darkGrey,
-                      ),
+                      style: CustomFonts.w700(fontSize: 18, color: CustomColors.darkGrey),
                     ),
                     SizedBox(height: 4),
                     // 도로명주소
                     Text(
-                      parkingInfo.roadAddr.isEmpty
-                          ? parkingInfo.jibunAddr
-                          : parkingInfo.roadAddr,
-                      style: CustomFonts.w400(
-                        fontSize: 12,
-                        color: CustomColors.grey,
-                      ),
+                      parkingInfo.roadAddr.isEmpty ? parkingInfo.jibunAddr : parkingInfo.roadAddr,
+                      style: CustomFonts.w400(fontSize: 12, color: CustomColors.grey),
                     ),
                     SizedBox(height: 4),
                   ],
@@ -54,66 +45,22 @@ class ParkingInfoContent extends ConsumerWidget {
               ],
             ),
             // 후기
-            Consumer(
-              builder: (context, ref, child) {
-                ReviewInfoResponse reviewInfo = ReviewInfoResponse(
+            FutureBuilder<ReviewInfoResponse?>(
+              future: ref
+                  .watch(reviewApiProvider.notifier)
+                  .getReviewInfo(code: parkingInfo.mngNo.toString()),
+              builder: (context, snapshot) {
+                final defaultReview = ReviewInfoResponse(
                   code: "",
                   total: 0,
                   score: 0,
-                  favoriteState: "off",
+                  favorite: false,
                 );
 
-                return ref
-                    .watch(reviewInfoProvider(parkingInfo.mngNo.toString()))
-                    .when(
-                      data: (data) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _review(
-                              context,
-                              data?.score.toInt() ?? 0,
-                              parkingInfo,
-                              data ?? reviewInfo,
-                            ),
-                            // 즐겨찾기 버튼
-                            FavoriteButton(
-                              mngNo: parkingInfo.mngNo.toString(),
-                              favoriteState: data?.favoriteState == "on",
-                            ),
-                          ],
-                        );
-                      },
-                      error: (error, stackTrace) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _review(context, 0, parkingInfo, reviewInfo),
-                            // 즐겨찾기 버튼
-                            FavoriteButton(
-                              mngNo: parkingInfo.mngNo.toString(),
-                              favoriteState: false,
-                            ),
-                          ],
-                        );
-                      },
-                      loading: () {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _review(context, 0, parkingInfo, reviewInfo),
-                            // 즐겨찾기 버튼
-                            FavoriteButton(
-                              mngNo: parkingInfo.mngNo.toString(),
-                              favoriteState: false,
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                final data = snapshot.data ?? defaultReview;
+                return _review(context, data.score.toInt(), parkingInfo, data);
               },
             ),
-
             Divider(color: CustomColors.whiteGrey, thickness: 1, height: 40),
             Column(
               children: [
@@ -122,11 +69,7 @@ class ParkingInfoContent extends ConsumerWidget {
                 // 운영시간
                 _info(Images.operationTimeIcon, "운영시간", parkingInfo.operGb),
                 // 주차면수
-                _info(
-                  Images.enableParkingCountIcon,
-                  "주차면수",
-                  parkingInfo.parkingCnt.toString(),
-                ),
+                _info(Images.enableParkingCountIcon, "주차면수", parkingInfo.parkingCnt.toString()),
               ],
             ),
             SizedBox(height: 30),
@@ -137,10 +80,7 @@ class ParkingInfoContent extends ConsumerWidget {
                 SizedBox(width: 4),
                 Text(
                   "${parkingInfo.lastUpdateDt} 업데이트",
-                  style: CustomFonts.w400(
-                    fontSize: 12,
-                    color: CustomColors.lightGrey,
-                  ),
+                  style: CustomFonts.w400(fontSize: 12, color: CustomColors.lightGrey),
                 ),
               ],
             ),
@@ -156,15 +96,9 @@ class ParkingInfoContent extends ConsumerWidget {
         children: [
           Image.asset(iconSrc, width: 24, height: 24),
           SizedBox(width: 4),
-          Text(
-            key,
-            style: CustomFonts.w400(fontSize: 16, color: CustomColors.darkGrey),
-          ),
+          Text(key, style: CustomFonts.w400(fontSize: 16, color: CustomColors.darkGrey)),
           Spacer(),
-          Text(
-            value,
-            style: CustomFonts.w600(fontSize: 18, color: CustomColors.primary),
-          ),
+          Text(value, style: CustomFonts.w600(fontSize: 18, color: CustomColors.primary)),
         ],
       ),
     );
@@ -194,10 +128,7 @@ class ParkingInfoContent extends ConsumerWidget {
           ),
           SizedBox(width: 6),
           ReviewRate(value: score, size: 18, paddingRight: 6),
-          Text(
-            "후기",
-            style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
-          ),
+          Text("후기", style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey)),
           SizedBox(width: 6),
           Image.asset(Images.arrowRight, height: 14),
         ],

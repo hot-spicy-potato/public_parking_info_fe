@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
-import 'package:public_parking_info_fe/data/models/request/review_filter_request.dart';
+import 'package:public_parking_info_fe/data/models/request/review_sort_request.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
 import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
@@ -13,24 +13,18 @@ import 'package:public_parking_info_fe/presentation/widgets/review_score.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_sort_dropdown.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_list_item.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
-import 'package:public_parking_info_fe/providers/api_provider.dart';
+import 'package:public_parking_info_fe/providers/review_api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
-import 'package:public_parking_info_fe/services/user_service_impl.dart';
 
 class ReviewPage extends ConsumerWidget {
   final ParkingInfo parkingInfo;
   final ReviewInfoResponse reviewInfo;
-  const ReviewPage({
-    required this.parkingInfo,
-    required this.reviewInfo,
-    super.key,
-  });
+  const ReviewPage({required this.parkingInfo, required this.reviewInfo, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final UserService userService = UserServiceImpl.instance;
-    bool existReview = false;
+    final UserService userService = UserService.instance;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -39,11 +33,7 @@ class ReviewPage extends ConsumerWidget {
         surfaceTintColor: Colors.white,
         leading: GestureDetector(
           onTap: () => context.pop(),
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: CustomColors.darkGrey,
-            size: 15,
-          ),
+          child: Icon(Icons.arrow_back_ios, color: CustomColors.darkGrey, size: 15),
         ),
         title: Text(
           parkingInfo.parkingNm,
@@ -60,15 +50,12 @@ class ReviewPage extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(
                   "방문 후기를 남겨주세요!",
-                  style: CustomFonts.w700(
-                    fontSize: 20,
-                    color: CustomColors.primary,
-                  ),
+                  style: CustomFonts.w700(fontSize: 20, color: CustomColors.primary),
                 ),
               ),
               GestureDetector(
                 onTap: () async {
-                  final token = await userService.getToken();
+                  final token = await userService.getAccessToken();
                   if (token == null) {
                     showCustomBottomSheet(
                       context,
@@ -76,10 +63,7 @@ class ReviewPage extends ConsumerWidget {
                       child: RequestLoginSheet(),
                     );
                   } else {
-                    context.pushNamed(
-                      "writeReview",
-                      extra: parkingInfo.mngNo.toString(),
-                    );
+                    context.pushNamed("writeReview", extra: parkingInfo.mngNo.toString());
                   }
                 },
                 child: ReviewRate(value: 0, size: 24, paddingRight: 4),
@@ -91,73 +75,69 @@ class ReviewPage extends ConsumerWidget {
                   children: [
                     ReviewScore(mngNo: parkingInfo.mngNo.toString()),
                     // 필터
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: ReviewSortDropdown(),
-                    ),
+                    Align(alignment: Alignment.centerLeft, child: ReviewSortDropdown()),
                   ],
                 ),
               ),
               Consumer(
                 builder: (context, ref, child) {
-                  return ref
-                      .watch(
-                        reviewListProvider(
-                          ReviewFilterRequest(
-                            mngCd: parkingInfo.mngNo.toString(),
-                            sort: "score",
-                          ),
-                        ),
-                      )
-                      .when(
-                        data: (data) {
-                          existReview = data?.reviews.isNotEmpty ?? false;
-                          return _widget(existReview, data);
-                        },
-                        error:
-                            (error, stackTrace) => _widget(existReview, null),
-                        loading: () => _widget(existReview, null),
+                  final future = ref
+                      .watch(reviewApiProvider.notifier)
+                      .getReviewList(
+                        ReviewSortRequest(code: parkingInfo.mngNo.toString(), sort: "score"),
                       );
+
+                  return FutureBuilder<List<ReviewListItemResponse>>(
+                    future: future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text("리뷰 불러오기 실패"));
+                      } else if (snapshot.hasData) {
+                        final list = snapshot.data!;
+                        return list.isNotEmpty
+                            ? ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: list.length,
+                              itemBuilder:
+                                  (context, index) => ReviewListItem(reviewItem: list[index]),
+                            )
+                            : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 80),
+                                Image.asset(Images.noDataIcon, width: 18),
+                                SizedBox(height: 4),
+                                Text(
+                                  "등록된 리뷰가 없습니다.",
+                                  style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
+                                ),
+                              ],
+                            );
+                      } else {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 80),
+                            Image.asset(Images.noDataIcon, width: 18),
+                            SizedBox(height: 4),
+                            Text(
+                              "등록된 리뷰가 없습니다.",
+                              style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  );
                 },
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _widget(bool existReview, ReviewListResponse? data) {
-    final existReview = data != null && data.reviews.isNotEmpty;
-
-    return Column(
-      children: [
-        // 리뷰
-        existReview
-            ? ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: data.reviews.length,
-              itemBuilder:
-                  (context, index) =>
-                      ReviewListItem(reviewItem: data.reviews[index]),
-            )
-            : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 80),
-                Image.asset(Images.noDataIcon, width: 18),
-                SizedBox(height: 4),
-                Text(
-                  "등록된 리뷰가 없습니다.",
-                  style: CustomFonts.w400(
-                    fontSize: 16,
-                    color: CustomColors.grey,
-                  ),
-                ),
-              ],
-            ),
-      ],
     );
   }
 }

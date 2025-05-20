@@ -6,8 +6,8 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_dialog.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_text_field.dart';
 import 'package:public_parking_info_fe/presentation/widgets/select_review_button.dart';
-import 'package:public_parking_info_fe/providers/api_provider.dart';
-import 'package:public_parking_info_fe/providers/review_provider.dart';
+import 'package:public_parking_info_fe/providers/review_api_provider.dart';
+import 'package:public_parking_info_fe/providers/write_review_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 import 'package:scroll_time_picker/scroll_time_picker.dart';
@@ -34,10 +34,7 @@ class WriteReviewPage extends ConsumerWidget {
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: CustomColors.primary, width: 1),
           ),
-          child: Text(
-            "선택완료",
-            style: CustomFonts.w600(fontSize: 16, color: CustomColors.primary),
-          ),
+          child: Text("선택완료", style: CustomFonts.w600(fontSize: 16, color: CustomColors.primary)),
         ),
       );
     }
@@ -49,24 +46,15 @@ class WriteReviewPage extends ConsumerWidget {
         surfaceTintColor: Colors.white,
         leading: GestureDetector(
           onTap: () => context.pop(),
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: CustomColors.darkGrey,
-            size: 15,
-          ),
+          child: Icon(Icons.arrow_back_ios, color: CustomColors.darkGrey, size: 15),
         ),
-        title: Text(
-          "주차장",
-          style: CustomFonts.w700(fontSize: 18, color: CustomColors.darkGrey),
-        ),
+        title: Text("주차장", style: CustomFonts.w700(fontSize: 18, color: CustomColors.darkGrey)),
       ),
       bottomNavigationBar: GestureDetector(
         onTap: () {
-          ref.read(reviewProvider.notifier).setCode(mngNo);
-          ref.read(reviewProvider.notifier).setKakaoId();
-          ref.read(reviewProvider.notifier).postReview();
-
-          ref.invalidate(reviewListProvider);
+          ref.read(writeReviewProvider.notifier).setCode(mngNo);
+          ref.read(writeReviewProvider.notifier).postReview();
+          ref.invalidate(reviewApiProvider);
           context.pop();
         },
         child: Container(
@@ -79,10 +67,7 @@ class WriteReviewPage extends ConsumerWidget {
             borderRadius: BorderRadius.circular(15),
             color: CustomColors.primary,
           ),
-          child: Text(
-            "작성 완료",
-            style: CustomFonts.w600(fontSize: 16, color: Colors.white),
-          ),
+          child: Text("작성 완료", style: CustomFonts.w600(fontSize: 16, color: Colors.white)),
         ),
       ),
       body: GestureDetector(
@@ -94,19 +79,14 @@ class WriteReviewPage extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(
                   "방문 후기를 남겨주세요!",
-                  style: CustomFonts.w700(
-                    fontSize: 20,
-                    color: CustomColors.primary,
-                  ),
+                  style: CustomFonts.w700(fontSize: 20, color: CustomColors.primary),
                 ),
               ),
               SizedBox(
                 width: 140,
                 child: AnimatedRatingBar(
                   onRatingChanged: (value) {
-                    ref
-                        .read(reviewProvider.notifier)
-                        .setScore(value.toDouble());
+                    ref.read(writeReviewProvider.notifier).setScore(value.toDouble());
                   },
                   initialValue: 5,
                   animationType: ARBAnimationType.none,
@@ -119,10 +99,7 @@ class WriteReviewPage extends ConsumerWidget {
               Divider(color: CustomColors.divider, thickness: 6, height: 80),
               Text(
                 "후기를 작성해 보세요!",
-                style: CustomFonts.w700(
-                  fontSize: 20,
-                  color: CustomColors.primary,
-                ),
+                style: CustomFonts.w700(fontSize: 20, color: CustomColors.primary),
               ),
               SizedBox(height: 40),
               Row(
@@ -138,8 +115,7 @@ class WriteReviewPage extends ConsumerWidget {
                               height: 280,
                               padding: const EdgeInsets.only(top: 20),
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   ScrollDateTimePicker(
                                     itemExtent: 36,
@@ -161,7 +137,7 @@ class WriteReviewPage extends ConsumerWidget {
                                     ),
                                     onChange: (datetime) {
                                       ref
-                                          .read(reviewProvider.notifier)
+                                          .read(writeReviewProvider.notifier)
                                           .setReviewDate(datetime);
                                     },
                                   ),
@@ -192,9 +168,7 @@ class WriteReviewPage extends ConsumerWidget {
                                       is12hFormat: true,
                                       selectedTime: DateTime.now(),
                                       onDateTimeChanged: (value) {
-                                        ref
-                                            .read(reviewProvider.notifier)
-                                            .setReviewDate(value);
+                                        ref.read(writeReviewProvider.notifier).setReviewDate(value);
                                       },
                                     ),
                                   ),

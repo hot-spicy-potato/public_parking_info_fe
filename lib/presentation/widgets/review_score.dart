@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
-import 'package:public_parking_info_fe/providers/api_provider.dart';
+import 'package:public_parking_info_fe/providers/review_api_provider.dart';
 
 class ReviewScore extends ConsumerWidget {
   final String mngNo;
@@ -11,16 +11,14 @@ class ReviewScore extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref
-        .watch(reviewInfoProvider(mngNo))
-        .when(
-          data: (data) {
-            if (data == null) return _widget(0, 0);
-            return _widget(data.score.toInt(), data.total);
-          },
-          error: (error, stackTrace) => _widget(0, 0),
-          loading: () => _widget(0, 0),
-        );
+    return FutureBuilder(
+      future: ref.watch(reviewApiProvider.notifier).getReviewInfo(code: mngNo),
+      builder: (context, snapshot) {
+        final data = snapshot.data;
+        if (data == null) return _widget(0, 0);
+        return _widget(data.score.toInt(), data.total);
+      },
+    );
   }
 
   Widget _widget(int score, int totalNum) {

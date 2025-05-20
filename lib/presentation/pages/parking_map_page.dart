@@ -6,8 +6,8 @@ import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.
 import 'package:public_parking_info_fe/presentation/widgets/parking_info_content.dart';
 import 'package:public_parking_info_fe/presentation/widgets/search_field.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
+import 'package:public_parking_info_fe/services/location_service.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
-import 'package:public_parking_info_fe/services/map_service_impl.dart';
 
 class ParkingMapPage extends ConsumerStatefulWidget {
   const ParkingMapPage({super.key});
@@ -20,7 +20,8 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
   @override
   Widget build(BuildContext context) {
     final mapController = ref.watch(mapControllerProvider);
-    final MapService mapService = MapServiceImpl.instance;
+    final MapService mapService = MapService.instance;
+    final LocationService locationService = LocationService.instance;
 
     return Scaffold(
       body: Stack(
@@ -30,23 +31,13 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
             onMapCreated: (controller) async {
               ref.read(mapControllerProvider.notifier).state = controller;
 
-              final currentLocation = await mapService.getCurrentLocation();
+              final currentLocation = await locationService.setInitialLocation();
 
-              if (currentLocation != null) {
-                mapService.setMapCenter(
-                  mapController: controller,
-                  lat: currentLocation.latitude,
-                  lon: currentLocation.longitude,
-                );
-              } else {
-                final location = mapService.getSeoulStationLocation();
-
-                mapService.setMapCenter(
-                  mapController: controller,
-                  lat: location.latitude,
-                  lon: location.longitude,
-                );
-              }
+              mapService.setMapCenter(
+                mapController: controller,
+                lat: currentLocation.latitude,
+                lon: currentLocation.longitude,
+              );
 
               await mapService.addMarkersInView(controller);
             },
@@ -58,23 +49,30 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
             },
             // 마커 클릭시 바텀 시트 노출
             onMarkerTap: (markerId, latLng, zoomLevel) async {
-              await mapService.updateMarker(
-                mapController: mapController!,
-                markerId: markerId,
-                latLng: latLng,
-                ref: ref,
-              );
-              ref.read(markerProvider.notifier).state = markerId;
+              if (mapController != null) {
+                await mapService.updateMarker(
+                  controller: mapController,
+                  markerId: markerId,
+                  latLng: latLng,
+                  ref: ref,
+                );
+              }
+
+              // ref.read(markerProvider.notifier).state = markerId;
+
+              // final ParkingInfo? parkingInfo = mapService.getParkingInfo(latLng);
+
+              // if (parkingInfo != null) {
+              //   ref.read(targetParkingProvider.notifier).setParkingInfo(parkingInfo);
+              // }
+
               showCustomBottomSheet(
                 context,
                 barrierColor: Colors.transparent,
                 child: ParkingInfoContent(),
               ).then((value) async {
                 if (mapController != null) {
-                  await mapService.onMapBackgroundClick(
-                    mapController,
-                    markerId,
-                  );
+                  await mapService.onMapBackgroundClick(mapController, markerId);
                 }
               });
             },

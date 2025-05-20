@@ -5,7 +5,7 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
-import 'package:public_parking_info_fe/providers/api_provider.dart';
+import 'package:public_parking_info_fe/providers/review_api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:intl/intl.dart';
 
@@ -23,14 +23,8 @@ class ReviewListItem extends ConsumerWidget {
           alignment: Alignment.center,
           margin: EdgeInsets.only(bottom: bottomMargin, left: 30, right: 30),
           padding: const EdgeInsets.symmetric(vertical: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            text,
-            style: CustomFonts.w600(fontSize: 16, color: CustomColors.primary),
-          ),
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
+          child: Text(text, style: CustomFonts.w600(fontSize: 16, color: CustomColors.primary)),
         ),
       );
     }
@@ -49,10 +43,7 @@ class ReviewListItem extends ConsumerWidget {
                 children: [
                   Text(
                     reviewItem.name,
-                    style: CustomFonts.w700(
-                      fontSize: 18,
-                      color: CustomColors.darkGrey,
-                    ),
+                    style: CustomFonts.w700(fontSize: 18, color: CustomColors.darkGrey),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -72,10 +63,10 @@ class ReviewListItem extends ConsumerWidget {
                                   reviewItem.myReview
                                       ? menuItem(
                                         () {
-                                          ref.read(
-                                            deleteReviewProvider(reviewItem.id),
-                                          );
-                                          ref.invalidate(reviewListProvider);
+                                          ref
+                                              .read(reviewApiProvider.notifier)
+                                              .deleteReview(id: reviewItem.id);
+                                          ref.invalidate(reviewApiProvider);
                                           context.pop();
                                         },
                                         "삭제하기",
@@ -83,10 +74,10 @@ class ReviewListItem extends ConsumerWidget {
                                       )
                                       : menuItem(
                                         () {
-                                          ref.read(
-                                            reportReviewProvider(reviewItem.id),
-                                          );
-                                          ref.invalidate(reviewListProvider);
+                                          ref
+                                              .read(reviewApiProvider.notifier)
+                                              .reportReview(id: reviewItem.id);
+                                          ref.invalidate(reviewApiProvider);
                                           context.pop();
                                         },
                                         "신고하기",
@@ -107,18 +98,11 @@ class ReviewListItem extends ConsumerWidget {
               SizedBox(height: 8),
               Row(
                 children: [
-                  ReviewRate(
-                    value: reviewItem.score.toInt(),
-                    size: 14,
-                    paddingRight: 4,
-                  ),
+                  ReviewRate(value: reviewItem.score.toInt(), size: 14, paddingRight: 4),
                   SizedBox(width: 8),
                   Text(
                     DateFormat("yyyy.mm.dd").format(reviewItem.reviewDate),
-                    style: CustomFonts.w400(
-                      fontSize: 16,
-                      color: CustomColors.grey,
-                    ),
+                    style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
                   ),
                 ],
               ),

@@ -15,7 +15,6 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$ReviewRequest {
-  String get kakaoId;
   String get code;
   double get score;
   String get content;
@@ -38,7 +37,6 @@ mixin _$ReviewRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is ReviewRequest &&
-            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.score, score) || other.score == score) &&
             (identical(other.content, content) || other.content == content) &&
@@ -50,12 +48,12 @@ mixin _$ReviewRequest {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, kakaoId, code, score, content, reviewDate, reviewTime);
+  int get hashCode =>
+      Object.hash(runtimeType, code, score, content, reviewDate, reviewTime);
 
   @override
   String toString() {
-    return 'ReviewRequest(kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime)';
+    return 'ReviewRequest(code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime)';
   }
 }
 
@@ -66,8 +64,7 @@ abstract mixin class $ReviewRequestCopyWith<$Res> {
       _$ReviewRequestCopyWithImpl;
   @useResult
   $Res call(
-      {String kakaoId,
-      String code,
+      {String code,
       double score,
       String content,
       DateTime reviewDate,
@@ -87,7 +84,6 @@ class _$ReviewRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? kakaoId = null,
     Object? code = null,
     Object? score = null,
     Object? content = null,
@@ -95,10 +91,6 @@ class _$ReviewRequestCopyWithImpl<$Res>
     Object? reviewTime = null,
   }) {
     return _then(_self.copyWith(
-      kakaoId: null == kakaoId
-          ? _self.kakaoId
-          : kakaoId // ignore: cast_nullable_to_non_nullable
-              as String,
       code: null == code
           ? _self.code
           : code // ignore: cast_nullable_to_non_nullable
@@ -127,8 +119,7 @@ class _$ReviewRequestCopyWithImpl<$Res>
 @JsonSerializable()
 class _ReviewRequest implements ReviewRequest {
   _ReviewRequest(
-      {required this.kakaoId,
-      required this.code,
+      {required this.code,
       required this.score,
       required this.content,
       required this.reviewDate,
@@ -136,8 +127,6 @@ class _ReviewRequest implements ReviewRequest {
   factory _ReviewRequest.fromJson(Map<String, dynamic> json) =>
       _$ReviewRequestFromJson(json);
 
-  @override
-  final String kakaoId;
   @override
   final String code;
   @override
@@ -169,7 +158,6 @@ class _ReviewRequest implements ReviewRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ReviewRequest &&
-            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.score, score) || other.score == score) &&
             (identical(other.content, content) || other.content == content) &&
@@ -181,12 +169,12 @@ class _ReviewRequest implements ReviewRequest {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, kakaoId, code, score, content, reviewDate, reviewTime);
+  int get hashCode =>
+      Object.hash(runtimeType, code, score, content, reviewDate, reviewTime);
 
   @override
   String toString() {
-    return 'ReviewRequest(kakaoId: $kakaoId, code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime)';
+    return 'ReviewRequest(code: $code, score: $score, content: $content, reviewDate: $reviewDate, reviewTime: $reviewTime)';
   }
 }
 
@@ -199,8 +187,7 @@ abstract mixin class _$ReviewRequestCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String kakaoId,
-      String code,
+      {String code,
       double score,
       String content,
       DateTime reviewDate,
@@ -220,7 +207,6 @@ class __$ReviewRequestCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? kakaoId = null,
     Object? code = null,
     Object? score = null,
     Object? content = null,
@@ -228,10 +214,6 @@ class __$ReviewRequestCopyWithImpl<$Res>
     Object? reviewTime = null,
   }) {
     return _then(_ReviewRequest(
-      kakaoId: null == kakaoId
-          ? _self.kakaoId
-          : kakaoId // ignore: cast_nullable_to_non_nullable
-              as String,
       code: null == code
           ? _self.code
           : code // ignore: cast_nullable_to_non_nullable

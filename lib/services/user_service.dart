@@ -1,11 +1,24 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class UserService {
-  Future<String?> kakaoLogin(WidgetRef ref);
-  Future<void> saveKakaoId(String kakaoId);
-  Future<String?> getKakaoId();
-  Future<void> saveToken(String token);
-  Future<String?> getToken();
-  Future<void> logout();
+class UserService {
+  UserService._internal();
+  static final UserService _instance = UserService._internal();
+  static UserService get instance => _instance;
+
+  Future<void> saveAccessToken(String accessToken) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("accessToken", accessToken);
+  }
+
+  Future<String?> getAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString("accessToken");
+    if (accessToken == null) return null;
+    return accessToken;
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("accessToken");
+  }
 }

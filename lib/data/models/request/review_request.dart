@@ -6,7 +6,6 @@ part 'review_request.g.dart';
 @freezed
 class ReviewRequest with _$ReviewRequest {
   factory ReviewRequest({
-    required String kakaoId,
     required String code,
     required double score,
     required String content,
@@ -22,7 +21,6 @@ class ReviewRequest with _$ReviewRequest {
 
   static ReviewRequest defaultReviewRequest() {
     return ReviewRequest(
-      kakaoId: "",
       code: "",
       score: 0,
       content: "",

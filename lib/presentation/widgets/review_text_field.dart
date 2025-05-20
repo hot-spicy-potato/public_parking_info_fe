@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
-import 'package:public_parking_info_fe/providers/review_provider.dart';
+import 'package:public_parking_info_fe/providers/write_review_provider.dart';
 
 class ReviewTextField extends ConsumerStatefulWidget {
   const ReviewTextField({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ReviewTextFieldState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ReviewTextFieldState();
 }
 
 class _ReviewTextFieldState extends ConsumerState<ReviewTextField> {
@@ -25,7 +24,7 @@ class _ReviewTextFieldState extends ConsumerState<ReviewTextField> {
       ),
       child: TextField(
         onChanged: (value) {
-          ref.read(reviewProvider.notifier).setContent(value);
+          ref.read(writeReviewProvider.notifier).setContent(value);
         },
         maxLines: null,
         decoration: InputDecoration(

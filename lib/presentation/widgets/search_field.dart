@@ -4,7 +4,6 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
-import 'package:public_parking_info_fe/services/map_service_impl.dart';
 
 class SearchField extends ConsumerStatefulWidget {
   const SearchField({super.key});
@@ -15,7 +14,7 @@ class SearchField extends ConsumerStatefulWidget {
 
 class _SearchFieldState extends ConsumerState<SearchField> {
   late TextEditingController textEditingController;
-  final MapService mapService = MapServiceImpl.instance;
+  final MapService mapService = MapService.instance;
 
   @override
   void initState() {
@@ -30,9 +29,7 @@ class _SearchFieldState extends ConsumerState<SearchField> {
     void searchEvent(String value) async {
       if (value.isNotEmpty) {
         // 검색 후 지도 이동
-        await mapService.searchAddress(textEditingController.text).then((
-          targetPosition,
-        ) {
+        await mapService.searchAddress(textEditingController.text).then((targetPosition) {
           if (targetPosition != null && mapController != null) {
             mapService.setMapCenter(
               mapController: mapController,
@@ -71,10 +68,7 @@ class _SearchFieldState extends ConsumerState<SearchField> {
                 onSubmitted: (value) => searchEvent(value),
                 decoration: InputDecoration(
                   hintText: "목적지 또는 주소 검색",
-                  hintStyle: TextStyle(
-                    color: CustomColors.lightGrey,
-                    fontSize: 16,
-                  ),
+                  hintStyle: TextStyle(color: CustomColors.lightGrey, fontSize: 16),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(0),
                 ),
