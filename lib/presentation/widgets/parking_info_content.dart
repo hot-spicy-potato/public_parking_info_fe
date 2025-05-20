@@ -5,6 +5,7 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
+import 'package:public_parking_info_fe/presentation/widgets/favorite_button.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/providers/review_api_provider.dart';
@@ -58,7 +59,16 @@ class ParkingInfoContent extends ConsumerWidget {
                 );
 
                 final data = snapshot.data ?? defaultReview;
-                return _review(context, data.score.toInt(), parkingInfo, data);
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _review(context, data.score.toInt(), parkingInfo, data),
+                    FavoriteButton(
+                      mngNo: parkingInfo.mngNo.toString(),
+                      favoriteState: data.favorite ?? false,
+                    ),
+                  ],
+                );
               },
             ),
             Divider(color: CustomColors.whiteGrey, thickness: 1, height: 40),

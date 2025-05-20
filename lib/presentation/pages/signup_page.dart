@@ -53,7 +53,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 final LoginResponse? response = await signupProvider.signup();
                 if (response != null) {
                   await userService.saveAccessToken(response.token.accessToken);
-                  context.pushNamed("main");
+                  context.pushReplacementNamed("completedSignup");
                 }
               }
             },

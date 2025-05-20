@@ -34,7 +34,7 @@ class UserApi {
   Future<LoginResponse?> signup(SignupRequest request) async {
     try {
       final res = await dio.post("/api/users/signup", data: request);
-      return res.data;
+      return LoginResponse.fromJson(res.data);
     } catch (e) {
       print("fail signup : $e");
     }
@@ -45,10 +45,7 @@ class UserApi {
   // /api/users/send-email
   Future<String?> postEmail(String email) async {
     try {
-      final res = await dio.post(
-        "/api/users/send-email",
-        queryParameters: {"email": email},
-      );
+      final res = await dio.post("/api/users/send-email", queryParameters: {"email": email});
       if (res.statusCode == 200) return res.data;
     } catch (e) {
       print("fail post email : $e");
