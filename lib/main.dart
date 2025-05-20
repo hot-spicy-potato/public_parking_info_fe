@@ -7,9 +7,12 @@ import 'package:public_parking_info_fe/core/constants/keys.dart';
 import 'package:public_parking_info_fe/core/utils/deep_link_handler.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
+import 'package:public_parking_info_fe/presentation/pages/completed_signup_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/email_login_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/review_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/signup_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/splash_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/write_review_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,23 +36,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<NavigatorState> _rootNavigatorKey =
-        GlobalKey<NavigatorState>();
+    final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
     DeepLinkHandler.init(context, _rootNavigatorKey);
 
     final router = GoRouter(
       navigatorKey: _rootNavigatorKey,
       initialLocation: isLoggedIn ? "/main" : "/splash",
       routes: [
+        GoRoute(name: "splash", path: "/splash", builder: (context, state) => const SplashPage()),
+        GoRoute(name: "main", path: "/main", builder: (context, state) => const ParkingMapPage()),
+        GoRoute(name: "login", path: "/login", builder: (context, state) => const EmailLoginPage()),
+        GoRoute(name: "signup", path: "/signup", builder: (context, state) => const SignupPage()),
         GoRoute(
-          name: "splash",
-          path: "/splash",
-          builder: (context, state) => const SplashPage(),
-        ),
-        GoRoute(
-          name: "main",
-          path: "/main",
-          builder: (context, state) => const ParkingMapPage(),
+          name: "completedSignup",
+          path: "/completed-signup",
+          builder: (context, state) => const CompletedSignupPage(),
         ),
         GoRoute(
           name: "roadView",

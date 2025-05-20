@@ -5,14 +5,18 @@ import 'package:public_parking_info_fe/resources/resources.dart';
 
 void main() {
   test('images assets test', () {
+    expect(File(Images.text).existsSync(), isTrue);
     expect(File(Images.alarmIcon).existsSync(), isTrue);
+    expect(File(Images.arrowLeft).existsSync(), isTrue);
     expect(File(Images.arrowRight).existsSync(), isTrue);
     expect(File(Images.carIcon).existsSync(), isTrue);
+    expect(File(Images.completedSignupIcon).existsSync(), isTrue);
     expect(File(Images.currentLocationIcon).existsSync(), isTrue);
     expect(File(Images.dotMenuIcon).existsSync(), isTrue);
     expect(File(Images.emptyDataIcon).existsSync(), isTrue);
     expect(File(Images.enableParkingCountIcon).existsSync(), isTrue);
     expect(File(Images.favoriteIcon).existsSync(), isTrue);
+    expect(File(Images.helperTextIcon).existsSync(), isTrue);
     expect(File(Images.historyIcon).existsSync(), isTrue);
     expect(File(Images.kakaoIcon).existsSync(), isTrue);
     expect(File(Images.kakaoLoginIcon).existsSync(), isTrue);

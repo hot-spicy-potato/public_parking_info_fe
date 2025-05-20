@@ -17,6 +17,7 @@ T _$identity<T>(T value) => value;
 mixin _$SignupRequest {
   String get email;
   String get password;
+  String? get rePassword;
   String get name;
 
   /// Create a copy of SignupRequest
@@ -38,16 +39,19 @@ mixin _$SignupRequest {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.rePassword, rePassword) ||
+                other.rePassword == rePassword) &&
             (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, email, password, name);
+  int get hashCode =>
+      Object.hash(runtimeType, email, password, rePassword, name);
 
   @override
   String toString() {
-    return 'SignupRequest(email: $email, password: $password, name: $name)';
+    return 'SignupRequest(email: $email, password: $password, rePassword: $rePassword, name: $name)';
   }
 }
 
@@ -57,7 +61,7 @@ abstract mixin class $SignupRequestCopyWith<$Res> {
           SignupRequest value, $Res Function(SignupRequest) _then) =
       _$SignupRequestCopyWithImpl;
   @useResult
-  $Res call({String email, String password, String name});
+  $Res call({String email, String password, String? rePassword, String name});
 }
 
 /// @nodoc
@@ -75,6 +79,7 @@ class _$SignupRequestCopyWithImpl<$Res>
   $Res call({
     Object? email = null,
     Object? password = null,
+    Object? rePassword = freezed,
     Object? name = null,
   }) {
     return _then(_self.copyWith(
@@ -86,6 +91,10 @@ class _$SignupRequestCopyWithImpl<$Res>
           ? _self.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      rePassword: freezed == rePassword
+          ? _self.rePassword
+          : rePassword // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -98,7 +107,10 @@ class _$SignupRequestCopyWithImpl<$Res>
 @JsonSerializable()
 class _SignupRequest implements SignupRequest {
   _SignupRequest(
-      {required this.email, required this.password, required this.name});
+      {required this.email,
+      required this.password,
+      this.rePassword,
+      required this.name});
   factory _SignupRequest.fromJson(Map<String, dynamic> json) =>
       _$SignupRequestFromJson(json);
 
@@ -106,6 +118,8 @@ class _SignupRequest implements SignupRequest {
   final String email;
   @override
   final String password;
+  @override
+  final String? rePassword;
   @override
   final String name;
 
@@ -132,16 +146,19 @@ class _SignupRequest implements SignupRequest {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.rePassword, rePassword) ||
+                other.rePassword == rePassword) &&
             (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, email, password, name);
+  int get hashCode =>
+      Object.hash(runtimeType, email, password, rePassword, name);
 
   @override
   String toString() {
-    return 'SignupRequest(email: $email, password: $password, name: $name)';
+    return 'SignupRequest(email: $email, password: $password, rePassword: $rePassword, name: $name)';
   }
 }
 
@@ -153,7 +170,7 @@ abstract mixin class _$SignupRequestCopyWith<$Res>
       __$SignupRequestCopyWithImpl;
   @override
   @useResult
-  $Res call({String email, String password, String name});
+  $Res call({String email, String password, String? rePassword, String name});
 }
 
 /// @nodoc
@@ -171,6 +188,7 @@ class __$SignupRequestCopyWithImpl<$Res>
   $Res call({
     Object? email = null,
     Object? password = null,
+    Object? rePassword = freezed,
     Object? name = null,
   }) {
     return _then(_SignupRequest(
@@ -182,6 +200,10 @@ class __$SignupRequestCopyWithImpl<$Res>
           ? _self.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      rePassword: freezed == rePassword
+          ? _self.rePassword
+          : rePassword // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable

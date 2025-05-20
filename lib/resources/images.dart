@@ -3,9 +3,13 @@ part of 'resources.dart';
 class Images {
   Images._();
 
+  static const String text = 'assets/imgs/Text.png';
   static const String alarmIcon = 'assets/imgs/alarm_icon.png';
+  static const String arrowLeft = 'assets/imgs/arrow_left.png';
   static const String arrowRight = 'assets/imgs/arrow_right.png';
   static const String carIcon = 'assets/imgs/car_icon.png';
+  static const String completedSignupIcon =
+      'assets/imgs/completed_signup_icon.png';
   static const String currentLocationIcon =
       'assets/imgs/current_location_icon.png';
   static const String dotMenuIcon = 'assets/imgs/dot_menu_icon.png';
@@ -13,6 +17,7 @@ class Images {
   static const String enableParkingCountIcon =
       'assets/imgs/enable_parking_count_icon.png';
   static const String favoriteIcon = 'assets/imgs/favorite_icon.png';
+  static const String helperTextIcon = 'assets/imgs/helper_text_icon.png';
   static const String historyIcon = 'assets/imgs/history_icon.png';
   static const String kakaoIcon = 'assets/imgs/kakao_icon.png';
   static const String kakaoLoginIcon = 'assets/imgs/kakao_login_icon.png';

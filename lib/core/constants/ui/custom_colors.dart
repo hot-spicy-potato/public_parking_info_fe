@@ -11,6 +11,8 @@ class CustomColors {
   static const Color textField = Color(0xffDBDBDB);
   static const Color grey = Color(0xff757F8C);
   static const Color darkGrey = Color(0xff3B414B);
+  static const Color darkGrey2 = Color(0xff606060);
   static const Color primary = Color(0xff613EEA);
   static const Color kakao = Color(0xffFEE500);
+  static const Color dangerous = Color(0xFFFF0000);
 }
