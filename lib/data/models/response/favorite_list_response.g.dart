@@ -23,15 +23,11 @@ Map<String, dynamic> _$FavoriteListResponseToJson(
 _FavoriteListItem _$FavoriteListItemFromJson(Map<String, dynamic> json) =>
     _FavoriteListItem(
       id: (json['id'] as num).toInt(),
-      kakaoId: json['kakaoId'] as String,
       code: json['code'] as String,
-      updateTime: DateTime.parse(json['updateTime'] as String),
     );
 
 Map<String, dynamic> _$FavoriteListItemToJson(_FavoriteListItem instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'kakaoId': instance.kakaoId,
       'code': instance.code,
-      'updateTime': instance.updateTime.toIso8601String(),
     };

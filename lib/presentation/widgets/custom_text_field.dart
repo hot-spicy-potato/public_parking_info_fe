@@ -8,6 +8,7 @@ class CustomTextField extends ConsumerStatefulWidget {
   final String hintText;
   final String? Function(String?)? validator;
   final TextEditingController? passwordController;
+  final bool? obscureText;
   final Function(String)? onChanged;
   const CustomTextField({
     required this.title,
@@ -15,6 +16,7 @@ class CustomTextField extends ConsumerStatefulWidget {
     required this.onChanged,
     this.validator,
     this.passwordController,
+    this.obscureText,
     super.key,
   });
 
@@ -40,8 +42,10 @@ class _CustomTextFieldState extends ConsumerState<CustomTextField> {
             ),
             controller: widget.passwordController,
             autovalidateMode: AutovalidateMode.onUnfocus,
+            obscureText: widget.obscureText ?? false,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(0),
+
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: CustomColors.lightGrey),
               ),

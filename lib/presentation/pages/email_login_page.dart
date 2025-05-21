@@ -88,6 +88,7 @@ class _EmailLoginPageState extends ConsumerState<EmailLoginPage> {
                       CustomTextField(
                         title: "비밀번호",
                         hintText: "영문, 숫자, 특수문자 포함 8자리 이상",
+                        obscureText: true,
                         validator: (value) {},
                         onChanged: (value) {
                           loginProvider.setPassword(value);

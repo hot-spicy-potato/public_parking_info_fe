@@ -109,6 +109,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       CustomTextField(
                         title: "비밀번호",
                         hintText: "영문, 숫자, 특수문자 포함 8자리 이상",
+                        obscureText: true,
                         validator: (value) {
                           final regex = RegExp(
                             r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[,\.\!\?\_\-\*])[A-Za-z\d,\.\!\?\_\-\*]{8,}$',
@@ -124,6 +125,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       CustomTextField(
                         title: "비밀번호 재입력",
                         hintText: "비밀번호를 재입력해 주세요.",
+                        obscureText: true,
                         validator: (value) {
                           if (value == null ||
                               value.isEmpty ||

@@ -58,7 +58,7 @@ class UserApi {
   Future<LoginResponse?> login(LoginRequest request) async {
     try {
       final res = await dio.post("/api/users/login", data: request);
-      return res.data;
+      return LoginResponse.fromJson(res.data);
     } catch (e) {
       print("fail login : $e");
     }

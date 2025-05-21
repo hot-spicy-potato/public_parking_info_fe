@@ -27,6 +27,8 @@ void main() async {
   final accessToken = prefs.getString("accessToken");
   final isLoggedIn = accessToken != null;
 
+  print("access token : $accessToken");
+
   runApp(ProviderScope(child: MyApp(isLoggedIn: isLoggedIn)));
 }
 

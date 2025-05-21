@@ -9,12 +9,8 @@ class DioClient {
 
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl:
-          'https://port-0-public-parking-info-de-ma8tyvwu9ca7cc7b.sel4.cloudtype.app',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
+      baseUrl: 'https://port-0-public-parking-info-de-ma8tyvwu9ca7cc7b.sel4.cloudtype.app',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     ),
   );
 
@@ -34,9 +30,7 @@ class DioClient {
         onError: (error, handler) async {
           if (error.response?.statusCode == 401) {
             try {
-              final refreshResponse = await _dio.post(
-                "/api/users/refresh-access-token",
-              );
+              final refreshResponse = await _dio.post("/api/users/refresh-access-token");
               final newAccessToken = refreshResponse.data;
 
               await UserService.instance.saveAccessToken(newAccessToken);

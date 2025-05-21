@@ -17,11 +17,8 @@ class ReviewApi {
   // /api/review
   Future<ReviewInfoResponse?> getReviewInfo(String code) async {
     try {
-      final res = await dio.post(
-        "/api/review",
-        queryParameters: {"code": code},
-      );
-      return res.data;
+      final res = await dio.post("/api/review", queryParameters: {"code": code});
+      return ReviewInfoResponse.fromJson(res.data);
     } catch (e) {
       print("fail get review info");
     }
@@ -32,7 +29,7 @@ class ReviewApi {
   // /api/review/review/report/{id}
   Future<bool> reportReview(int id) async {
     try {
-      final res = await dio.post("/api/review/review/report/$id");
+      final res = await dio.post("/api/review/report/$id");
       if (res.statusCode == 200) return true;
     } catch (e) {
       print("fail report review");
@@ -42,12 +39,11 @@ class ReviewApi {
 
   // 리뷰 목록 조회 API
   // /api/review/review/list
-  Future<List<ReviewListItemResponse>> getReviewList(
-    ReviewSortRequest request,
-  ) async {
+  Future<List<ReviewListItemResponse>> getReviewList(ReviewSortRequest request) async {
     try {
-      final res = await dio.post("/api/review/review/list", data: request);
-      return res.data;
+      final res = await dio.post("/api/review/list", data: request);
+      final List list = res.data;
+      return list.map((item) => ReviewListItemResponse.fromJson(item)).toList();
     } catch (e) {
       print("fail get review list");
     }
@@ -58,7 +54,7 @@ class ReviewApi {
   // /api/review/review/insert
   Future<int?> postReview(ReviewRequest request) async {
     try {
-      final res = await dio.post("/api/review/review/insert", data: request);
+      final res = await dio.post("/api/review/insert", data: request);
       return res.data;
     } catch (e) {
       print("fail post review");
@@ -70,7 +66,7 @@ class ReviewApi {
   // /api/review/review/delete/{id}
   Future<bool> deleteReview(int id) async {
     try {
-      final res = await dio.delete("/api/review/review/delete/$id");
+      final res = await dio.delete("/api/review/delete/$id");
       if (res.statusCode == 200) return true;
     } catch (e) {
       print("fail delete review");

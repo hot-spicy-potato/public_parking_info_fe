@@ -17,15 +17,9 @@ class FavoriteListResponse with _$FavoriteListResponse {
 
 @freezed
 class FavoriteListItem with _$FavoriteListItem {
-  factory FavoriteListItem({
-    required int id,
-    required String kakaoId,
-    required String code,
-    required DateTime updateTime,
-  }) = _FavoriteListItem;
+  factory FavoriteListItem({required int id, required String code}) = _FavoriteListItem;
 
-  factory FavoriteListItem.fromJson(Map<String, dynamic> json) =>
-      _$FavoriteListItemFromJson(json);
+  factory FavoriteListItem.fromJson(Map<String, dynamic> json) => _$FavoriteListItemFromJson(json);
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

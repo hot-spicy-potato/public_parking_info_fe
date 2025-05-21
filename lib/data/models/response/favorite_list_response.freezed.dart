@@ -171,9 +171,7 @@ class __$FavoriteListResponseCopyWithImpl<$Res>
 /// @nodoc
 mixin _$FavoriteListItem {
   int get id;
-  String get kakaoId;
   String get code;
-  DateTime get updateTime;
 
   /// Create a copy of FavoriteListItem
   /// with the given fields replaced by the non-null parameter values.
@@ -192,19 +190,16 @@ mixin _$FavoriteListItem {
         (other.runtimeType == runtimeType &&
             other is FavoriteListItem &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.updateTime, updateTime) ||
-                other.updateTime == updateTime));
+            (identical(other.code, code) || other.code == code));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, kakaoId, code, updateTime);
+  int get hashCode => Object.hash(runtimeType, id, code);
 
   @override
   String toString() {
-    return 'FavoriteListItem(id: $id, kakaoId: $kakaoId, code: $code, updateTime: $updateTime)';
+    return 'FavoriteListItem(id: $id, code: $code)';
   }
 }
 
@@ -214,7 +209,7 @@ abstract mixin class $FavoriteListItemCopyWith<$Res> {
           FavoriteListItem value, $Res Function(FavoriteListItem) _then) =
       _$FavoriteListItemCopyWithImpl;
   @useResult
-  $Res call({int id, String kakaoId, String code, DateTime updateTime});
+  $Res call({int id, String code});
 }
 
 /// @nodoc
@@ -231,27 +226,17 @@ class _$FavoriteListItemCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? kakaoId = null,
     Object? code = null,
-    Object? updateTime = null,
   }) {
     return _then(_self.copyWith(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      kakaoId: null == kakaoId
-          ? _self.kakaoId
-          : kakaoId // ignore: cast_nullable_to_non_nullable
-              as String,
       code: null == code
           ? _self.code
           : code // ignore: cast_nullable_to_non_nullable
               as String,
-      updateTime: null == updateTime
-          ? _self.updateTime
-          : updateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -259,22 +244,14 @@ class _$FavoriteListItemCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _FavoriteListItem implements FavoriteListItem {
-  _FavoriteListItem(
-      {required this.id,
-      required this.kakaoId,
-      required this.code,
-      required this.updateTime});
+  _FavoriteListItem({required this.id, required this.code});
   factory _FavoriteListItem.fromJson(Map<String, dynamic> json) =>
       _$FavoriteListItemFromJson(json);
 
   @override
   final int id;
   @override
-  final String kakaoId;
-  @override
   final String code;
-  @override
-  final DateTime updateTime;
 
   /// Create a copy of FavoriteListItem
   /// with the given fields replaced by the non-null parameter values.
@@ -297,19 +274,16 @@ class _FavoriteListItem implements FavoriteListItem {
         (other.runtimeType == runtimeType &&
             other is _FavoriteListItem &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.kakaoId, kakaoId) || other.kakaoId == kakaoId) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.updateTime, updateTime) ||
-                other.updateTime == updateTime));
+            (identical(other.code, code) || other.code == code));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, kakaoId, code, updateTime);
+  int get hashCode => Object.hash(runtimeType, id, code);
 
   @override
   String toString() {
-    return 'FavoriteListItem(id: $id, kakaoId: $kakaoId, code: $code, updateTime: $updateTime)';
+    return 'FavoriteListItem(id: $id, code: $code)';
   }
 }
 
@@ -321,7 +295,7 @@ abstract mixin class _$FavoriteListItemCopyWith<$Res>
       __$FavoriteListItemCopyWithImpl;
   @override
   @useResult
-  $Res call({int id, String kakaoId, String code, DateTime updateTime});
+  $Res call({int id, String code});
 }
 
 /// @nodoc
@@ -338,27 +312,17 @@ class __$FavoriteListItemCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
-    Object? kakaoId = null,
     Object? code = null,
-    Object? updateTime = null,
   }) {
     return _then(_FavoriteListItem(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      kakaoId: null == kakaoId
-          ? _self.kakaoId
-          : kakaoId // ignore: cast_nullable_to_non_nullable
-              as String,
       code: null == code
           ? _self.code
           : code // ignore: cast_nullable_to_non_nullable
               as String,
-      updateTime: null == updateTime
-          ? _self.updateTime
-          : updateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }

@@ -13,10 +13,8 @@ class FavoriteApi {
   // /api/favorite/favorite
   Future<bool> setFavorite(String code) async {
     try {
-      final res = await dio.post(
-        "/api/favorite/favorite",
-        queryParameters: {"code": code},
-      );
+      final Dio _dio = DioClient.dio;
+      final res = await _dio.post("/api/favorite", queryParameters: {"code": code});
       String state = res.data;
       if (state == "on") return true;
     } catch (e) {
@@ -29,8 +27,9 @@ class FavoriteApi {
   // /api/favorite/favorite/list
   Future<List<FavoriteListItem>> getFavoriteList() async {
     try {
-      final res = await dio.post("/api/favorite/favorite/list");
-      return res.data;
+      final res = await dio.post("/api/favorite/list");
+      final List list = res.data;
+      return list.map((item) => FavoriteListItem.fromJson(item)).toList();
     } catch (e) {
       print("fail get favorite list : $e");
     }

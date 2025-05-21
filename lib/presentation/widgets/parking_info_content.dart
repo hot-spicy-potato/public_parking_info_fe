@@ -58,7 +58,14 @@ class ParkingInfoContent extends ConsumerWidget {
                   favorite: false,
                 );
 
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // 로딩 중 상태
+                  return CircularProgressIndicator();
+                }
+
                 final data = snapshot.data ?? defaultReview;
+                print("favorite: ${data.favorite}");
+
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
