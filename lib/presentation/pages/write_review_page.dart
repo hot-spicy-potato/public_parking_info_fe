@@ -54,7 +54,7 @@ class WriteReviewPage extends ConsumerWidget {
         onTap: () {
           ref.read(writeReviewProvider.notifier).setCode(mngNo);
           ref.read(writeReviewProvider.notifier).postReview();
-          ref.invalidate(reviewApiProvider);
+          ref.invalidate(reviewListProvider);
           context.pop();
         },
         child: Container(

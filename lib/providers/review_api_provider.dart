@@ -4,6 +4,14 @@ import 'package:public_parking_info_fe/data/models/request/review_sort_request.d
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
 import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 
+final reviewListProvider = FutureProvider.family<List<ReviewListItemResponse>, ReviewSortRequest>((
+  ref,
+  request,
+) async {
+  final api = ReviewApi.instance;
+  return await api.getReviewList(request);
+});
+
 final reviewApiProvider = StateNotifierProvider<ReviewNotifier, AsyncValue<void>>((ref) {
   return ReviewNotifier(AsyncData(null));
 });
@@ -21,9 +29,9 @@ class ReviewNotifier extends StateNotifier<AsyncValue<void>> {
     return await api.reportReview(id);
   }
 
-  Future<List<ReviewListItemResponse>> getReviewList(ReviewSortRequest request) async {
-    return await api.getReviewList(request);
-  }
+  // Future<List<ReviewListItemResponse>> getReviewList(ReviewSortRequest request) async {
+  //   return await api.getReviewList(request);
+  // }
 
   Future<bool> deleteReview({required int id}) async {
     return await api.deleteReview(id);

@@ -6,7 +6,6 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/request/review_sort_request.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
-import 'package:public_parking_info_fe/data/models/response/review_list_response.dart';
 import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_score.dart';
@@ -81,57 +80,43 @@ class ReviewPage extends ConsumerWidget {
               ),
               Consumer(
                 builder: (context, ref, child) {
-                  final future = ref
-                      .watch(reviewApiProvider.notifier)
-                      .getReviewList(
-                        ReviewSortRequest(code: parkingInfo.mngNo.toString(), sort: "score"),
-                      );
-
-                  return FutureBuilder<List<ReviewListItemResponse>>(
-                    future: future,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text("리뷰 불러오기 실패"));
-                      } else if (snapshot.hasData) {
-                        final list = snapshot.data!;
-                        return list.isNotEmpty
-                            ? ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: list.length,
-                              itemBuilder:
-                                  (context, index) => ReviewListItem(reviewItem: list[index]),
-                            )
-                            : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(height: 80),
-                                Image.asset(Images.noDataIcon, width: 18),
-                                SizedBox(height: 4),
-                                Text(
-                                  "등록된 리뷰가 없습니다.",
-                                  style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
-                                ),
-                              ],
-                            );
-                      } else {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 80),
-                            Image.asset(Images.noDataIcon, width: 18),
-                            SizedBox(height: 4),
-                            Text(
-                              "등록된 리뷰가 없습니다.",
-                              style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
-                            ),
-                          ],
-                        );
-                      }
-                    },
+                  final request = ReviewSortRequest(
+                    code: parkingInfo.mngNo.toString(),
+                    sort: "score",
                   );
+
+                  _empty() {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 80),
+                        Image.asset(Images.noDataIcon, width: 18),
+                        SizedBox(height: 4),
+                        Text(
+                          "등록된 리뷰가 없습니다.",
+                          style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
+                        ),
+                      ],
+                    );
+                  }
+
+                  return ref
+                      .watch(reviewListProvider(request))
+                      .when(
+                        data: (list) {
+                          return list.isEmpty
+                              ? _empty()
+                              : ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: list.length,
+                                itemBuilder:
+                                    (context, index) => ReviewListItem(reviewItem: list[index]),
+                              );
+                        },
+                        error: (error, stackTrace) => _empty(),
+                        loading: () => CircularProgressIndicator(),
+                      );
                 },
               ),
             ],

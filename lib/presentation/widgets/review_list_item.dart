@@ -66,7 +66,7 @@ class ReviewListItem extends ConsumerWidget {
                                           ref
                                               .read(reviewApiProvider.notifier)
                                               .deleteReview(id: reviewItem.id);
-                                          ref.invalidate(reviewApiProvider);
+                                          ref.invalidate(reviewListProvider);
                                           context.pop();
                                         },
                                         "삭제하기",
@@ -77,7 +77,7 @@ class ReviewListItem extends ConsumerWidget {
                                           ref
                                               .read(reviewApiProvider.notifier)
                                               .reportReview(id: reviewItem.id);
-                                          ref.invalidate(reviewApiProvider);
+                                          ref.invalidate(reviewListProvider);
                                           context.pop();
                                         },
                                         "신고하기",
