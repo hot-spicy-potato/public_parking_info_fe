@@ -5,10 +5,13 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk_share.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/core/constants/keys.dart';
 import 'package:public_parking_info_fe/core/utils/deep_link_handler.dart';
+import 'package:public_parking_info_fe/data/datasource/dio_client.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
 import 'package:public_parking_info_fe/presentation/pages/completed_signup_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/delete_user_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/email_login_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/my_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/review_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
@@ -26,6 +29,8 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final accessToken = prefs.getString("accessToken");
   final isLoggedIn = accessToken != null;
+
+  await DioClient.instance.init();
 
   print("access token : $accessToken");
 
@@ -49,6 +54,12 @@ class MyApp extends StatelessWidget {
         GoRoute(name: "main", path: "/main", builder: (context, state) => const ParkingMapPage()),
         GoRoute(name: "login", path: "/login", builder: (context, state) => const EmailLoginPage()),
         GoRoute(name: "signup", path: "/signup", builder: (context, state) => const SignupPage()),
+        GoRoute(name: "mypage", path: "/mypage", builder: (context, state) => const MyPage()),
+        GoRoute(
+          name: "deleteUser",
+          path: "/delete-user",
+          builder: (context, state) => const DeleteUserPage(),
+        ),
         GoRoute(
           name: "completedSignup",
           path: "/completed-signup",

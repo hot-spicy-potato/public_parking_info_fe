@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:public_parking_info_fe/data/datasource/dio_client.dart';
 import 'package:public_parking_info_fe/data/datasource/user_api.dart';
 import 'package:public_parking_info_fe/data/models/request/signup_request.dart';
 import 'package:public_parking_info_fe/data/models/response/login_response.dart';
+import 'package:public_parking_info_fe/services/user_service.dart';
 
 final enableSignupProvider = Provider<bool>((ref) {
   final state = ref.watch(signupNotifierProvider);
@@ -71,7 +73,18 @@ class SignupNotifier extends StateNotifier<SignupRequest> {
 
   Future<LoginResponse?> signup() async {
     if (enableSignup()) {
-      return await api.signup(state);
+      final LoginResponse? res = await api.signup(state);
+      final UserService userService = UserService.instance;
+
+      if (res != null) {
+        await userService.saveAccessToken(res.token.accessToken);
+
+        final refreshToken = res.token.refreshToken;
+        final uri = Uri.parse(DioClient.dio.options.baseUrl);
+        DioClient.instance.saveRefreshTokenCookie(refreshToken, uri);
+      }
+
+      return res;
     }
     return null;
   }

@@ -492,7 +492,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5Y6KXV94NC;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.2;
+				FLUTTER_BUILD_NAME = 1.0.4;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "공영주차장 알리미";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
@@ -501,7 +501,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.potato.publicParkingInfoFe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -691,7 +691,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5Y6KXV94NC;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.2;
+				FLUTTER_BUILD_NAME = 1.0.4;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "공영주차장 알리미";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
@@ -700,7 +700,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.potato.publicParkingInfoFe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -725,7 +725,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5Y6KXV94NC;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.2;
+				FLUTTER_BUILD_NAME = 1.0.4;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "공영주차장 알리미";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
@@ -734,7 +734,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.potato.publicParkingInfoFe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

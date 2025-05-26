@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/presentation/widgets/current_location_button.dart';
@@ -125,19 +126,25 @@ class BottomBar extends ConsumerWidget {
                   //     //
                   //   },
                   // ),
-                  // iconWithText(
-                  //   index: 3,
-                  //   src: Images.tabbarMypageIcon,
-                  //   selectedSrc: Images.selectedTabbarMypageIcon,
-                  //   text: "내 정보",
-                  //   onTap: () {
-                  //     showCustomBottomSheet(
-                  //       context,
-                  //       barrierColor: Colors.black.withOpacity(0.4),
-                  //       child: RequestLoginSheet(),
-                  //     );
-                  //   },
-                  // ),
+                  iconWithText(
+                    index: 2,
+                    src: Images.tabbarMypageIcon,
+                    selectedSrc: Images.selectedTabbarMypageIcon,
+                    text: "내 정보",
+                    onTap: () async {
+                      final token = await userService.getAccessToken();
+                      if (token == null) {
+                        showCustomBottomSheet(
+                          context,
+                          barrierColor: Colors.black.withOpacity(0.4),
+                          child: RequestLoginSheet(),
+                        );
+                      } else {
+                        ref.read(pageProvider.notifier).state = 2;
+                        context.pushNamed("mypage");
+                      }
+                    },
+                  ),
                 ],
               ),
               SizedBox(height: 24),

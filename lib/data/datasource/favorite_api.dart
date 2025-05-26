@@ -13,8 +13,7 @@ class FavoriteApi {
   // /api/favorite/favorite
   Future<bool> setFavorite(String code) async {
     try {
-      final Dio _dio = DioClient.dio;
-      final res = await _dio.post("/api/favorite", queryParameters: {"code": code});
+      final res = await dio.post("/api/favorite", queryParameters: {"code": code});
       String state = res.data;
       if (state == "on") return true;
     } catch (e) {

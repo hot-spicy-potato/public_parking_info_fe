@@ -88,6 +88,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                               value.length > 10) {
                             return "최소 2자 이상 최대 10자 이하를 입력해 주세요.";
                           }
+                          return null;
                         },
                         onChanged: (value) {
                           signupProvider.setName(value);
@@ -101,6 +102,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           if (value == null || value.isEmpty || !emailRegex.hasMatch(value)) {
                             return "올바른 이메일 형식을 입력해 주세요.";
                           }
+                          return null;
                         },
                         onChanged: (value) {
                           signupProvider.setEmail(value);
@@ -117,6 +119,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           if (value == null || value.isEmpty || !regex.hasMatch(value)) {
                             return "영문, 숫자, 특수문자를 포함하여 8자리 이상 입력해 주세요.";
                           }
+                          return null;
                         },
                         onChanged: (value) {
                           signupProvider.setPassword(value);
@@ -132,6 +135,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                               signupProvider.getPassword() != value) {
                             return "비밀번호가 일치하지 않습니다.";
                           }
+                          return null;
                         },
                         onChanged: (value) {
                           signupProvider.setRePassword(value);

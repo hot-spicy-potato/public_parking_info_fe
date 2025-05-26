@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:public_parking_info_fe/data/datasource/dio_client.dart';
 import 'package:public_parking_info_fe/data/datasource/user_api.dart';
 import 'package:public_parking_info_fe/data/models/request/login_request.dart';
 import 'package:public_parking_info_fe/data/models/response/login_response.dart';
+import 'package:public_parking_info_fe/services/user_service.dart';
 
 final loginNotifireProvider = StateNotifierProvider(
   (ref) => LoginNotifier(LoginRequest.defaultLoginRequest()),
@@ -21,6 +23,19 @@ class LoginNotifier extends StateNotifier<LoginRequest> {
   }
 
   Future<LoginResponse?> login() async {
-    return await api.login(state);
+    final LoginResponse? res = await api.login(state);
+    final UserService userService = UserService.instance;
+
+    if (res != null) {
+      userService.saveAccessToken(res.token.accessToken);
+
+      final refreshToken = res.token.refreshToken;
+      final uri = Uri.parse(DioClient.dio.options.baseUrl);
+      DioClient.instance.saveRefreshTokenCookie(refreshToken, uri);
+
+      return res;
+    }
+
+    return null;
   }
 }

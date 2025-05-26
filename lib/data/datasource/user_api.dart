@@ -3,6 +3,7 @@ import 'package:public_parking_info_fe/data/datasource/dio_client.dart';
 import 'package:public_parking_info_fe/data/models/request/login_request.dart';
 import 'package:public_parking_info_fe/data/models/request/signup_request.dart';
 import 'package:public_parking_info_fe/data/models/response/login_response.dart';
+import 'package:public_parking_info_fe/data/models/response/user_info_response.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
 
 class UserApi {
@@ -61,6 +62,28 @@ class UserApi {
       return LoginResponse.fromJson(res.data);
     } catch (e) {
       print("fail login : $e");
+    }
+    return null;
+  }
+
+  // 회원탈퇴 API
+  // POST /api/users/delete
+  Future<void> deleteUser() async {
+    try {
+      await dio.post("/api/users/delete");
+    } catch (e) {
+      print("fail delete user : $e");
+    }
+  }
+
+  // 내 정보 조회 API
+  // GET /api/users/info
+  Future<UserInfoResponse?> getUserInfo() async {
+    try {
+      final res = await dio.get("/api/users/info");
+      return UserInfoResponse.fromJson(res.data);
+    } catch (e) {
+      print("fail get user info : $e");
     }
     return null;
   }
