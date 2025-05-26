@@ -42,7 +42,8 @@ class BottomBar extends ConsumerWidget {
               text,
               style: CustomFonts.w400(
                 fontSize: 12,
-                color: isSelected ? CustomColors.primary : CustomColors.unselected,
+                color:
+                    isSelected ? CustomColors.primary : CustomColors.unselected,
               ),
             ),
           ],
@@ -65,7 +66,11 @@ class BottomBar extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [RoadViewButton(), SizedBox(height: 6), CurrentLocationButton()],
+                children: [
+                  RoadViewButton(),
+                  SizedBox(height: 6),
+                  CurrentLocationButton(),
+                ],
               ),
             ),
           ],
@@ -78,7 +83,9 @@ class BottomBar extends ConsumerWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
-            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, spreadRadius: 2)],
+            boxShadow: [
+              BoxShadow(color: Colors.black12, blurRadius: 8, spreadRadius: 2),
+            ],
           ),
           child: Column(
             children: [
@@ -113,7 +120,9 @@ class BottomBar extends ConsumerWidget {
                           context,
                           barrierColor: Colors.black.withOpacity(0.4),
                           child: FavoriteList(),
-                        ).then((value) => ref.read(pageProvider.notifier).state = 0);
+                        ).then(
+                          (value) => ref.read(pageProvider.notifier).state = 0,
+                        );
                       }
                     },
                   ),

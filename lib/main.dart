@@ -13,6 +13,7 @@ import 'package:public_parking_info_fe/presentation/pages/delete_user_page.dart'
 import 'package:public_parking_info_fe/presentation/pages/email_login_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/my_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/reset_password_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/review_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/signup_page.dart';
@@ -43,18 +44,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-    DeepLinkHandler.init(context, _rootNavigatorKey);
+    final GlobalKey<NavigatorState> _rootNavigatorKey =
+        GlobalKey<NavigatorState>();
+    // DeepLinkHandler.init(context, _rootNavigatorKey);
 
     final router = GoRouter(
       navigatorKey: _rootNavigatorKey,
       initialLocation: isLoggedIn ? "/main" : "/splash",
       routes: [
-        GoRoute(name: "splash", path: "/splash", builder: (context, state) => const SplashPage()),
-        GoRoute(name: "main", path: "/main", builder: (context, state) => const ParkingMapPage()),
-        GoRoute(name: "login", path: "/login", builder: (context, state) => const EmailLoginPage()),
-        GoRoute(name: "signup", path: "/signup", builder: (context, state) => const SignupPage()),
-        GoRoute(name: "mypage", path: "/mypage", builder: (context, state) => const MyPage()),
+        GoRoute(
+          name: "splash",
+          path: "/splash",
+          builder: (context, state) => const SplashPage(),
+        ),
+        GoRoute(
+          name: "main",
+          path: "/main",
+          builder: (context, state) => const ParkingMapPage(),
+        ),
+        GoRoute(
+          name: "login",
+          path: "/login",
+          builder: (context, state) => const EmailLoginPage(),
+        ),
+        GoRoute(
+          name: "signup",
+          path: "/signup",
+          builder: (context, state) => const SignupPage(),
+        ),
+        GoRoute(
+          name: "resetPwd",
+          path: "/resetPwd",
+          builder: (context, state) => const ResetPwdPage(),
+        ),
+        GoRoute(
+          name: "mypage",
+          path: "/mypage",
+          builder: (context, state) => const MyPage(),
+        ),
         GoRoute(
           name: "deleteUser",
           path: "/delete-user",

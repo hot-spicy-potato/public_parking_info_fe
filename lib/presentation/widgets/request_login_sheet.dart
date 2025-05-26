@@ -9,7 +9,8 @@ class RequestLoginSheet extends ConsumerStatefulWidget {
   const RequestLoginSheet({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _RequestLoginSheetState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RequestLoginSheetState();
 }
 
 class _RequestLoginSheetState extends ConsumerState<RequestLoginSheet> {
@@ -42,7 +43,14 @@ class _RequestLoginSheetState extends ConsumerState<RequestLoginSheet> {
             ),
           ),
         ),
-        Text("건너뛰기", style: CustomFonts.w600(fontSize: 16, color: CustomColors.darkGrey)),
+        // Text("건너뛰기", style: CustomFonts.w600(fontSize: 16, color: CustomColors.darkGrey)),
+        GestureDetector(
+          onTap: () => context.pushNamed("main"),
+          child: Text(
+            "건너뛰기",
+            style: CustomFonts.w600(fontSize: 16, color: CustomColors.darkGrey),
+          ),
+        ),
       ],
     );
   }

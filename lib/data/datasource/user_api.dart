@@ -46,7 +46,14 @@ class UserApi {
   // /api/users/send-email
   Future<String?> postEmail(String email) async {
     try {
-      final res = await dio.post("/api/users/send-email", queryParameters: {"email": email});
+      final res = await dio.post(
+        "/api/users/send-email",
+        queryParameters: {"email": email},
+        options: Options(
+          headers: {"accept": "*/*"},
+          validateStatus: (status) => status! < 500,
+        ),
+      );
       if (res.statusCode == 200) return res.data;
     } catch (e) {
       print("fail post email : $e");
