@@ -8,6 +8,7 @@ import 'package:public_parking_info_fe/core/utils/deep_link_handler.dart';
 import 'package:public_parking_info_fe/data/datasource/dio_client.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
+import 'package:public_parking_info_fe/presentation/pages/Verification_code_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/completed_signup_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/delete_user_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/email_login_page.dart';
@@ -76,6 +77,14 @@ class MyApp extends StatelessWidget {
           name: "resetPwd",
           path: "/resetPwd",
           builder: (context, state) => const ResetPwdPage(),
+        ),
+        GoRoute(
+          name: "verification",
+          path: "/verification",
+          builder: (context, state) {
+            final email = state.extra as String?;
+            return VerificationCodePage(email: email);
+          },
         ),
         GoRoute(
           name: "mypage",

@@ -5,7 +5,9 @@ import 'package:public_parking_info_fe/services/user_service.dart';
 
 final UserService userService = UserService.instance;
 
-final userApiProvider = StateNotifierProvider<UserNorifier, AsyncValue<void>>((ref) {
+final userApiProvider = StateNotifierProvider<UserNorifier, AsyncValue<void>>((
+  ref,
+) {
   return UserNorifier(AsyncData(null));
 });
 
@@ -14,12 +16,19 @@ class UserNorifier extends StateNotifier<AsyncValue<void>> {
 
   UserNorifier(super.state);
 
-  Future<bool> postVerifyCode({required String email, required String verificationCode}) async {
+  Future<bool> postVerifyCode({
+    required String email,
+    required String verificationCode,
+  }) async {
     return await api.postVerifyCode(email, verificationCode);
   }
 
   Future<String?> postEmail({required String email}) async {
     return api.postEmail(email);
+  }
+
+  Future<bool> checkEmail({required String email}) async {
+    return api.checkEmail(email);
   }
 
   Future<void> deleteUser() async {

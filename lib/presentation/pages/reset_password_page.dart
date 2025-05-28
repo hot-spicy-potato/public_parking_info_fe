@@ -7,7 +7,6 @@ import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_button
 import 'package:public_parking_info_fe/presentation/widgets/custom_text_field.dart';
 import 'package:public_parking_info_fe/providers/user_api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
-import 'package:public_parking_info_fe/services/user_service.dart';
 
 class ResetPwdPage extends ConsumerStatefulWidget {
   const ResetPwdPage({super.key});
@@ -23,7 +22,7 @@ class _ResetPwdPageState extends ConsumerState<ResetPwdPage> {
 
   bool get _isFormValid =>
       _email.isNotEmpty &&
-      RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_email);
+      RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$').hasMatch(_email);
 
   @override
   Widget build(BuildContext context) {
@@ -61,34 +60,26 @@ class _ResetPwdPageState extends ConsumerState<ResetPwdPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
-                        height: 60,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "비밀번호 재설정을 위해",
-                              style: CustomFonts.w700(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
+                      const SizedBox(height: 60),
+                      Column(
+                        children: [
+                          Text(
+                            "비밀번호 재설정을 위해",
+                            style: CustomFonts.w700(
+                              fontSize: 18,
+                              color: Colors.black,
                             ),
-                            Text(
-                              "가입한 이메일 주소를 입력해주세요",
-                              style: CustomFonts.w700(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
+                          ),
+                          Text(
+                            "가입한 이메일 주소를 입력해주세요",
+                            style: CustomFonts.w700(
+                              fontSize: 18,
+                              color: Colors.black,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-
                       const SizedBox(height: 140),
-
                       CustomTextField(
                         title: "이메일",
                         hintText: "email@address.com",
@@ -113,107 +104,50 @@ class _ResetPwdPageState extends ConsumerState<ResetPwdPage> {
                           });
                         },
                       ),
-
                       const SizedBox(height: 100),
-
                       GestureDetector(
                         onTap:
                             _isFormValid
                                 ? () async {
                                   try {
+                                    final isDuplicated = await userApi
+                                        .checkEmail(email: _email);
+                                    if (!isDuplicated) {
+                                      if (!mounted) return;
+                                      _showDialog(
+                                        title: '메일 전송에 실패했습니다',
+                                        message1: '가입한 이력이 없습니다.\n',
+                                        highlighted: '회원가입',
+                                        message2: '을 진행해주세요.',
+                                      );
+                                      return;
+                                    }
+
                                     final result = await userApi.postEmail(
                                       email: _email,
                                     );
-
                                     if (result != null) {
                                       if (!mounted) return;
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('메일 전송이되었습니다'),
-                                            content: SizedBox(
-                                              width: 300,
-                                              height: 200,
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                    color: Colors.grey,
-                                                  ),
-                                                  children: [
-                                                    const TextSpan(
-                                                      text:
-                                                          '비밀번호 재설정 이메일을 전송했습니다\n',
-                                                    ),
-                                                    const TextSpan(
-                                                      text: '인증코드 검증 후 ',
-                                                    ),
-                                                    TextSpan(
-                                                      text: '새 비밀번호',
-                                                      style: TextStyle(
-                                                        color:
-                                                            CustomColors
-                                                                .primary,
-                                                      ),
-                                                    ),
-                                                    const TextSpan(
-                                                      text: '를\n입력해주세요.',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            actions: [
-                                              SizedBox(
-                                                width: double.infinity,
-                                                child: TextButton(
-                                                  style: TextButton.styleFrom(
-                                                    backgroundColor: Color(
-                                                      0xFF613EEA,
-                                                    ),
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          vertical: 12,
-                                                        ),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text(
-                                                    '완료',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                      _showDialog(
+                                        title: '메일 전송이되었습니다',
+                                        message1: '비밀번호 재설정 이메일을 전송했습니다\n',
+                                        highlighted: '새 비밀번호',
+                                        message2: '를\n입력해주세요.',
+                                        prefix: '인증코드 검증 후 ',
+                                        onConfirm: () {
+                                          context.pushReplacementNamed(
+                                            "verification",
+                                            extra: _email,
                                           );
                                         },
                                       );
                                     } else {
                                       if (!mounted) return;
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('⚠️ 이메일 전송에 실패했습니다.'),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
+                                      _showSnackBar('⚠️ 이메일 전송에 실패했습니다.');
                                     }
                                   } catch (e) {
                                     if (!mounted) return;
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('오류가 발생했습니다: $e'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
+                                    _showSnackBar('오류가 발생했습니다: $e');
                                   }
                                 }
                                 : null,
@@ -231,7 +165,6 @@ class _ResetPwdPageState extends ConsumerState<ResetPwdPage> {
                           radius: 12,
                         ),
                       ),
-
                       const SizedBox(height: 340),
                     ],
                   ),
@@ -241,6 +174,94 @@ class _ResetPwdPageState extends ConsumerState<ResetPwdPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showDialog({
+    required String title,
+    required String message1,
+    required String highlighted,
+    required String message2,
+    String prefix = '',
+    String confirmText = '확인',
+    VoidCallback? onConfirm,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.black,
+            ),
+          ),
+          content: SizedBox(
+            width: 300,
+            height: 140,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                Text.rich(
+                  TextSpan(
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    children: [
+                      TextSpan(text: message1),
+                      if (prefix.isNotEmpty) TextSpan(text: prefix),
+                      TextSpan(
+                        text: highlighted,
+                        style: TextStyle(
+                          color: CustomColors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(text: message2),
+                    ],
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color(0xFF613EEA),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(dialogContext).pop(); // 다이얼로그 닫기
+                  if (onConfirm != null) {
+                    onConfirm(); // 이동 콜백 호출
+                  }
+                },
+                child: Text(
+                  confirmText,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 }

@@ -61,6 +61,31 @@ class UserApi {
     return null;
   }
 
+  // 이메일 중복 확인 API
+  // /api/users/check-email
+  Future<bool> checkEmail(String email) async {
+    try {
+      final res = await dio.post(
+        "/api/users/check-email",
+        queryParameters: {"email": email},
+        options: Options(
+          headers: {"accept": "application/json"},
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
+
+      if (res.statusCode == 200) {
+        final exists = res.data['exists'] == true;
+        return exists; // true면 중복, false면 사용 가능
+      } else {
+        throw Exception("이메일 확인 실패: ${res.statusCode}");
+      }
+    } catch (e) {
+      print("fail check email: $e");
+      rethrow;
+    }
+  }
+
   // 로그인 API
   // /api/users/login
   Future<LoginResponse?> login(LoginRequest request) async {
