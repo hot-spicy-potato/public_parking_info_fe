@@ -8,16 +8,16 @@ import 'package:public_parking_info_fe/core/utils/deep_link_handler.dart';
 import 'package:public_parking_info_fe/data/datasource/dio_client.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
-import 'package:public_parking_info_fe/presentation/pages/completed_signup_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/delete_user_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/email_login_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/my_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/review_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/signup_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/splash_page.dart';
-import 'package:public_parking_info_fe/presentation/pages/write_review_page.dart';
+import 'package:public_parking_info_fe/presentation/signup/pages/completed_signup_page.dart';
+import 'package:public_parking_info_fe/presentation/my_page/pages/delete_user_page.dart';
+import 'package:public_parking_info_fe/presentation/login/pages/email_login_page.dart';
+import 'package:public_parking_info_fe/presentation/my_page/pages/my_page.dart';
+import 'package:public_parking_info_fe/presentation/map/pages/parking_map_page.dart';
+import 'package:public_parking_info_fe/presentation/review/pages/review_page.dart';
+import 'package:public_parking_info_fe/presentation/map/pages/road_view_page.dart';
+import 'package:public_parking_info_fe/presentation/signup/pages/signup_page.dart';
+import 'package:public_parking_info_fe/presentation/review/pages/write_review_page.dart';
+import 'package:public_parking_info_fe/presentation/splash/pages/splash_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {

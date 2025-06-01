@@ -27,8 +27,7 @@ class SplashPage extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // pageview
-              SizedBox(
-                height: height - 210,
+              Expanded(
                 child: PageView.builder(
                   controller: pageController,
                   itemCount: pages.length,

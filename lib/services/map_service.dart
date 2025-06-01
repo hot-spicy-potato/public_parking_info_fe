@@ -7,8 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/data/datasource/kakao_search_address_api.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
-import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
-import 'package:public_parking_info_fe/providers/map_provider.dart';
+import 'package:public_parking_info_fe/presentation/map/widgets/fast_search.dart';
+import 'package:public_parking_info_fe/presentation/map/providers/map_provider.dart';
 
 class MapService {
   MapService._internal();
