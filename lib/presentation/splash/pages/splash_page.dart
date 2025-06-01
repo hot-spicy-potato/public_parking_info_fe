@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
-import 'package:public_parking_info_fe/presentation/widgets/splash_first.dart';
-import 'package:public_parking_info_fe/presentation/widgets/splash_second.dart';
+import 'package:public_parking_info_fe/presentation/common_widgets/custom_text_button.dart';
+import 'package:public_parking_info_fe/presentation/splash/widgets/splash_first.dart';
+import 'package:public_parking_info_fe/presentation/splash/widgets/splash_second.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SplashPage extends ConsumerWidget {
@@ -20,31 +21,32 @@ class SplashPage extends ConsumerWidget {
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: height * 0.7,
-              child: PageView.builder(
-                controller: pageController,
-                itemCount: pages.length,
-                itemBuilder: (context, index) {
-                  return pages[index];
-                },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // pageview
+              SizedBox(
+                height: height - 210,
+                child: PageView.builder(
+                  controller: pageController,
+                  itemCount: pages.length,
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
-              child: Row(
+              // page indicator
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () => context.pushNamed("main"),
-                    child: Text(
-                      "건너뛰기",
-                      style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
-                    ),
+                  CustomTextButton(
+                    text: "건너뛰기",
+                    textStyle: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
+                    onTap: () {
+                      context.pushNamed("main");
+                    },
                   ),
                   SmoothPageIndicator(
                     controller: pageController,
@@ -52,8 +54,8 @@ class SplashPage extends ConsumerWidget {
                     effect: WormEffect(
                       activeDotColor: CustomColors.primary,
                       dotColor: CustomColors.lightGrey,
-                      dotHeight: 8,
-                      dotWidth: 8,
+                      dotHeight: 7,
+                      dotWidth: 7,
                       type: WormType.underground,
                     ),
                     onDotClicked: (index) {
@@ -64,27 +66,25 @@ class SplashPage extends ConsumerWidget {
                       );
                     },
                   ),
-                  GestureDetector(
+                  CustomTextButton(
+                    text: "다음",
+                    textStyle: CustomFonts.w700(fontSize: 16, color: CustomColors.primary),
                     onTap: () {
-                      if (pageController.page == 1) {
-                        // mapService.getCurrentLocation();
+                      if (pageController.page == pages.length - 1) {
+                        // 마지막 페이지일 경우 main 페이지로 이동
                         context.pushNamed("main");
                       } else {
                         pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 200),
                           curve: Curves.easeIn,
                         );
                       }
                     },
-                    child: Text(
-                      "다음",
-                      style: CustomFonts.w700(fontSize: 16, color: CustomColors.primary),
-                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
