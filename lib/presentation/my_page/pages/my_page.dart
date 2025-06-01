@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
-import 'package:public_parking_info_fe/presentation/splash/providers/page_provider.dart';
+import 'package:public_parking_info_fe/presentation/splash/providers/splash_page_provider.dart';
 import 'package:public_parking_info_fe/providers/user_api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 
@@ -19,7 +19,7 @@ class MyPage extends ConsumerWidget {
         surfaceTintColor: Colors.white,
         leading: GestureDetector(
           onTap: () {
-            ref.read(pageProvider.notifier).state = 0;
+            ref.read(splashPageProvider.notifier).state = 0;
             context.pop();
           },
           child: Icon(Icons.arrow_back_ios, color: CustomColors.darkGrey, size: 15),

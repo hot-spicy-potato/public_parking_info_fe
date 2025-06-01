@@ -9,7 +9,7 @@ import 'package:public_parking_info_fe/presentation/map/widgets/fast_search.dart
 import 'package:public_parking_info_fe/presentation/favorite/widgets/favorite_list.dart';
 import 'package:public_parking_info_fe/presentation/login/widgets/request_login_sheet.dart';
 import 'package:public_parking_info_fe/presentation/map/widgets/road_view_button.dart';
-import 'package:public_parking_info_fe/presentation/splash/providers/page_provider.dart';
+import 'package:public_parking_info_fe/presentation/splash/providers/splash_page_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
 
@@ -28,7 +28,7 @@ class BottomBar extends ConsumerWidget {
       required String text,
       required Function onTap,
     }) {
-      final isSelected = ref.watch(pageProvider) == index;
+      final isSelected = ref.watch(splashPageProvider) == index;
 
       return GestureDetector(
         onTap: () {
@@ -91,7 +91,7 @@ class BottomBar extends ConsumerWidget {
                     selectedSrc: Images.selectedTabbarHomeIcon,
                     text: "홈",
                     onTap: () {
-                      ref.read(pageProvider.notifier).state = 0;
+                      ref.read(splashPageProvider.notifier).state = 0;
                     },
                   ),
                   iconWithText(
@@ -108,12 +108,12 @@ class BottomBar extends ConsumerWidget {
                           child: RequestLoginSheet(),
                         );
                       } else {
-                        ref.read(pageProvider.notifier).state = 1;
+                        ref.read(splashPageProvider.notifier).state = 1;
                         showCustomBottomSheet(
                           context,
                           barrierColor: Colors.black.withOpacity(0.4),
                           child: FavoriteList(),
-                        ).then((value) => ref.read(pageProvider.notifier).state = 0);
+                        ).then((value) => ref.read(splashPageProvider.notifier).state = 0);
                       }
                     },
                   ),
@@ -140,7 +140,7 @@ class BottomBar extends ConsumerWidget {
                           child: RequestLoginSheet(),
                         );
                       } else {
-                        ref.read(pageProvider.notifier).state = 2;
+                        ref.read(splashPageProvider.notifier).state = 2;
                         context.pushNamed("mypage");
                       }
                     },

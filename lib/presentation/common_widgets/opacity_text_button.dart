@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomTextButton extends ConsumerStatefulWidget {
+class OpacityTextButton extends ConsumerStatefulWidget {
+  final Function onTap;
   final String text;
   final TextStyle textStyle;
-  final Function onTap;
-  const CustomTextButton({
+  const OpacityTextButton({
+    required this.onTap,
     required this.text,
     required this.textStyle,
-    required this.onTap,
     super.key,
   });
 
@@ -16,7 +16,7 @@ class CustomTextButton extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _CustomTextButtonState();
 }
 
-class _CustomTextButtonState extends ConsumerState<CustomTextButton> {
+class _CustomTextButtonState extends ConsumerState<OpacityTextButton> {
   bool isTap = false;
 
   @override

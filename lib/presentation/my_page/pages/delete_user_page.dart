@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/custom_bottom_button.dart';
-import 'package:public_parking_info_fe/presentation/splash/providers/page_provider.dart';
+import 'package:public_parking_info_fe/presentation/splash/providers/splash_page_provider.dart';
 import 'package:public_parking_info_fe/providers/user_api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 
@@ -31,7 +31,7 @@ class DeleteUserPage extends ConsumerWidget {
             onTap: () async {
               await ref.read(userApiProvider.notifier).deleteUser();
               userService.logout();
-              ref.read(pageProvider.notifier).state = 0;
+              ref.read(splashPageProvider.notifier).state = 0;
               context.pushReplacementNamed("main");
             },
             child: CustomBottomButton(
