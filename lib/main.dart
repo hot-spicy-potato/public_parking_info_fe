@@ -13,6 +13,7 @@ import 'package:public_parking_info_fe/presentation/pages/completed_signup_page.
 import 'package:public_parking_info_fe/presentation/pages/delete_user_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/email_login_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/my_page.dart';
+import 'package:public_parking_info_fe/presentation/pages/new_password_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/parking_map_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/reset_password_page.dart';
 import 'package:public_parking_info_fe/presentation/pages/review_page.dart';
@@ -84,6 +85,14 @@ class MyApp extends StatelessWidget {
           builder: (context, state) {
             final email = state.extra as String?;
             return VerificationCodePage(email: email);
+          },
+        ),
+        GoRoute(
+          name: "newPwd",
+          path: "/newPwd",
+          builder: (context, state) {
+            final email = state.extra as String?;
+            return NewPwdPage(email: email);
           },
         ),
         GoRoute(

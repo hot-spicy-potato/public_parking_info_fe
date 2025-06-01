@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,10 +23,44 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
   final _formKey = GlobalKey<FormState>();
   String? _codeError;
   String _verificationCode = '';
+  Timer? _timer;
+  Duration _remainingTime = Duration(minutes: 5);
 
   bool get _isFormValid =>
       _verificationCode.isNotEmpty &&
       RegExp(r'^\d{6}$').hasMatch(_verificationCode);
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _remainingTime = Duration(minutes: 5);
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_remainingTime.inSeconds == 0) {
+        timer.cancel();
+        _showSnackBar("⚠️ 인증번호가 만료되었습니다.", backgroundColor: Colors.red);
+      } else {
+        setState(() {
+          _remainingTime -= Duration(seconds: 1);
+        });
+      }
+    });
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    return "${twoDigits(duration.inMinutes)}:${twoDigits(duration.inSeconds % 60)}";
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,19 +112,25 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
                         color: Colors.black,
                       ),
                     ),
+                    // const SizedBox(height: 8),
+                    Text(
+                      "남은 시간: ${_formatDuration(_remainingTime)}",
+                      textAlign: TextAlign.center,
+                      style: CustomFonts.w500(fontSize: 15, color: Colors.red),
+                    ),
                     const SizedBox(height: 80),
                     CustomTextField(
                       title: "인증번호",
                       hintText: "인증번호를 입력해주세요",
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '코드를 입력해주세요.';
-                        }
-                        if (!RegExp(r'^\d{6}$').hasMatch(value)) {
-                          return '6자리 숫자만 입력해주세요.';
-                        }
-                        return null;
-                      },
+                      // validator: (value) {
+                      //   if (value == null || value.isEmpty) {
+                      //     return '코드를 입력해주세요.';
+                      //   }
+                      //   if (!RegExp(r'^\d{6}$').hasMatch(value)) {
+                      //     return '6자리 숫자만 입력해주세요.';
+                      //   }
+                      //   return null;
+                      // },
                       onChanged: (value) {
                         setState(() {
                           _verificationCode = value;
@@ -121,14 +163,10 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
                                       );
                                   if (isVerified) {
                                     if (!mounted) return;
-                                    _showSnackBar(
-                                      "📩 인증번호가 맞습니다.",
-                                      backgroundColor: Colors.green,
+                                    context.pushReplacementNamed(
+                                      "newPwd",
+                                      extra: widget.email,
                                     );
-                                    // context.pushReplacementNamed(
-                                    //   "newPassword",
-                                    //   extra: widget.email,
-                                    // );
                                   } else {
                                     _showSnackBar(
                                       "⚠️ 인증번호가 올바르지 않습니다.",
@@ -140,7 +178,6 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
                                     "에러 발생.",
                                     backgroundColor: Colors.red,
                                   );
-                                  // _showSnackBar("오류 발생: $e");
                                 }
                               }
                               : null,
@@ -167,12 +204,13 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
                               email: widget.email!,
                             );
                             if (result != null) {
-                              // _showSnackBar("📩 인증번호가 재전송되었습니다.");
+                              _showSnackBar("인증번호가 재전송되었습니다.");
+                              _startTimer(); // 타이머 리셋
                             } else {
-                              // _showSnackBar("⚠️ 이메일 전송에 실패했습니다.");
+                              _showSnackBar("이메일 전송에 실패했습니다.");
                             }
                           } catch (e) {
-                            // _showSnackBar("오류 발생: $e");
+                            _showSnackBar("오류 발생: $e");
                           }
                         },
                         child: Text(

@@ -29,6 +29,65 @@ class _ResetPwdPageState extends ConsumerState<ResetPwdPage> {
     final userApi = ref.read(userApiProvider.notifier);
 
     return Scaffold(
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: GestureDetector(
+            onTap:
+                _isFormValid
+                    ? () async {
+                      try {
+                        final isDuplicated = await userApi.checkEmail(
+                          email: _email,
+                        );
+                        if (!isDuplicated) {
+                          if (!mounted) return;
+                          _showDialog(
+                            title: '메일 전송에 실패했습니다',
+                            message1: '가입한 이력이 없습니다.\n',
+                            highlighted: '회원가입',
+                            message2: '을 진행해주세요.',
+                          );
+                          return;
+                        }
+
+                        final result = await userApi.postEmail(email: _email);
+                        if (result != null) {
+                          if (!mounted) return;
+                          _showDialog(
+                            title: '메일 전송이되었습니다',
+                            message1: '비밀번호 재설정 이메일을 전송했습니다\n',
+                            highlighted: '새 비밀번호',
+                            message2: '를\n입력해주세요.',
+                            prefix: '인증코드 검증 후 ',
+                            onConfirm: () {
+                              context.pushReplacementNamed(
+                                "verification",
+                                extra: _email,
+                              );
+                            },
+                          );
+                        } else {
+                          if (!mounted) return;
+                          _showSnackBar('⚠️ 이메일 전송에 실패했습니다.');
+                        }
+                      } catch (e) {
+                        if (!mounted) return;
+                        _showSnackBar('오류가 발생했습니다: $e');
+                      }
+                    }
+                    : null,
+            child: CustomBottomButton(
+              color:
+                  _isFormValid ? CustomColors.primary : const Color(0xFFE9EBED),
+              text: "이메일 보내기",
+              fontColor: _isFormValid ? Colors.white : const Color(0xFF73787E),
+              height: 60,
+              radius: 12,
+            ),
+          ),
+        ),
+      ),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -55,117 +114,62 @@ class _ResetPwdPageState extends ConsumerState<ResetPwdPage> {
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Form(
               key: _formKey,
-              child: Center(
+              child: Expanded(
                 child: SingleChildScrollView(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 60),
                       Column(
                         children: [
-                          Text(
-                            "비밀번호 재설정을 위해",
-                            style: CustomFonts.w700(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
+                          const SizedBox(height: 60),
+                          Column(
+                            children: [
+                              Text(
+                                "비밀번호 재설정을 위해",
+                                style: CustomFonts.w700(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                "가입한 이메일 주소를 입력해주세요",
+                                style: CustomFonts.w700(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "가입한 이메일 주소를 입력해주세요",
-                            style: CustomFonts.w700(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
+                          const SizedBox(height: 140),
+                          CustomTextField(
+                            title: "이메일",
+                            hintText: "email@address.com",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return '이메일을 입력해주세요.';
+                              }
+                              if (!RegExp(
+                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                              ).hasMatch(value)) {
+                                return '올바른 이메일 형식을 입력해주세요.';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _email = value;
+                                _emailError = null;
+                                if (!_isFormValid) {
+                                  _emailError = '올바른 이메일 형식을 입력해주세요.';
+                                }
+                              });
+                            },
                           ),
                         ],
                       ),
-                      const SizedBox(height: 140),
-                      CustomTextField(
-                        title: "이메일",
-                        hintText: "email@address.com",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '이메일을 입력해주세요.';
-                          }
-                          if (!RegExp(
-                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                          ).hasMatch(value)) {
-                            return '올바른 이메일 형식을 입력해주세요.';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            _email = value;
-                            _emailError = null;
-                            if (!_isFormValid) {
-                              _emailError = '올바른 이메일 형식을 입력해주세요.';
-                            }
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 100),
-                      GestureDetector(
-                        onTap:
-                            _isFormValid
-                                ? () async {
-                                  try {
-                                    final isDuplicated = await userApi
-                                        .checkEmail(email: _email);
-                                    if (!isDuplicated) {
-                                      if (!mounted) return;
-                                      _showDialog(
-                                        title: '메일 전송에 실패했습니다',
-                                        message1: '가입한 이력이 없습니다.\n',
-                                        highlighted: '회원가입',
-                                        message2: '을 진행해주세요.',
-                                      );
-                                      return;
-                                    }
-
-                                    final result = await userApi.postEmail(
-                                      email: _email,
-                                    );
-                                    if (result != null) {
-                                      if (!mounted) return;
-                                      _showDialog(
-                                        title: '메일 전송이되었습니다',
-                                        message1: '비밀번호 재설정 이메일을 전송했습니다\n',
-                                        highlighted: '새 비밀번호',
-                                        message2: '를\n입력해주세요.',
-                                        prefix: '인증코드 검증 후 ',
-                                        onConfirm: () {
-                                          context.pushReplacementNamed(
-                                            "verification",
-                                            extra: _email,
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      if (!mounted) return;
-                                      _showSnackBar('⚠️ 이메일 전송에 실패했습니다.');
-                                    }
-                                  } catch (e) {
-                                    if (!mounted) return;
-                                    _showSnackBar('오류가 발생했습니다: $e');
-                                  }
-                                }
-                                : null,
-                        child: CustomBottomButton(
-                          color:
-                              _isFormValid
-                                  ? CustomColors.primary
-                                  : const Color(0xFFE9EBED),
-                          text: "이메일 보내기",
-                          fontColor:
-                              _isFormValid
-                                  ? Colors.white
-                                  : const Color(0xFF73787E),
-                          height: 60,
-                          radius: 12,
-                        ),
-                      ),
-                      const SizedBox(height: 340),
+                      // const SizedBox(height: 100),
+                      // const SizedBox(height: 340),
                     ],
                   ),
                 ),

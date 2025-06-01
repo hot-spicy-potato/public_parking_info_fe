@@ -22,6 +22,10 @@ class UserApi {
       final res = await dio.post(
         "/api/users/verify-code",
         queryParameters: {"email": email, "verificationCode": verificationCode},
+        options: Options(
+          headers: {"accept": "*/*"},
+          validateStatus: (status) => status! < 500,
+        ),
       );
       if (res.statusCode == 200) return true;
     } catch (e) {
@@ -118,5 +122,24 @@ class UserApi {
       print("fail get user info : $e");
     }
     return null;
+  }
+
+  // 비밀번호 재설정 API
+  // POST /api/user/new-password
+  Future<bool> updatePassword(String email, String password) async {
+    try {
+      final res = await dio.post(
+        "/api/users/new-password",
+        queryParameters: {"email": email, "newPassword": password},
+        options: Options(
+          headers: {"accept": "*/*"},
+          validateStatus: (status) => status! < 500,
+        ),
+      );
+      if (res.statusCode == 200) return true;
+    } catch (e) {
+      print("fail post email, password : $e");
+    }
+    return false;
   }
 }

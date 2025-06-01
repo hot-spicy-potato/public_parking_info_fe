@@ -34,6 +34,13 @@ class UserNorifier extends StateNotifier<AsyncValue<void>> {
   Future<void> deleteUser() async {
     await api.deleteUser();
   }
+
+  Future<bool> updatePassword({
+    required String email,
+    required String password,
+  }) async {
+    return api.updatePassword(email, password);
+  }
 }
 
 final userInfoProvider = FutureProvider<UserInfoResponse?>((ref) async {
