@@ -112,68 +112,70 @@ class _ResetPwdPageState extends ConsumerState<ResetPwdPage> {
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
-            child: Form(
-              key: _formKey,
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Column(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const SizedBox(height: 60),
                           Column(
                             children: [
-                              Text(
-                                "비밀번호 재설정을 위해",
-                                style: CustomFonts.w700(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                ),
+                              const SizedBox(height: 60),
+                              Column(
+                                children: [
+                                  Text(
+                                    "비밀번호 재설정을 위해",
+                                    style: CustomFonts.w700(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    "가입한 이메일 주소를 입력해주세요",
+                                    style: CustomFonts.w700(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "가입한 이메일 주소를 입력해주세요",
-                                style: CustomFonts.w700(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                ),
+                              const SizedBox(height: 140),
+                              CustomTextField(
+                                title: "이메일",
+                                hintText: "email@address.com",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '이메일을 입력해주세요.';
+                                  }
+                                  if (!RegExp(
+                                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                  ).hasMatch(value)) {
+                                    return '올바른 이메일 형식을 입력해주세요.';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    _email = value;
+                                    _emailError = null;
+                                    if (!_isFormValid) {
+                                      _emailError = '올바른 이메일 형식을 입력해주세요.';
+                                    }
+                                  });
+                                },
                               ),
                             ],
                           ),
-                          const SizedBox(height: 140),
-                          CustomTextField(
-                            title: "이메일",
-                            hintText: "email@address.com",
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '이메일을 입력해주세요.';
-                              }
-                              if (!RegExp(
-                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                              ).hasMatch(value)) {
-                                return '올바른 이메일 형식을 입력해주세요.';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                _email = value;
-                                _emailError = null;
-                                if (!_isFormValid) {
-                                  _emailError = '올바른 이메일 형식을 입력해주세요.';
-                                }
-                              });
-                            },
-                          ),
                         ],
                       ),
-                      // const SizedBox(height: 100),
-                      // const SizedBox(height: 340),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ),

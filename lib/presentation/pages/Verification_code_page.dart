@@ -112,90 +112,38 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
                         color: Colors.black,
                       ),
                     ),
-                    // const SizedBox(height: 8),
+                    const SizedBox(height: 40),
                     Text(
                       "남은 시간: ${_formatDuration(_remainingTime)}",
                       textAlign: TextAlign.center,
                       style: CustomFonts.w500(fontSize: 15, color: Colors.red),
                     ),
-                    const SizedBox(height: 80),
-                    CustomTextField(
-                      title: "인증번호",
-                      hintText: "인증번호를 입력해주세요",
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return '코드를 입력해주세요.';
-                      //   }
-                      //   if (!RegExp(r'^\d{6}$').hasMatch(value)) {
-                      //     return '6자리 숫자만 입력해주세요.';
-                      //   }
-                      //   return null;
-                      // },
-                      onChanged: (value) {
-                        setState(() {
-                          _verificationCode = value;
-                          _codeError =
-                              !_isFormValid ? '올바른 인증번호 형식을 입력해주세요.' : null;
-                        });
-                      },
-                    ),
-                    if (_codeError != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Text(
-                          _codeError!,
-                          style: CustomFonts.w400(
-                            fontSize: 13,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
                     const SizedBox(height: 40),
-                    GestureDetector(
-                      onTap:
-                          _isFormValid
-                              ? () async {
-                                try {
-                                  final isVerified = await userApi
-                                      .postVerifyCode(
-                                        email: widget.email!,
-                                        verificationCode: _verificationCode,
-                                      );
-                                  if (isVerified) {
-                                    if (!mounted) return;
-                                    context.pushReplacementNamed(
-                                      "newPwd",
-                                      extra: widget.email,
-                                    );
-                                  } else {
-                                    _showSnackBar(
-                                      "⚠️ 인증번호가 올바르지 않습니다.",
-                                      backgroundColor: Colors.red,
-                                    );
-                                  }
-                                } catch (e) {
-                                  _showSnackBar(
-                                    "에러 발생.",
-                                    backgroundColor: Colors.red,
-                                  );
-                                }
-                              }
-                              : null,
-                      child: CustomBottomButton(
-                        text: "확인",
-                        color:
-                            _isFormValid
-                                ? CustomColors.primary
-                                : const Color(0xFFE9EBED),
-                        fontColor:
-                            _isFormValid
-                                ? Colors.white
-                                : const Color(0xFF73787E),
-                        height: 60,
-                        radius: 12,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextField(
+                          title: "인증번호",
+                          hintText: "인증번호를 입력해주세요",
+                          onChanged: (value) {
+                            setState(() {
+                              _verificationCode = value;
+                              _codeError =
+                                  !_isFormValid ? '올바른 인증번호 형식을 입력해주세요.' : null;
+                            });
+                          },
+                        ),
+                        if (_codeError != null)
+                          Text(
+                            _codeError!,
+                            style: CustomFonts.w400(
+                              fontSize: 13,
+                              color: Colors.red,
+                            ),
+                          ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 32),
                     Center(
                       child: TextButton(
                         onPressed: () async {
@@ -205,7 +153,7 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
                             );
                             if (result != null) {
                               _showSnackBar("인증번호가 재전송되었습니다.");
-                              _startTimer(); // 타이머 리셋
+                              _startTimer();
                             } else {
                               _showSnackBar("이메일 전송에 실패했습니다.");
                             }
@@ -222,10 +170,50 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 12),
                   ],
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          child: GestureDetector(
+            onTap:
+                _isFormValid
+                    ? () async {
+                      try {
+                        final isVerified = await userApi.postVerifyCode(
+                          email: widget.email!,
+                          verificationCode: _verificationCode,
+                        );
+                        if (isVerified) {
+                          if (!mounted) return;
+                          context.pushReplacementNamed(
+                            "newPwd",
+                            extra: widget.email,
+                          );
+                        } else {
+                          _showSnackBar(
+                            "⚠️ 인증번호가 올바르지 않습니다.",
+                            backgroundColor: Colors.red,
+                          );
+                        }
+                      } catch (e) {
+                        _showSnackBar("에러 발생.", backgroundColor: Colors.red);
+                      }
+                    }
+                    : null,
+            child: CustomBottomButton(
+              text: "확인",
+              color:
+                  _isFormValid ? CustomColors.primary : const Color(0xFFE9EBED),
+              fontColor: _isFormValid ? Colors.white : const Color(0xFF73787E),
+              height: 60,
+              radius: 12,
             ),
           ),
         ),

@@ -106,46 +106,45 @@ class _NewPwdPageState extends ConsumerState<NewPwdPage> {
                     });
                   },
                 ),
-                const SizedBox(height: 60),
-                GestureDetector(
-                  onTap:
-                      _isFormValid
-                          ? () async {
-                            final result = await userApi.updatePassword(
-                              email: email,
-                              password: _password,
-                            );
-                            if (!mounted) return;
-                            if (result) {
-                              _showDialog(
-                                title: "비밀번호가 변경 되었습니다.",
-                                message1: '비밀번호가 변경되었습니다.\n',
-                                highlighted: "로그인",
-                                message2: "을 진행해 주세요.",
-                                onConfirm: () {
-                                  context.goNamed("login");
-                                },
-                              );
-                            } else {
-                              _showSnackBar("비밀번호 변경에 실패했습니다.");
-                            }
-                          }
-                          : null,
-                  child: CustomBottomButton(
-                    text: "확인",
-                    color:
-                        _isFormValid
-                            ? CustomColors.primary
-                            : const Color(0xFFE9EBED),
-                    fontColor:
-                        _isFormValid ? Colors.white : const Color(0xFF73787E),
-                    height: 60,
-                    radius: 12,
-                  ),
-                ),
                 const SizedBox(height: 40),
               ],
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(18, 0, 18, 20),
+        child: GestureDetector(
+          onTap:
+              _isFormValid
+                  ? () async {
+                    final result = await userApi.updatePassword(
+                      email: email,
+                      password: _password,
+                    );
+                    if (!mounted) return;
+                    if (result) {
+                      _showDialog(
+                        title: "비밀번호가 변경 되었습니다.",
+                        message1: '비밀번호가 변경되었습니다.\n',
+                        highlighted: "로그인",
+                        message2: "을 진행해 주세요.",
+                        onConfirm: () {
+                          context.goNamed("login");
+                        },
+                      );
+                    } else {
+                      _showSnackBar("비밀번호 변경에 실패했습니다.");
+                    }
+                  }
+                  : null,
+          child: CustomBottomButton(
+            text: "확인",
+            color:
+                _isFormValid ? CustomColors.primary : const Color(0xFFE9EBED),
+            fontColor: _isFormValid ? Colors.white : const Color(0xFF73787E),
+            height: 60,
+            radius: 12,
           ),
         ),
       ),
