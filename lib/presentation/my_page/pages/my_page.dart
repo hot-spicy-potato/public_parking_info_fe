@@ -72,6 +72,7 @@ class MyPage extends ConsumerWidget {
                     GestureDetector(
                       onTap: () async {
                         await userService.logout();
+                        ref.read(splashPageProvider.notifier).state = 0;
                         context.pushReplacementNamed("main");
                       },
                       child: Text(

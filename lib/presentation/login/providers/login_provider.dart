@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:public_parking_info_fe/data/datasource/dio_client.dart';
 import 'package:public_parking_info_fe/data/datasource/user_api.dart';
 import 'package:public_parking_info_fe/data/models/request/login_request.dart';
 import 'package:public_parking_info_fe/data/models/response/login_response.dart';
@@ -28,11 +27,6 @@ class LoginNotifier extends StateNotifier<LoginRequest> {
 
     if (res != null) {
       userService.saveAccessToken(res.token.accessToken);
-
-      final refreshToken = res.token.refreshToken;
-      final uri = Uri.parse(DioClient.dio.options.baseUrl);
-      DioClient.instance.saveRefreshTokenCookie(refreshToken, uri);
-
       return res;
     }
 

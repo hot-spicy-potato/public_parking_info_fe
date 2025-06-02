@@ -26,6 +26,7 @@ class _RequestLoginSheetState extends ConsumerState<LoginRequest> {
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: OpacityBottomButton(
             onTap: () {
+              context.pop();
               context.pushNamed("login");
             },
             text: "이메일 로그인",

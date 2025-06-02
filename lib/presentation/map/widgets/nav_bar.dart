@@ -16,6 +16,13 @@ class NavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final UserService userService = UserService.instance;
+
+    Future<String?> getToken() async {
+      final String? token = await userService.getAccessToken();
+      return token;
+    }
+
     return Container(
       width: double.infinity,
       alignment: Alignment.topCenter,
@@ -40,19 +47,37 @@ class NavBar extends ConsumerWidget {
               _NavItem(
                 index: 1,
                 onTap: () async {
-                  ref.read(splashPageProvider.notifier).state = 1;
-                  showCustomBottomSheet(
-                    context,
-                    barrierColor: Colors.black.withOpacity(0.4),
-                    child: FavoriteList(),
-                  ).then((value) => ref.read(splashPageProvider.notifier).state = 0);
+                  final token = await getToken();
+                  if (token == null) {
+                    showCustomBottomSheet(
+                      context,
+                      barrierColor: Colors.black.withOpacity(0.4),
+                      child: LoginRequest(),
+                    );
+                  } else {
+                    ref.read(splashPageProvider.notifier).state = 1;
+                    showCustomBottomSheet(
+                      context,
+                      barrierColor: Colors.black.withOpacity(0.4),
+                      child: FavoriteList(token: token),
+                    ).then((value) => ref.read(splashPageProvider.notifier).state = 0);
+                  }
                 },
               ),
               _NavItem(
                 index: 2,
                 onTap: () async {
-                  ref.read(splashPageProvider.notifier).state = 2;
-                  context.pushNamed("mypage");
+                  final token = await getToken();
+                  if (token == null) {
+                    showCustomBottomSheet(
+                      context,
+                      barrierColor: Colors.black.withOpacity(0.4),
+                      child: LoginRequest(),
+                    );
+                  } else {
+                    ref.read(splashPageProvider.notifier).state = 2;
+                    context.pushNamed("mypage");
+                  }
                 },
               ),
             ],
@@ -71,7 +96,6 @@ class _NavItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final UserService userService = UserService.instance;
     final bool isSelected = ref.watch(splashPageProvider) == index;
 
     List imgs = [Images.tabbarHomeIcon, Images.tabbarFavoriteIcon, Images.tabbarMypageIcon];
@@ -83,22 +107,7 @@ class _NavItem extends ConsumerWidget {
     List text = ["홈", "즐겨찾기", "내 정보"];
 
     return OpacityButton(
-      onTap: () async {
-        if (index != 0) {
-          final token = await userService.getAccessToken();
-          if (token == null) {
-            showCustomBottomSheet(
-              context,
-              barrierColor: Colors.black.withOpacity(0.4),
-              child: LoginRequest(),
-            );
-          } else {
-            onTap();
-          }
-        } else {
-          onTap();
-        }
-      },
+      onTap: () => onTap(),
       child: Column(
         children: [
           Image.asset(isSelected ? selectedImgs[index] : imgs[index], width: 24),

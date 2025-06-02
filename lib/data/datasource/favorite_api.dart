@@ -13,12 +13,20 @@ class FavoriteApi {
   // /api/favorite/favorite
   Future<bool> setFavorite(String code) async {
     try {
-      final res = await dio.post("/api/favorite", queryParameters: {"code": code});
+      final res = await dio.post(
+        "/api/favorite",
+        queryParameters: {"code": code},
+        options: Options(responseType: ResponseType.plain),
+      );
       String state = res.data;
+      print("status: ${res.statusCode}, data: ${res.data}");
       if (state == "on") return true;
+    } on DioException catch (e) {
+      print("Dio error: ${e.response?.statusCode}, data: ${e.response?.data}");
     } catch (e) {
-      print("fail set favorite : $e");
+      print("Other error: $e");
     }
+
     return false;
   }
 
