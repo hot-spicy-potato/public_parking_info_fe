@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/opacity_button.dart';
-import 'package:public_parking_info_fe/presentation/login/widgets/request_login_sheet.dart';
+import 'package:public_parking_info_fe/presentation/login/widgets/login_request.dart';
 import 'package:public_parking_info_fe/presentation/favorite/providers/favorite_api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
@@ -35,7 +35,7 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
           showCustomBottomSheet(
             context,
             barrierColor: Colors.black.withOpacity(0.4),
-            child: RequestLoginSheet(),
+            child: LoginRequest(),
           );
         } else {
           await ref.read(favoriteApiProvider.notifier).setFavorite(code: widget.mngNo);

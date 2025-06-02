@@ -6,7 +6,7 @@ import 'package:public_parking_info_fe/core/constants/ui/text_styles.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/opacity_button.dart';
 import 'package:public_parking_info_fe/presentation/favorite/widgets/favorite_list.dart';
-import 'package:public_parking_info_fe/presentation/login/widgets/request_login_sheet.dart';
+import 'package:public_parking_info_fe/presentation/login/widgets/login_request.dart';
 import 'package:public_parking_info_fe/presentation/splash/providers/splash_page_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
@@ -90,7 +90,7 @@ class _NavItem extends ConsumerWidget {
             showCustomBottomSheet(
               context,
               barrierColor: Colors.black.withOpacity(0.4),
-              child: RequestLoginSheet(),
+              child: LoginRequest(),
             );
           } else {
             onTap();

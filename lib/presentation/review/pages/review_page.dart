@@ -7,7 +7,7 @@ import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/request/review_sort_request.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/custom_bottom_sheet.dart';
-import 'package:public_parking_info_fe/presentation/login/widgets/request_login_sheet.dart';
+import 'package:public_parking_info_fe/presentation/login/widgets/login_request.dart';
 import 'package:public_parking_info_fe/presentation/review/widgets/review_score.dart';
 import 'package:public_parking_info_fe/presentation/review/widgets/review_sort_dropdown.dart';
 import 'package:public_parking_info_fe/presentation/review/widgets/review_list_item.dart';
@@ -59,7 +59,7 @@ class ReviewPage extends ConsumerWidget {
                     showCustomBottomSheet(
                       context,
                       barrierColor: Colors.black.withOpacity(0.4),
-                      child: RequestLoginSheet(),
+                      child: LoginRequest(),
                     );
                   } else {
                     context.pushNamed("writeReview", extra: parkingInfo.mngNo.toString());
