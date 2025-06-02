@@ -1,12 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
+import 'package:public_parking_info_fe/services/map_service.dart';
 
 final mapControllerProvider = StateProvider<KakaoMapController?>((ref) => null);
 
-final targetParkingProvider = StateNotifierProvider<TargetParkingNotifier, ParkingInfo?>(
-  (ref) => TargetParkingNotifier(),
-);
+final mapServiceProvider = Provider<MapService>((ref) {
+  return MapService.instance;
+});
+
+final targetParkingProvider =
+    StateNotifierProvider<TargetParkingNotifier, ParkingInfo?>(
+      (ref) => TargetParkingNotifier(),
+    );
 
 class TargetParkingNotifier extends StateNotifier<ParkingInfo?> {
   TargetParkingNotifier() : super(null);
@@ -22,7 +28,9 @@ class TargetParkingNotifier extends StateNotifier<ParkingInfo?> {
 
 // final markerProvider = StateProvider<String>((ref) => "");
 
-final roadViewProvider = StateNotifierProvider<RoadViewNotifier, bool>((ref) => RoadViewNotifier());
+final roadViewProvider = StateNotifierProvider<RoadViewNotifier, bool>(
+  (ref) => RoadViewNotifier(),
+);
 
 class RoadViewNotifier extends StateNotifier<bool> {
   RoadViewNotifier() : super(false);

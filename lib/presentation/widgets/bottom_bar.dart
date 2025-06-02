@@ -9,6 +9,7 @@ import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
 import 'package:public_parking_info_fe/presentation/widgets/favorite_list.dart';
 import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.dart';
 import 'package:public_parking_info_fe/presentation/widgets/road_view_button.dart';
+import 'package:public_parking_info_fe/presentation/widgets/sky_view_button.dart';
 import 'package:public_parking_info_fe/providers/page_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 import 'package:public_parking_info_fe/services/user_service.dart';
@@ -67,6 +68,8 @@ class BottomBar extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  SkyViewButton(),
+                  SizedBox(height: 6),
                   RoadViewButton(),
                   SizedBox(height: 6),
                   CurrentLocationButton(),
@@ -141,7 +144,8 @@ class BottomBar extends ConsumerWidget {
                     selectedSrc: Images.selectedTabbarMypageIcon,
                     text: "내 정보",
                     onTap: () async {
-                      final token = await userService.getAccessToken();
+                      // final token = await userService.getAccessToken();
+                      final token = null;
                       if (token == null) {
                         showCustomBottomSheet(
                           context,
