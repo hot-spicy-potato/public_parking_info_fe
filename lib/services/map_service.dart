@@ -26,11 +26,15 @@ class MapService {
   Future<List<ParkingInfo>> loadParkingdata() async {
     if (parkingList.isNotEmpty) return parkingList.toList();
 
-    final String jsonString = await rootBundle.loadString("assets/data/parking.json");
+    final String jsonString = await rootBundle.loadString(
+      "assets/data/parking.json",
+    );
 
     final List jsonList = json.decode(jsonString);
 
-    parkingList.addAll(jsonList.map((json) => ParkingInfo.fromJson(json)).toList());
+    parkingList.addAll(
+      jsonList.map((json) => ParkingInfo.fromJson(json)).toList(),
+    );
 
     return parkingList.toList();
   }
@@ -41,12 +45,27 @@ class MapService {
 
     final double ctlat = center.latitude;
     final double ctlon = center.longitude;
-    final double radius = 1000; // 반경
+    double radius; // 반경
+    final level = await controller.getLevel();
+    if (level >= 8) {
+      radius = 6000;
+    } else if (level >= 7) {
+      radius = 5000;
+    } else if (level >= 6) {
+      radius = 4000;
+    } else {
+      radius = 3000;
+    }
 
     // 반경 내 주차장 필터링
     final visibleParkings =
         parkingList.where((parking) {
-          final distance = Geolocator.distanceBetween(ctlat, ctlon, parking.lat, parking.lon);
+          final distance = Geolocator.distanceBetween(
+            ctlat,
+            ctlon,
+            parking.lat,
+            parking.lon,
+          );
           return distance <= radius;
         }).toList();
 
@@ -89,7 +108,8 @@ class MapService {
 
     // 기존 마커 리스트에서 해당 마커 제거
     markerList.removeWhere((Marker marker) => marker.markerId == markerId);
-    List<String> markerIdsToKeep = markerList.map((marker) => marker.markerId.toString()).toList();
+    List<String> markerIdsToKeep =
+        markerList.map((marker) => marker.markerId.toString()).toList();
 
     await controller.clearMarker(markerIds: markerIdsToKeep);
 
@@ -144,13 +164,17 @@ class MapService {
   // 좌표로 주소 정보 조회
   ParkingInfo? getParkingInfo(LatLng latLng) {
     return parkingList.firstWhere(
-      (parkingInfo) => parkingInfo.lat == latLng.latitude && parkingInfo.lon == latLng.longitude,
+      (parkingInfo) =>
+          parkingInfo.lat == latLng.latitude &&
+          parkingInfo.lon == latLng.longitude,
     );
   }
 
   // id로 주소 정보 조회
   ParkingInfo? getParkingInfoByCode(String code) {
-    return parkingList.firstWhere((parkingInfo) => parkingInfo.mngNo.toString() == code);
+    return parkingList.firstWhere(
+      (parkingInfo) => parkingInfo.mngNo.toString() == code,
+    );
   }
 
   List<ParkingInfoWithDistance> getParkingNearby({
@@ -161,7 +185,12 @@ class MapService {
     return parkingList
         .map((parking) {
           // 거리 계산
-          final distance = calculateDistance(lat, lon, parking.lat, parking.lon);
+          final distance = calculateDistance(
+            lat,
+            lon,
+            parking.lat,
+            parking.lon,
+          );
 
           // ParkingInfo와 거리 정보를 함께 담은 객체 생성
           return ParkingInfoWithDistance(
@@ -186,7 +215,10 @@ class MapService {
 
     final a =
         sin(dLat / 2) * sin(dLat / 2) +
-        cos(_degreesToRadians(lat1)) * cos(_degreesToRadians(lat2)) * sin(dLon / 2) * sin(dLon / 2);
+        cos(_degreesToRadians(lat1)) *
+            cos(_degreesToRadians(lat2)) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
     final c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     return earthRadius * c;
@@ -197,7 +229,10 @@ class MapService {
   }
 
   // 지도 배경 클릭 시 마커 이미지를 원래 상태로 되돌리기(보류)
-  Future<void> onMapBackgroundClick(KakaoMapController mapController, String markerId) async {
+  Future<void> onMapBackgroundClick(
+    KakaoMapController mapController,
+    String markerId,
+  ) async {
     try {
       final updatedMarkers =
           markerList.map((marker) {
