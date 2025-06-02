@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-import 'package:public_parking_info_fe/presentation/common_widgets/bottom_bar.dart';
+import 'package:public_parking_info_fe/presentation/map/widgets/bottom_buttons.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/parking_info/widgets/parking_info_content.dart';
 import 'package:public_parking_info_fe/presentation/map/widgets/search_field.dart';
@@ -24,6 +24,7 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
     final LocationService locationService = LocationService.instance;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           KakaoMap(
@@ -56,30 +57,20 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                   latLng: latLng,
                   ref: ref,
                 );
-              }
 
-              // ref.read(markerProvider.notifier).state = markerId;
-
-              // final ParkingInfo? parkingInfo = mapService.getParkingInfo(latLng);
-
-              // if (parkingInfo != null) {
-              //   ref.read(targetParkingProvider.notifier).setParkingInfo(parkingInfo);
-              // }
-
-              showCustomBottomSheet(
-                context,
-                barrierColor: Colors.transparent,
-                child: ParkingInfoContent(),
-              ).then((value) async {
-                if (mapController != null) {
+                showCustomBottomSheet(
+                  context,
+                  barrierColor: Colors.transparent,
+                  child: ParkingInfoContent(),
+                ).then((value) async {
                   await mapService.onMapBackgroundClick(mapController, markerId);
-                }
-              });
+                });
+              }
             },
           ),
           // 검색필드
           SearchField(),
-          Align(alignment: Alignment.bottomCenter, child: BottomBar()),
+          BottomButtons(),
         ],
       ),
     );

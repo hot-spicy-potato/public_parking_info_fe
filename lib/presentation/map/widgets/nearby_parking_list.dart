@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
-import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
+import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
+import 'package:public_parking_info_fe/core/constants/ui/text_styles.dart';
 import 'package:public_parking_info_fe/presentation/map/widgets/fast_search.dart';
 import 'package:public_parking_info_fe/services/map_service.dart';
 
@@ -23,20 +24,20 @@ class NearbyParkingList extends ConsumerWidget {
         itemBuilder: (context, index) {
           final item = parkingList[index];
           return ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
             title: Text(
               item.parkingInfo.parkingNm,
-              style: CustomFonts.w600(fontSize: 16, color: Colors.black),
+              style: TextStyles.style(fontSize: 16, fontWeight: 6),
             ),
             subtitle: Text(
               item.parkingInfo.roadAddr.isNotEmpty == true
                   ? item.parkingInfo.roadAddr
                   : item.parkingInfo.jibunAddr,
-              style: CustomFonts.w400(fontSize: 14, color: Colors.grey[700]!),
+              style: TextStyles.style(fontSize: 14, fontWeight: 4, color: CustomColors.darkGrey2),
             ),
             trailing: Text(
               "${(item.distance / 1000).toStringAsFixed(1)} km",
-              style: CustomFonts.w500(fontSize: 14, color: Colors.blueGrey),
+              style: TextStyles.style(fontSize: 14, fontWeight: 5, color: CustomColors.darkGrey2),
             ),
             onTap: () {
               final lat = item.parkingInfo.lat;
@@ -46,7 +47,7 @@ class NearbyParkingList extends ConsumerWidget {
             },
           );
         },
-        separatorBuilder: (context, index) => const Divider(height: 1),
+        separatorBuilder: (context, index) => const Divider(height: 16),
       ),
     );
   }
