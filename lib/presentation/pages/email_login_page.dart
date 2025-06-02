@@ -142,6 +142,20 @@ class _EmailLoginPageState extends ConsumerState<EmailLoginPage> {
                                       response.token.accessToken,
                                     );
                                     context.pushReplacementNamed("main");
+                                  } else {
+                                    _showDialog(
+                                      title: '로그인 실패',
+                                      message1: '아이디 또는 비밀번호를 확인 후\n',
+                                      highlighted: '다시',
+                                      message2: ' 입력해 주세요.',
+                                      prefix: '',
+                                      // onConfirm: () {
+                                      //   context.pushReplacementNamed(
+                                      //     "verification",
+                                      //     extra: _email,
+                                      //   );
+                                      // },
+                                    );
                                   }
                                 }
                                 : null,
@@ -196,6 +210,88 @@ class _EmailLoginPageState extends ConsumerState<EmailLoginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showDialog({
+    required String title,
+    required String message1,
+    required String highlighted,
+    required String message2,
+    String prefix = '',
+    String confirmText = '확인',
+    VoidCallback? onConfirm,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.black,
+            ),
+          ),
+          content: SizedBox(
+            width: 300,
+            height: 140,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                Text.rich(
+                  TextSpan(
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    children: [
+                      TextSpan(text: message1),
+                      if (prefix.isNotEmpty) TextSpan(text: prefix),
+                      TextSpan(
+                        text: highlighted,
+                        style: TextStyle(
+                          color: CustomColors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(text: message2),
+                    ],
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color(0xFF613EEA),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(dialogContext).pop(); // 다이얼로그 닫기
+                  if (onConfirm != null) {
+                    onConfirm(); // 이동 콜백 호출
+                  }
+                },
+                child: Text(
+                  confirmText,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
