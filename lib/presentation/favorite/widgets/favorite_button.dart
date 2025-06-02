@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/custom_bottom_sheet.dart';
+import 'package:public_parking_info_fe/presentation/common_widgets/opacity_button.dart';
 import 'package:public_parking_info_fe/presentation/login/widgets/request_login_sheet.dart';
 import 'package:public_parking_info_fe/presentation/favorite/providers/favorite_api_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
@@ -27,7 +28,7 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return OpacityButton(
       onTap: () async {
         final token = await userService.getAccessToken();
         if (token == null) {

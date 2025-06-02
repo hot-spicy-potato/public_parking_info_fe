@@ -20,7 +20,7 @@ class ReviewRate extends ConsumerWidget {
       children: List.generate(5, (index) {
         final icon = index < value ? Images.selectedStarIcon : Images.starIcon;
         return Padding(
-          padding: EdgeInsets.only(right: paddingRight),
+          padding: EdgeInsets.only(right: index != 4 ? paddingRight : 0),
           child: Image.asset(icon, width: size, height: size),
         );
       }),

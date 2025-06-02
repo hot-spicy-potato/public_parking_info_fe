@@ -8,7 +8,6 @@ import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/data/datasource/kakao_search_address_api.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/presentation/map/widgets/fast_search.dart';
-import 'package:public_parking_info_fe/presentation/map/providers/map_provider.dart';
 
 class MapService {
   MapService._internal();
@@ -73,7 +72,7 @@ class MapService {
     await controller.addMarker(markers: newMarkers);
   }
 
-  Future<void> updateMarker({
+  Future<ParkingInfo> updateMarker({
     required KakaoMapController controller,
     required String markerId,
     required LatLng latLng,
@@ -84,8 +83,6 @@ class MapService {
           isSameLocation(parkingInfo.lat, latLng.latitude) &&
           isSameLocation(parkingInfo.lon, latLng.longitude),
     );
-
-    ref.read(targetParkingProvider.notifier).setParkingInfo(parkingInfo);
 
     // 기존 마커 리스트에서 해당 마커 제거
     markerList.removeWhere((Marker marker) => marker.markerId == markerId);
@@ -108,6 +105,8 @@ class MapService {
 
     // 중심 이동
     await controller.setCenter(latLng);
+
+    return parkingInfo;
   }
 
   // kakao search api

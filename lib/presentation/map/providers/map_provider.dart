@@ -4,10 +4,6 @@ import 'package:public_parking_info_fe/data/models/parking_info.dart';
 
 final mapControllerProvider = StateProvider<KakaoMapController?>((ref) => null);
 
-final targetParkingProvider = StateNotifierProvider<TargetParkingNotifier, ParkingInfo?>(
-  (ref) => TargetParkingNotifier(),
-);
-
 class TargetParkingNotifier extends StateNotifier<ParkingInfo?> {
   TargetParkingNotifier() : super(null);
 

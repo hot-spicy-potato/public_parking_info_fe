@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/presentation/map/widgets/bottom_buttons.dart';
 import 'package:public_parking_info_fe/presentation/common_widgets/custom_bottom_sheet.dart';
 import 'package:public_parking_info_fe/presentation/parking_info/widgets/parking_info_content.dart';
@@ -51,7 +52,7 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
             // 마커 클릭시 바텀 시트 노출
             onMarkerTap: (markerId, latLng, zoomLevel) async {
               if (mapController != null) {
-                await mapService.updateMarker(
+                final ParkingInfo parkingInfo = await mapService.updateMarker(
                   controller: mapController,
                   markerId: markerId,
                   latLng: latLng,
@@ -61,7 +62,7 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                 showCustomBottomSheet(
                   context,
                   barrierColor: Colors.transparent,
-                  child: ParkingInfoContent(),
+                  child: ParkingInfoContent(parkingInfo: parkingInfo),
                 ).then((value) async {
                   await mapService.onMapBackgroundClick(mapController, markerId);
                 });
