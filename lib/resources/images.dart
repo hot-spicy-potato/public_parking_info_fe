@@ -30,6 +30,7 @@ class Images {
   static const String parkingFeeIcon = 'assets/imgs/parking_fee_icon.png';
   static const String profileIcon = 'assets/imgs/profile_icon.png';
   static const String roadViewIcon = 'assets/imgs/road_view_icon.png';
+  static const String skyViewIcon = 'assets/imgs/sky_view_icon.png';
   static const String searchIcon = 'assets/imgs/search_icon.png';
   static const String selectDateIcon = 'assets/imgs/select_date_icon.png';
   static const String selectTimeIcon = 'assets/imgs/select_time_icon.png';

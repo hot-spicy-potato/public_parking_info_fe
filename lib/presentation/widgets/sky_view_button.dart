@@ -5,45 +5,23 @@ import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
 
-// import 'package:public_parking_info_fe/services/map_service.dart';
-// import 'package:public_parking_info_fe/services/map_service_impl.dart';
-
 class SkyViewButton extends ConsumerWidget {
   const SkyViewButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final MapService mapService = MapServiceImpl.instance;
     final mapController = ref.watch(mapControllerProvider);
     final mapService = ref.read(mapServiceProvider);
-    final isRoadView = ref.watch(roadViewProvider);
+    final isSkyView = ref.watch(skyViewProvider);
 
     return GestureDetector(
       onTap: () async {
-        ref.read(roadViewProvider.notifier).toggle();
-        final isRoadView = ref.watch(roadViewProvider);
+        ref.read(skyViewProvider.notifier).toggle();
+        final isSkyView = ref.watch(skyViewProvider);
 
-        isRoadView
+        isSkyView
             ? mapController?.addOverlayMapTypeId(MapType.skyView)
             : mapController?.removeOverlayMapTypeId(MapType.skyView);
-
-        // await mapController?.clearMarker();
-
-        // final List<Marker> updatedMarkers =
-        //     mapService.markerList.map((marker) {
-        //       return Marker(
-        //         markerId: marker.markerId,
-        //         latLng: marker.latLng,
-        //         width: marker.width,
-        //         height: marker.height,
-        //         markerImageSrc:
-        //             isRoadView
-        //                 ? 'https://velog.velcdn.com/images/luna-han/post/869cb99f-b485-49b0-8c7d-04d0ab0f9762/image.png'
-        //                 : 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-        //       );
-        //     }).toList();
-
-        // await mapController?.addMarker(markers: updatedMarkers);
       },
       child: Container(
         width: 48,
@@ -51,7 +29,7 @@ class SkyViewButton extends ConsumerWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          color: isSkyView ? const Color(0xFF613EEA) : Colors.white,
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -64,11 +42,19 @@ class SkyViewButton extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(Images.roadViewIcon, width: 16, height: 16),
-            SizedBox(height: 4),
+            Image.asset(
+              Images.skyViewIcon,
+              width: 16,
+              height: 16,
+              color: isSkyView ? Colors.white : null,
+            ),
+            const SizedBox(height: 4),
             Text(
-              "로드뷰", // todo. 로드뷰
-              style: CustomFonts.w500(fontSize: 9, color: Colors.grey),
+              "로드뷰",
+              style: CustomFonts.w500(
+                fontSize: 9,
+                color: isSkyView ? Colors.white : Colors.grey,
+              ),
             ),
           ],
         ),

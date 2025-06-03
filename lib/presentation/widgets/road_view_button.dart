@@ -14,6 +14,7 @@ class RoadViewButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final MapService mapService = MapServiceImpl.instance;
     final mapController = ref.watch(mapControllerProvider);
+    final isRoadView = ref.watch(roadViewProvider);
 
     return GestureDetector(
       onTap: () {
@@ -30,7 +31,7 @@ class RoadViewButton extends ConsumerWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          color: isRoadView ? Color(0xFF613EEA) : Colors.white,
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -43,11 +44,19 @@ class RoadViewButton extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(Images.roadViewIcon, width: 16, height: 16),
+            Image.asset(
+              Images.roadViewIcon,
+              width: 16,
+              height: 16,
+              color: isRoadView ? Colors.white : null,
+            ),
             SizedBox(height: 4),
             Text(
               "혼잡도", // todo. 로드뷰
-              style: CustomFonts.w500(fontSize: 9, color: Colors.grey),
+              style: CustomFonts.w500(
+                fontSize: 9,
+                color: isRoadView ? Colors.white : Colors.grey,
+              ),
             ),
           ],
         ),

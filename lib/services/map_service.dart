@@ -228,7 +228,7 @@ class MapService {
     return degrees * pi / 180;
   }
 
-  // 지도 배경 클릭 시 마커 이미지를 원래 상태로 되돌리기(보류)
+  // 지도 배경 클릭 시 마커 이미지를 원래 상태로 되돌리기
   Future<void> onMapBackgroundClick(
     KakaoMapController mapController,
     String markerId,

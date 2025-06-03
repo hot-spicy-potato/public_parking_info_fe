@@ -26,15 +26,24 @@ class TargetParkingNotifier extends StateNotifier<ParkingInfo?> {
   }
 }
 
-// final markerProvider = StateProvider<String>((ref) => "");
-
-final roadViewProvider = StateNotifierProvider<RoadViewNotifier, bool>(
-  (ref) => RoadViewNotifier(),
-);
-
 class RoadViewNotifier extends StateNotifier<bool> {
   RoadViewNotifier() : super(false);
 
   void toggle() => state = !state;
   void remove() => state = false;
 }
+
+class SkyViewNotifier extends StateNotifier<bool> {
+  SkyViewNotifier() : super(false);
+
+  void toggle() => state = !state;
+  void remove() => state = false;
+}
+
+final roadViewProvider = StateNotifierProvider<RoadViewNotifier, bool>(
+  (ref) => RoadViewNotifier(),
+);
+
+final skyViewProvider = StateNotifierProvider<SkyViewNotifier, bool>(
+  (ref) => SkyViewNotifier(),
+);
