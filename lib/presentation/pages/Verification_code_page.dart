@@ -119,29 +119,27 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
                       style: CustomFonts.w500(fontSize: 15, color: Colors.red),
                     ),
                     const SizedBox(height: 40),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomTextField(
-                          title: "인증번호",
-                          hintText: "인증번호를 입력해주세요",
-                          onChanged: (value) {
-                            setState(() {
-                              _verificationCode = value;
-                              _codeError =
-                                  !_isFormValid ? '올바른 인증번호 형식을 입력해주세요.' : null;
-                            });
-                          },
-                        ),
-                        if (_codeError != null)
-                          Text(
-                            _codeError!,
-                            style: CustomFonts.w400(
-                              fontSize: 13,
-                              color: Colors.red,
-                            ),
-                          ),
-                      ],
+                    CustomTextField(
+                      title: "인증번호",
+                      hintText: "인증번호를 입력해주세요",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '인증번호를 입력해주세요.';
+                        }
+                        if (!RegExp(r'^\d{6}$').hasMatch(value)) {
+                          return '올바른 이메일 형식을 입력해주세요.';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _verificationCode = value;
+                          _codeError = null;
+                          if (!_isFormValid) {
+                            _codeError = '올바른 인증번호 형식을 입력해주세요.';
+                          }
+                        });
+                      },
                     ),
                     const SizedBox(height: 32),
                     Center(

@@ -10,17 +10,26 @@ final enableSignupProvider = Provider<bool>((ref) {
   return SignupNotifier(state).enableSignup();
 });
 
-final signupNotifierProvider = StateNotifierProvider<SignupNotifier, SignupRequest>(
-  (ref) => SignupNotifier(SignupRequest.defaultSignupRequest()),
-);
+final signupNotifierProvider =
+    StateNotifierProvider<SignupNotifier, SignupRequest>(
+      (ref) => SignupNotifier(SignupRequest.defaultSignupRequest()),
+    );
 
 class SignupNotifier extends StateNotifier<SignupRequest> {
   SignupNotifier(super.state);
+
+  void reset() {
+    state = SignupRequest.defaultSignupRequest();
+  }
 
   final UserApi api = UserApi.instance;
 
   String getPassword() {
     return state.password;
+  }
+
+  String getEmail() {
+    return state.email;
   }
 
   void setEmail(String email) {
@@ -56,7 +65,7 @@ class SignupNotifier extends StateNotifier<SignupRequest> {
     final password = state.password;
     final rePassword = state.rePassword;
     final regex = RegExp(
-      r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[,\.\!\?\_\-\*])[A-Za-z\d,\.\!\?\_\-\*]{8,}$',
+      r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#\$%^&*(),.?":{}|<>]).{8,}$',
     );
     if (!regex.hasMatch(password) || password != rePassword) return false;
     return true;
