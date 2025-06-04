@@ -31,7 +31,8 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
             onMapCreated: (controller) async {
               ref.read(mapControllerProvider.notifier).state = controller;
 
-              final currentLocation = await locationService.setInitialLocation();
+              final currentLocation =
+                  await locationService.setInitialLocation();
 
               mapService.setMapCenter(
                 mapController: controller,
@@ -39,7 +40,30 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                 lon: currentLocation.longitude,
               );
 
+              // 초기 현재 위치 저장
+              ref.read(currentUserLocationProvider.notifier).state = LatLng(
+                currentLocation.latitude,
+                currentLocation.longitude,
+              );
+
               await mapService.addMarkersInView(controller);
+            },
+            onCenterChangeCallback: (LatLng latlng, int zoomLevel) {
+              final currentUserLatLng = ref.read(currentUserLocationProvider);
+              final isFollowing = ref.read(locationViewProvider);
+
+              if (isFollowing && currentUserLatLng != null) {
+                final movedDistance = mapService.calculateDistance(
+                  currentUserLatLng.latitude,
+                  currentUserLatLng.longitude,
+                  latlng.latitude,
+                  latlng.longitude,
+                );
+
+                if (movedDistance > 50) {
+                  ref.read(locationViewProvider.notifier).state = false;
+                }
+              }
             },
             // 지도 이동시 마커 로드
             onCameraIdle: (latLng, zoomLevel) async {
@@ -72,7 +96,10 @@ class _ParkingMapPageState extends ConsumerState<ParkingMapPage> {
                 child: ParkingInfoContent(),
               ).then((value) async {
                 if (mapController != null) {
-                  await mapService.onMapBackgroundClick(mapController, markerId);
+                  await mapService.onMapBackgroundClick(
+                    mapController,
+                    markerId,
+                  );
                 }
               });
             },

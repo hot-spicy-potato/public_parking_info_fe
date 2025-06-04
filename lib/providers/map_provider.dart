@@ -5,6 +5,9 @@ import 'package:public_parking_info_fe/services/map_service.dart';
 
 final mapControllerProvider = StateProvider<KakaoMapController?>((ref) => null);
 
+// 현재 위치 저장 (버튼 눌렀을 때 기준)
+final currentUserLocationProvider = StateProvider<LatLng?>((ref) => null);
+
 final mapServiceProvider = Provider<MapService>((ref) {
   return MapService.instance;
 });
@@ -26,6 +29,13 @@ class TargetParkingNotifier extends StateNotifier<ParkingInfo?> {
   }
 }
 
+class LocationViewNotifier extends StateNotifier<bool> {
+  LocationViewNotifier() : super(false);
+
+  void toggle() => state = !state;
+  void remove() => state = false;
+}
+
 class RoadViewNotifier extends StateNotifier<bool> {
   RoadViewNotifier() : super(false);
 
@@ -39,6 +49,10 @@ class SkyViewNotifier extends StateNotifier<bool> {
   void toggle() => state = !state;
   void remove() => state = false;
 }
+
+final locationViewProvider = StateNotifierProvider<LocationViewNotifier, bool>(
+  (ref) => LocationViewNotifier(),
+);
 
 final roadViewProvider = StateNotifierProvider<RoadViewNotifier, bool>(
   (ref) => RoadViewNotifier(),
