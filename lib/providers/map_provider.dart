@@ -5,7 +5,7 @@ import 'package:public_parking_info_fe/services/map_service.dart';
 
 final mapControllerProvider = StateProvider<KakaoMapController?>((ref) => null);
 
-// 현재 위치 저장 (버튼 눌렀을 때 기준)
+// 현재 위치 저장
 final currentUserLocationProvider = StateProvider<LatLng?>((ref) => null);
 
 final mapServiceProvider = Provider<MapService>((ref) {

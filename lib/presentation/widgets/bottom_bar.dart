@@ -8,7 +8,7 @@ import 'package:public_parking_info_fe/presentation/widgets/custom_bottom_sheet.
 import 'package:public_parking_info_fe/presentation/widgets/fast_search.dart';
 import 'package:public_parking_info_fe/presentation/widgets/favorite_list.dart';
 import 'package:public_parking_info_fe/presentation/widgets/request_login_sheet.dart';
-import 'package:public_parking_info_fe/presentation/widgets/road_view_button.dart';
+import 'package:public_parking_info_fe/presentation/widgets/traffic_view_button.dart';
 import 'package:public_parking_info_fe/presentation/widgets/sky_view_button.dart';
 import 'package:public_parking_info_fe/providers/page_provider.dart';
 import 'package:public_parking_info_fe/resources/resources.dart';
@@ -70,7 +70,7 @@ class BottomBar extends ConsumerWidget {
                 children: [
                   SkyViewButton(),
                   SizedBox(height: 6),
-                  RoadViewButton(),
+                  TrafficViewButton(),
                   SizedBox(height: 6),
                   CurrentLocationButton(),
                 ],

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_colors.dart';
 import 'package:public_parking_info_fe/core/constants/ui/custom_fonts.dart';
 import 'package:public_parking_info_fe/data/models/parking_info.dart';
 import 'package:public_parking_info_fe/data/models/response/review_info_response.dart';
+import 'package:public_parking_info_fe/presentation/pages/road_view_page.dart';
 import 'package:public_parking_info_fe/presentation/widgets/favorite_button.dart';
 import 'package:public_parking_info_fe/presentation/widgets/review_rate.dart';
 import 'package:public_parking_info_fe/providers/map_provider.dart';
@@ -17,32 +19,69 @@ class ParkingInfoContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ParkingInfo? parkingInfo = ref.watch(targetParkingProvider);
-
+    final mapController = ref.watch(mapControllerProvider);
     return parkingInfo != null
         ? Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // 주차장 이름
-                    Text(
-                      parkingInfo.parkingNm,
-                      style: CustomFonts.w700(fontSize: 18, color: CustomColors.darkGrey),
+                    Expanded(
+                      child: Text(
+                        parkingInfo.parkingNm,
+                        style: CustomFonts.w700(
+                          fontSize: 18,
+                          color: CustomColors.darkGrey,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 4),
-                    // 도로명주소
-                    Text(
-                      parkingInfo.roadAddr.isEmpty ? parkingInfo.jibunAddr : parkingInfo.roadAddr,
-                      style: CustomFonts.w400(fontSize: 12, color: CustomColors.grey),
+                    SizedBox(width: 12),
+                    GestureDetector(
+                      onTap: () {
+                        if (parkingInfo.lat != null &&
+                            parkingInfo.lon != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (_) => RoadViewPage(
+                                    latLng: LatLng(
+                                      parkingInfo.lat,
+                                      parkingInfo.lon,
+                                    ),
+                                  ),
+                            ),
+                          );
+                        }
+                      },
+                      child: Text(
+                        '로드뷰',
+                        style: CustomFonts.w600(
+                          fontSize: 14,
+                          color: CustomColors.grey,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 4),
                   ],
                 ),
+                SizedBox(height: 4),
+                Text(
+                  parkingInfo.roadAddr.isEmpty
+                      ? parkingInfo.jibunAddr
+                      : parkingInfo.roadAddr,
+                  style: CustomFonts.w400(
+                    fontSize: 12,
+                    color: CustomColors.grey,
+                  ),
+                ),
+                SizedBox(height: 4),
               ],
             ),
             // 후기
@@ -86,7 +125,11 @@ class ParkingInfoContent extends ConsumerWidget {
                 // 운영시간
                 _info(Images.operationTimeIcon, "운영시간", parkingInfo.operGb),
                 // 주차면수
-                _info(Images.enableParkingCountIcon, "주차면수", parkingInfo.parkingCnt.toString()),
+                _info(
+                  Images.enableParkingCountIcon,
+                  "주차면수",
+                  parkingInfo.parkingCnt.toString(),
+                ),
               ],
             ),
             SizedBox(height: 30),
@@ -97,7 +140,10 @@ class ParkingInfoContent extends ConsumerWidget {
                 SizedBox(width: 4),
                 Text(
                   "${parkingInfo.lastUpdateDt} 업데이트",
-                  style: CustomFonts.w400(fontSize: 12, color: CustomColors.lightGrey),
+                  style: CustomFonts.w400(
+                    fontSize: 12,
+                    color: CustomColors.lightGrey,
+                  ),
                 ),
               ],
             ),
@@ -113,9 +159,15 @@ class ParkingInfoContent extends ConsumerWidget {
         children: [
           Image.asset(iconSrc, width: 24, height: 24),
           SizedBox(width: 4),
-          Text(key, style: CustomFonts.w400(fontSize: 16, color: CustomColors.darkGrey)),
+          Text(
+            key,
+            style: CustomFonts.w400(fontSize: 16, color: CustomColors.darkGrey),
+          ),
           Spacer(),
-          Text(value, style: CustomFonts.w600(fontSize: 18, color: CustomColors.primary)),
+          Text(
+            value,
+            style: CustomFonts.w600(fontSize: 18, color: CustomColors.primary),
+          ),
         ],
       ),
     );
@@ -145,7 +197,10 @@ class ParkingInfoContent extends ConsumerWidget {
           ),
           SizedBox(width: 6),
           ReviewRate(value: score, size: 18, paddingRight: 6),
-          Text("후기", style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey)),
+          Text(
+            "후기",
+            style: CustomFonts.w400(fontSize: 16, color: CustomColors.grey),
+          ),
           SizedBox(width: 6),
           Image.asset(Images.arrowRight, height: 14),
         ],

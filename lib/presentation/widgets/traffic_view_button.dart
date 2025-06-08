@@ -7,14 +7,14 @@ import 'package:public_parking_info_fe/resources/resources.dart';
 // import 'package:public_parking_info_fe/services/map_service.dart';
 // import 'package:public_parking_info_fe/services/map_service_impl.dart';
 
-class RoadViewButton extends ConsumerWidget {
-  const RoadViewButton({super.key});
+class TrafficViewButton extends ConsumerWidget {
+  const TrafficViewButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final MapService mapService = MapServiceImpl.instance;
     final mapController = ref.watch(mapControllerProvider);
-    final isRoadView = ref.watch(roadViewProvider);
+    final isTrafficView = ref.watch(roadViewProvider);
 
     return GestureDetector(
       onTap: () {
@@ -31,7 +31,7 @@ class RoadViewButton extends ConsumerWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: isRoadView ? Color(0xFF613EEA) : Colors.white,
+          color: isTrafficView ? Color(0xFF613EEA) : Colors.white,
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -48,14 +48,14 @@ class RoadViewButton extends ConsumerWidget {
               Images.roadViewIcon,
               width: 16,
               height: 16,
-              color: isRoadView ? Colors.white : null,
+              color: isTrafficView ? Colors.white : null,
             ),
             SizedBox(height: 4),
             Text(
               "혼잡도", // todo. 로드뷰
               style: CustomFonts.w500(
                 fontSize: 9,
-                color: isRoadView ? Colors.white : Colors.grey,
+                color: isTrafficView ? Colors.white : Colors.grey,
               ),
             ),
           ],

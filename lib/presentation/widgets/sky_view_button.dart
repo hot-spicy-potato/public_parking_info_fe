@@ -50,7 +50,7 @@ class SkyViewButton extends ConsumerWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              "로드뷰",
+              "스카이뷰",
               style: CustomFonts.w500(
                 fontSize: 9,
                 color: isSkyView ? Colors.white : Colors.grey,
